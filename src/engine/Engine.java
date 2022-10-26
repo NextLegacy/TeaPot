@@ -50,7 +50,7 @@ public final class Engine implements IActivatable
 
     public String toString()
     {
-        return "Engine(fs: " + frameSkips() + " | tps: " + tps() + " | fps: " + fps() + " | dt: " + deltaTime() + ")";
+        return "Engine(tps: " + tps() + " | fps: " + fps() + " | dt: " + deltaTime() + ")";
     }
 
     protected void onActivate  () { gameLoop.startThread(); }
