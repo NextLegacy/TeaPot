@@ -140,9 +140,65 @@ public class DrawableImage extends Image
 
     public void rect(int x0, int y0, int x1, int y1, double z, Func3<Integer, Integer, Integer, Double> color)
     {
-        for (int x = x0; x < x1; x++)
-            for (int y = y0; y < y1; y++)
-                drawPixel(x, y, z, color.get(x, y, z));
+        //for (int x = x0; x < x1; x++)
+        //    for (int y = y0; y < y1; y++)
+        //        drawPixel(x, y, z, color.get(x, y, z));
+
+        int x = x0;
+        int y = y0;
+
+        //w and h are just the width and height of the Rectangle, width and height are the clipped version of this
+        int w = x1 - x0;
+        int h = y1 - y0;        
+
+        //Not a single Pixel is inside the Bounds of this
+        if (x >= width() || y >= height() || x <= -w || y <= -h) 
+            return;
+
+        //width and height, that lies inside the Bounds of this
+        var width  = (x + w > width () ? width () - x : w) + (x < 0 ? x : 0);
+        var height = (y + h > height() ? height() - y : h) + (y < 0 ? y : 0);
+
+        //Start Index
+        var thisStartIndex  = (x < 0 ?  0 : x) + (y < 0 ?  0 : y) * width();
+
+        //Needed in the While-Loop, to avoid usage of repetitive multiplication (y * any_width = any_height). 
+        //It may be faster, for that reason its here.
+        var thisHeight  = 0;
+
+        //Last Index in current line
+        var thisMaxWidthIndex = thisStartIndex + width;
+        //Last Index that has to be filled
+        var thisMaxIndex = thisStartIndex + height * width();
+
+        //Index of this that is gonna be drawn on
+        var thisIndex = thisStartIndex;
+
+        while(true)
+        {
+            //TODO: find out x y z for color.get(...) | 
+            //TODO: Even better, find a better solution to use instead of color.get(...)
+
+            //draw Pixel
+            drawPixel(thisIndex, z, color.get(0, 0, 0d));
+            
+            thisIndex++;
+
+            if (thisIndex == thisMaxWidthIndex) 
+            {
+                //Increase Height by one (width of Rectangle)
+                thisHeight += width(); 
+
+                //Reset Indices to most left point shifted down by current Height
+                thisIndex = thisStartIndex  + thisHeight;
+
+                //Set new last point in line
+                thisMaxWidthIndex = thisIndex + width;
+
+                //If reached last Index, step out of loop
+                if (thisIndex == thisMaxIndex) break;
+            }
+        }
     }
 
     public void drawImage(Image image, int x, int y)
@@ -197,7 +253,7 @@ public class DrawableImage extends Image
                 //Set new last point in line
                 imageMaxWidthIndex = imageIndex + width;
 
-                //If reached last Index, end function
+                //If reached last Index, step out of loop
                 if (imageIndex == imageMaxIndex) break;
             }
         }
