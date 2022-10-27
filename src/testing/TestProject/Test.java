@@ -11,7 +11,7 @@ public class Test
 
     public static void main(String[] args)
     {
-        Engine engine = new Engine(vec(1080, 720), 600, 600, "main");
+        Engine engine = new Engine(vec(1080, 720), 60, 60, "main");
 
         engine.setActiveScene(START_SCENE);
         
