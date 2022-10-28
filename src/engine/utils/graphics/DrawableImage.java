@@ -69,15 +69,20 @@ public class DrawableImage extends Image
     public void drawPixel(int x, int y, double z, int argb) { drawPixel(getIndex(x, y), z, argb); }
     public void drawPixel(int index, double z, int argb)
     {
-        if (z <= -1) return;
+        if (!isPixelValid(index)) return; 
 
-        if (isPixelValid(index))
-            overridePixel(
-                index, 
-                z,
-                zBuffer[index] > z ? Color.mix(argb, colorBuffer[index]) :
-                                     Color.mix(colorBuffer[index], argb)  
-            );
+        final boolean t = zBuffer[index] > z; 
+
+        //if current z is higher and current color is not transparent, do not draw the Pixel
+        //even if current z is higher, if the current color is transparent, the Pixel must be drawn 
+        if (t && colorBuffer[index] >>> 24 == 0xff) return; 
+
+        overridePixel(
+            index, 
+            z,
+            t ? Color.mix(argb, colorBuffer[index]) :
+                Color.mix(colorBuffer[index], argb)  
+        );
     }
 
     public DrawableImage line(int x0, int y0, double z0, int x1, int y1, double z1, Func4<Integer, Integer, Integer, Double, Double> color)
