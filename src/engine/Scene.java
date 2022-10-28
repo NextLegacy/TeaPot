@@ -48,7 +48,7 @@ public abstract class Scene
     public final boolean isActiveScene() { return engine != null && this == engine.activeScene(); }
 
     @Override
-    public String toString() { return ClassUtils.simpleToString(getClass(), name); }
+    public String toString() { return "Scene(name: " + name + ")"; }
 
     public final void addGameObject(GameObject gameObject)
     {
