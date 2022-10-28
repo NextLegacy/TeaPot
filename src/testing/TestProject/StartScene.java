@@ -16,7 +16,7 @@ public class StartScene extends Scene
 
         getGameObject("main").addScript
         (
-            new ButtonScript(window().size(0.5, 0.5).minus(vec(100, 100)), window().size(0.5, 0.5).plus(100, 100), 3, 0xffafff6d, () -> 
+            new ButtonScript(window().size(0.5, 0.5).minus(vec(100, 100)), window().size(0.5, 0.5).plus(100, 100), 3, 0xaaafff6d, () -> 
             {
                 engine().setActiveScene(Test.GAME_SCENE);
             }
