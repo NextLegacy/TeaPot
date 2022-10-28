@@ -1,5 +1,7 @@
 package testing.TestProject;
 
+import java.awt.event.KeyEvent;
+
 import engine.Script;
 import engine.math.FinalVector;
 import engine.math.Vector;
@@ -25,8 +27,8 @@ public class ButtonScript extends Script
     {
         this.a = a.toFinalVector();
         this.b = b.toFinalVector();
-        da = a.minus(75).toFinalVector();
-        db = b.plus(75).toFinalVector();
+        da = a.minus(100).toFinalVector();
+        db = b.plus(100).toFinalVector();
 
         used_a = a.toVector();
         used_b = b.toVector();
@@ -48,7 +50,8 @@ public class ButtonScript extends Script
     @Override
     protected void update() 
     {
-        System.out.println(engine());
+        if (input().key(KeyEvent.VK_ESCAPE).isDown())
+            engine().deactivate();
 
         if (input().left().isClicked() && 
             input().mouse().isInRange(a, b))
