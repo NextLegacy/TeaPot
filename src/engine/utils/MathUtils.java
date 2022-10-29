@@ -77,6 +77,18 @@ public final class MathUtils
     public static double lerp(double a, double b, double t) { return t * (b - a) + a; }
     public static Vector lerp(Vector4 from, Vector4 to, double t) { return Vector.lerp(from, to, t); }
 
+    //https://en.wikipedia.org/wiki/Smoothstep
+    public static double smoothStep(double a, double b, double x)
+    {
+        if (x < a) return 0;
+        if (x > b) return 1;
+        
+        // Scale/bias into [0..1] range
+        x = (x - a) / (b - a);
+
+        return x * x * (3 - 2 * x);
+    }
+
     public static Vector inverseOf  (Vector4 vector) { return vector.inverted  (); }   
     public static Vector normalOf   (Vector4 vector) { return vector.normalized(); }
     public static double magnitudeOf(Vector4 vector) { return vector.magnitude (); }  
