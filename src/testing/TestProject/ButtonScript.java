@@ -7,6 +7,9 @@ import engine.math.FinalVector;
 import engine.math.Vector;
 import engine.math.Vector4;
 import engine.utils.Lambda.Action0;
+import engine.utils.time.Time;
+
+import static engine.utils.MathUtils.*;
 
 public class ButtonScript extends Script
 {
@@ -27,8 +30,8 @@ public class ButtonScript extends Script
     {
         this.a = a.toFinalVector();
         this.b = b.toFinalVector();
-        da = a.minus(100).toFinalVector();
-        db = b.plus(100).toFinalVector();
+        da = a.minus(10).toFinalVector();
+        db = b.plus(10).toFinalVector();
 
         used_a = a.toVector();
         used_b = b.toVector();
@@ -47,6 +50,8 @@ public class ButtonScript extends Script
 
     boolean hovering = false;
 
+    double t = 0;
+
     @Override
     protected void update() 
     {
@@ -59,10 +64,15 @@ public class ButtonScript extends Script
         
         if (input().mouse().isInRange(a, b))
         {
-            used_a = used_a.lerpTo(da, 3.5 * engine().deltaTime());
-            used_b = used_b.lerpTo(db, 3.5 * engine().deltaTime());
+            t += engine().deltaTime()*4;
+
+            double step = smoothStep(-0.5, 1, t);
+
+            used_a = used_a.lerpTo(da, step);
+            used_b = used_b.lerpTo(db, step);
         }
         else {
+            t = 0;
             used_a = a.toVector();
             used_b = b.toVector();
         }
