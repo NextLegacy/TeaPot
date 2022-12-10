@@ -56,7 +56,12 @@ public class App
 
                 if (input().key(KeyEvent.VK_ESCAPE).isDown())
                     engine().deactivate();
+
+                n+= input().wheel().direction()*30;    
+                System.out.println(n);
             }
+
+            double n = 0;
 
             @Override
             protected void render() 
@@ -66,7 +71,8 @@ public class App
                 image().drawImage(result, position.int_x(), position.int_y());
                 image().drawImage(logo, 0, 0);
 
-                image().rect(vec(250, 250), vec(500, 500), -4, (x, y, z) -> 0x4bff00ff);
+                //Error when n is smaller than -250
+                image().rect(vec(250, 250), vec(500, 500).plus(n), 5, (x, y, z) -> 0x4bff00ff);
             }
         });
 
