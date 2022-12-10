@@ -82,10 +82,10 @@ public final class Matrix
     public Vector times(Vector4 vector)
     {
         return vec(
-            vector.x * m[ 0] + vector.y * m[ 4] + vector.z * m[ 8] + vector.w * m[12],
-            vector.x * m[ 1] + vector.y * m[ 5] + vector.z * m[ 9] + vector.w * m[13],
-            vector.x * m[ 2] + vector.y * m[ 6] + vector.z * m[10] + vector.w * m[14],
-            vector.x * m[ 3] + vector.y * m[ 7] + vector.z * m[11] + vector.w * m[15]
+            vector.x() * m[ 0] + vector.y() * m[ 4] + vector.z() * m[ 8] + vector.w() * m[12],
+            vector.x() * m[ 1] + vector.y() * m[ 5] + vector.z() * m[ 9] + vector.w() * m[13],
+            vector.x() * m[ 2] + vector.y() * m[ 6] + vector.z() * m[10] + vector.w() * m[14],
+            vector.x() * m[ 3] + vector.y() * m[ 7] + vector.z() * m[11] + vector.w() * m[15]
         );
     }
 
@@ -108,10 +108,10 @@ public final class Matrix
         Vector newRight = newUp.cross(newForward);
 
         Matrix lookAtMatrix = new Matrix(
-            newRight.x   , newRight.y   , newRight.z   , 0 ,
-            newUp.x      , newUp.y      , newUp.z      , 0 ,
-            newForward.x , newForward.y , newForward.z , 0 ,
-            pos.x        , pos.y        , pos.z        , 1 
+            newRight.x  (), newRight.y  (), newRight.z  (), 0 ,
+            newUp.x     (), newUp.y     (), newUp.z     (), 0 ,
+            newForward.x(), newForward.y(), newForward.z(), 0 ,
+            pos.x       (), pos.y       (), pos.z       (), 1 
         );
 
         return lookAtMatrix.quickInverse();
@@ -142,20 +142,20 @@ public final class Matrix
     public static Matrix MakeTranslation(Vector4 v)
     {
         return new Matrix(
-            1,    0,    0,    0,
-            0,    1,    0,    0, 
-            0,    0,    1,    0,
-            v.x,  v.y,  v.z,    1
+            1    , 0    , 0    , 0,
+            0    , 1    , 0    , 0, 
+            0    , 0    , 1    , 0,
+            v.x(), v.y(), v.z(), 1
         );
     }
 
     public static Matrix MakeScale(Vector4 v)
     {
         return new Matrix(
-            v.x, 0  , 0  , 0,
-            0  , v.y, 0  , 0, 
-            0  , 0  , v.z, 0,
-            0  , 0  , 0  , 1
+            v.x(), 0    , 0    , 0,
+            0    , v.y(), 0    , 0, 
+            0    , 0    , v.z(), 0,
+            0    , 0    , 0    , 1
         );
     }
 
