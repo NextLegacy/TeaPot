@@ -16,7 +16,7 @@ public abstract class Scene
     private final ArrayList<GameObject> gameObjects;
     private GameObject[] gameObjectsArray;
     
-    public Scene() { this("Scene " + scenesCounter++); } 
+    public Scene() { this("Scene " + ++scenesCounter); } 
 
     public Scene(String name)
     {
