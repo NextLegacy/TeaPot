@@ -4,9 +4,10 @@ import engine.math.FinalVector;
 import engine.math.Vector4;
 import engine.utils.activatable.IActivatable;
 import engine.utils.time.GameLoop;
+import engine.utils.time.Time;
 import engine.window.Window;
 import engine.window.WindowLayer;
-import engine.window.Input.InputListener;
+import engine.window.Input.Input;
 
 public final class Engine implements IActivatable
 {
@@ -36,7 +37,7 @@ public final class Engine implements IActivatable
     @SuppressWarnings("unchecked") public <T extends Scene> T sceneToLoad() { return (T)sceneToLoad; }
 
     public Window        window        () { return window                            ; }
-    public InputListener inputListener () { return window.inputListener()            ; }
+    public Input         input         () { return window.input()                    ; }
     public WindowLayer   image         () { return currentImage                      ; }
 
     public double        fps           () { return gameLoop.currentFPS()             ; }
@@ -160,9 +161,17 @@ public final class Engine implements IActivatable
         @Override
         public void start() 
         {
-            tryLoadScene();
-
             window.start();
+
+            //wait until Window loaded;
+            long time = 0L;
+            while(!input().isActive() || time >= 10 * Time.SECONDS_TO_NANOS) 
+                time += Time.nanos();
+
+            if (time >= 10 * Time.SECONDS_TO_NANOS)
+                throw new RuntimeException("Window not responding");
+
+            tryLoadScene();
         }
 
         @Override
@@ -185,7 +194,7 @@ public final class Engine implements IActivatable
             if (activeScene == null) return;
 
             activeScene.update();
-            inputListener().update();
+            input().update();
         }
 
         @Override
@@ -198,7 +207,7 @@ public final class Engine implements IActivatable
         @Override
         public boolean isActive() 
         {
-            return inputListener().isActive() && engine.isActive();  
+            return input().isActive() && engine.isActive();  
         }
     }
 }
