@@ -21,8 +21,6 @@ public final class GameObject implements IActivatable, IDestroyable
     private final ArrayList<Script> scripts;
     private Script[] scriptsArray;
 
-    public final Transform transform;
-
     private Scene scene;
     
     public GameObject() { this(""); }
@@ -33,8 +31,6 @@ public final class GameObject implements IActivatable, IDestroyable
 
         children = new ArrayList<>();
         scripts = new ArrayList<>();
-        
-        transform = new Transform();
     }
 
     void setScene(Scene scene) { this.scene = scene; init(); }
@@ -124,8 +120,6 @@ public final class GameObject implements IActivatable, IDestroyable
 
     void init()
     {
-        transform.init();
-
         childrenArray = new GameObject[0];
         scriptsArray = new Script[0];
     }
@@ -138,7 +132,7 @@ public final class GameObject implements IActivatable, IDestroyable
         destroyed = true;
 
         /*
-         * The thing is, destroy does not make that much Scene like this
+         * The thing is, destroy does not make that much Sense like this
          * When you destroy a GameObject in a Scene
          * 
          * The Scripts should stay and the Children as well
@@ -148,7 +142,6 @@ public final class GameObject implements IActivatable, IDestroyable
          */
 
         //scripts.clear();
-        transform.destroy();
 
         deactivate();
 
