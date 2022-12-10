@@ -12,13 +12,13 @@ import engine.math.Vector4;
 import engine.utils.ImageUtils;
 import engine.utils.ScreenUtils;
 import engine.utils.graphics.DrawableImage;
-import engine.window.Input.InputListener;
+import engine.window.Input.Input;
 
 public abstract class Window
 {
     private Frame frame;
 
-    private InputListener inputListener;
+    private Input input;
 
     private BufferStrategy strategy;
 
@@ -41,10 +41,10 @@ public abstract class Window
     private final void initializeFrame()
     {
         frame = new Frame();
-        inputListener = new InputListener()
+        input = new Input()
             .bindToFrame(frame);
 
-        frame.setUndecorated(true);
+        //frame.setUndecorated(true);
 
         frame.setResizable(false);
         
@@ -102,15 +102,17 @@ public abstract class Window
 
     public final Window setPositionToCenter()
     {
-        return setPosition(ScreenUtils.SCREEN_SIZE.dividedBy(2).minus(size.dividedBy(2)));
+        return this;
+        //return setPosition(ScreenUtils.SCREEN_SIZE.dividedBy(2).minus(size.dividedBy(2)));
     }
     
-    public final FinalVector   size         () { return size            ; }
-    public final FinalVector   position     () { return position        ; }
-    public final int           width        () { return size.int_x()    ; }
-    public final int           height       () { return size.int_y()    ; }
-    public final InputListener inputListener() { return inputListener   ; }
-    public final String        title        () { return frame.getTitle(); }
+    public final FinalVector   size          () { return size            ; }
+    public final FinalVector   position      () { return position        ; }
+    public final int           width         () { return size.int_x()    ; }
+    public final int           height        () { return size.int_y()    ; }
+    public final int           verticalBorder() { return frame.getInsets().top + frame.getInsets().bottom; }
+    public final Input         input         () { return input   ; }
+    public final String        title         () { return frame.getTitle(); }
     
     public final FinalVector size  (double widthRatio, double heightRatio) { return size.times(widthRatio, heightRatio).toFinalVector(); }
     public final double      width (double ratio) { return width () * ratio; }
@@ -159,7 +161,7 @@ public abstract class Window
         frame.dispose();
 
         frame = null;
-        inputListener = null;
+        input = null;
 
         strategy = null;
     }
@@ -203,7 +205,7 @@ public abstract class Window
                     graphics.setColor(Color.BLACK);
                     graphics.fillRect(0, 0, width(), height()); 
 
-                    graphics.drawImage(windowBufferedImage, 0, 0, null);
+                    graphics.drawImage(windowBufferedImage, 0, verticalBorder(), null);
                 
                 //RENDER END
 
