@@ -2,11 +2,12 @@ package engine.math;
 
 import static engine.utils.MathUtils.*;
 
+//Immutable Quaternion Class
 public class Quaternion
 {
-    FinalVector q;
+    private final FinalVector q;
     
-    Quaternion(double x, double y, double z, double w) { q = fvec(x, y, z, w); }
+    private Quaternion(double x, double y, double z, double w) { q = fvec(x, y, z, w); }
 
     public Quaternion plus(Quaternion quaternion)
     {
@@ -17,7 +18,6 @@ public class Quaternion
             q.w + quaternion.q.w
         );
     }
-
     
     public Quaternion minus(Quaternion quaternion)
     {
@@ -38,7 +38,27 @@ public class Quaternion
             q.w * quaternion.q.w
         );
     }
-    public Quaternion scaledBy(double n) { return new Quaternion(q.x * n, q.y * n, q.z * n, q.w * n); }
+
+    public Quaternion times(double n)
+    {
+        return new Quaternion(
+            q.x * n,
+            q.y * n,
+            q.z * n,
+            q.w * n
+        );
+    }
+
+    public Quaternion dividedBy(Quaternion quaternion)
+    {
+        return new Quaternion(
+            q.x / quaternion.q.x,
+            q.y / quaternion.q.y,
+            q.z / quaternion.q.z,
+            q.w / quaternion.q.w
+        );
+    }
+
     public Vector rotateVector(Vector4 vector)  
     { 
         //https://gamedev.stackexchange.com/a/50545
@@ -53,28 +73,17 @@ public class Quaternion
          */
 
         return q.times(2.0d * q.dot(vector))
-                .plus(vector.times(q.w * q.w - q.dot(q)))
+                .plus(vector.times(q.w * q.w - q.magnitudeSquared()))
                 .plus(q.cross(vector).times(2.0d * q.w));
         
         //return matrix().times(vector);
-
     }
 
     public Vector rotateVector2(Vector4 vector)
     {
         return matrix().times(vector);
     }
-        
-    public Quaternion dividedBy(Quaternion quaternion)
-    {
-        return new Quaternion(
-            q.x / quaternion.q.x,
-            q.y / quaternion.q.y,
-            q.z / quaternion.q.z,
-            q.w / quaternion.q.w
-        );
-    }
-
+    
     public double norm()
     {
         return q.magnitude();
@@ -82,7 +91,7 @@ public class Quaternion
 
     public double normSq()
     {
-        return q.dot(q);
+        return q.magnitudeSquared();
     }
 
     public Quaternion normalized()
@@ -92,7 +101,7 @@ public class Quaternion
         if (norm < EPSILON) 
             return Quaternion.zero;
 
-        return scaledBy(norm);
+        return times(norm);
     }
 
     public Quaternion inverse()
@@ -161,13 +170,13 @@ public class Quaternion
     {
         vector = vector.times(0.5d * RADIANT);
     
-        double cosX = Math.cos(vector.x);
-        double cosY = Math.cos(vector.y);
-        double cosZ = Math.cos(vector.z);
+        double cosX = Math.cos(vector.x());
+        double cosY = Math.cos(vector.y());
+        double cosZ = Math.cos(vector.z());
     
-        double sinX = Math.sin(vector.x);
-        double sinY = Math.sin(vector.y);
-        double sinZ = Math.sin(vector.z);
+        double sinX = Math.sin(vector.x());
+        double sinY = Math.sin(vector.y());
+        double sinZ = Math.sin(vector.z());
 
         return new Quaternion
         (
@@ -181,14 +190,14 @@ public class Quaternion
     public static Quaternion FromBetweenVector(Vector4 a, Vector4 b)
     {
         double dot = a.dot(b);
-        Vector c   = a.cross(b);
+        Vector4 c  = a.cross(b);
     
         return new Quaternion
         (
-            c.x,
-            c.y,
-            c.z,
-            dot + Math.sqrt(dot * dot + c.dot(c))
+            c.x(),
+            c.y(),
+            c.z(),
+            dot + Math.sqrt(dot * dot + c.magnitudeSquared())
         ).normalized();
     }
 
@@ -196,9 +205,9 @@ public class Quaternion
     {
         double halfAngle = angle * 0.5;
 
-        double a = axis.x;
-        double b = axis.y;
-        double c = axis.z;
+        double a = axis.x();
+        double b = axis.y();
+        double c = axis.z();
     
         double sin_2 = Math.sin(halfAngle);
         double cos_2 = Math.cos(halfAngle);
