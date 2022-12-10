@@ -74,7 +74,7 @@ public final class MathUtils
     
     public static double clamp(double n, double min, double max) { return n <= min ? min : n >= max ? max : n; }
 
-    public static double lerp(double a, double b, double t) { return t * (b - a) + a; }
+    public static double lerp(double a, double b, double t) { return clamp(t * (b - a) + a, a, b); }
     public static Vector lerp(Vector4 from, Vector4 to, double t) { return Vector.lerp(from, to, t); }
 
     //https://en.wikipedia.org/wiki/Smoothstep
@@ -92,7 +92,7 @@ public final class MathUtils
     public static Vector inverseOf  (Vector4 vector) { return vector.inverted  (); }   
     public static Vector normalOf   (Vector4 vector) { return vector.normalized(); }
     public static double magnitudeOf(Vector4 vector) { return vector.magnitude (); }  
-    public static Vector angleOf    (Vector4 vector) { return vector.angle     (); }
+    //public static Vector angleOf    (Vector4 vector) { return vector.angle     (); }
 
     public static Vector vec()                                       { return vec(0, 0, 0, 1); }
     public static Vector vec(double x)                               { return vec(x, 0, 0, 1); }
