@@ -1,10 +1,16 @@
 package engine;
 
+import engine.math.Quaternion;
+import engine.math.Vector;
 import engine.utils.activatable.IActivatable;
 import engine.utils.destroyable.IDestroyable;
 import engine.window.Window;
 import engine.window.WindowLayer;
-import engine.window.Input.InputListener;
+import engine.window.Input.Button;
+import engine.window.Input.Input;
+import engine.window.Input.Key;
+import engine.window.Input.Mouse;
+import engine.window.Input.Wheel;
 
 public abstract class Script implements IActivatable, IDestroyable
 {
@@ -19,13 +25,24 @@ public abstract class Script implements IActivatable, IDestroyable
 
     void setGameObject(GameObject gameObject) { this.gameObject = gameObject; }
     
-    protected final GameObject gameObject() { return gameObject; }
+    protected final GameObject  gameObject() { return gameObject            ; }
 
-    protected final Engine        engine() { return gameObject.engine     (); }
-    protected final Window        window() { return engine().window       (); }
-    protected final InputListener input () { return engine().inputListener(); }
-    protected final Scene         scene () { return engine().activeScene  (); }
-    protected final WindowLayer   image () { return engine().image        (); }
+    protected final Engine      engine    () { return gameObject.engine(); }
+    protected final Window      window    () { return engine().window  (); }
+
+    protected final Input       input     () { return engine().input   (); }
+    protected final Mouse       mouse     () { return input().mouse    (); }
+    protected final Button      left      () { return input().left     (); }
+    protected final Button      right     () { return input().right    (); }
+    protected final Wheel       wheel     () { return input().wheel    (); }
+    protected final Key         key(int keyEvent) { return input().key(keyEvent); }
+
+    protected final Scene       scene     () { return engine().activeScene(); }
+    protected final WindowLayer image     () { return engine().image      (); }
+
+    protected final double deltaTime      () { return engine().deltaTime(); }
+    protected final double frameDeltaTime () { return engine().deltaTime(); }
+    protected final double tickDeltaTime  () { return engine().deltaTime(); }
 
     protected void awake() { }
 
