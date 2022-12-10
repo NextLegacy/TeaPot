@@ -6,6 +6,23 @@ import engine.utils.Lambda.Func0;
 import engine.utils.Lambda.Func1;
 import engine.utils.color.ANSICode;
 
+/*
+ * TODO: Imrprove LoggerInformationBuilder, currently way to annoying to use
+ * 
+ * Idea:
+ * LoggerLevelFormat format = new LoggerLevelFormat((level) -> "[" + level + "]")
+ * 
+ * LoggerInformation.build()
+ *     .setFormat(format)
+ *     .levels()
+ *          .build("info")
+ *          .done()
+ *          .build("debug")
+ *          .done()
+ * .done();
+ *     
+ */
+
 public final class LoggerInformationBuilder 
 {
     private final ArrayList<Func1<Object, String>> parts;
