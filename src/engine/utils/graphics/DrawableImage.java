@@ -1,5 +1,6 @@
 package engine.utils.graphics;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +12,8 @@ import engine.math.Vector4;
 import engine.utils.ArrayUtils;
 import engine.utils.ImageUtils;
 import engine.utils.MathUtils;
+import engine.utils.Lambda.Action0;
+import engine.utils.Lambda.Action1;
 import engine.utils.Lambda.Func2;
 import engine.utils.Lambda.Func3;
 import engine.utils.Lambda.Func4;
@@ -22,7 +25,7 @@ public class DrawableImage extends Image
 {
     public static final int CLEAR_COLOR = 0xff000000;
     public static final double CLEAR_Z  = -1;
-    
+
     public DrawableImage(final int[] data, Vector4 size)
     {
         super(data, size);
@@ -161,23 +164,23 @@ public class DrawableImage extends Image
             return;
 
         //width and height, that lies inside the Bounds of this
-        var width  = (x + w > width () ? width () - x : w) + (x < 0 ? x : 0);
-        var height = (y + h > height() ? height() - y : h) + (y < 0 ? y : 0);
+        int width  = (x + w > width () ? width () - x : w) + (x < 0 ? x : 0);
+        int height = (y + h > height() ? height() - y : h) + (y < 0 ? y : 0);
 
         //Start Index
-        var thisStartIndex  = (x < 0 ?  0 : x) + (y < 0 ?  0 : y) * width();
+        int thisStartIndex  = (x < 0 ?  0 : x) + (y < 0 ?  0 : y) * width();
 
         //Needed in the While-Loop, to avoid usage of repetitive multiplication (y * any_width = any_height). 
         //It may be faster, for that reason its here.
-        var thisHeight  = 0;
+        int thisHeight  = 0;
 
         //Last Index in current line
-        var thisMaxWidthIndex = thisStartIndex + width;
+        int thisMaxWidthIndex = thisStartIndex + width;
         //Last Index that has to be filled
-        var thisMaxIndex = thisStartIndex + height * width();
+        int thisMaxIndex = thisStartIndex + height * width();
 
         //Index of this that is gonna be drawn on
-        var thisIndex = thisStartIndex;
+        int thisIndex = thisStartIndex;
 
         while(true)
         {
@@ -213,27 +216,27 @@ public class DrawableImage extends Image
             return;
 
         //width and height, that lies inside the Bounds of this
-        var width  = (x + image.width()  > width()  ? width()  - x : image.width() ) + (x < 0 ? x : 0);
-        var height = (y + image.height() > height() ? height() - y : image.height()) + (y < 0 ? y : 0);
+        int width  = (x + image.width()  > width()  ? width()  - x : image.width() ) + (x < 0 ? x : 0);
+        int height = (y + image.height() > height() ? height() - y : image.height()) + (y < 0 ? y : 0);
 
         //Start Index, for image and this
-        var imageStartIndex = (x < 0 ? -x : 0) + (y < 0 ? -y : 0) * image.width();
-        var thisStartIndex  = (x < 0 ?  0 : x) + (y < 0 ?  0 : y) * width();
+        int imageStartIndex = (x < 0 ? -x : 0) + (y < 0 ? -y : 0) * image.width();
+        int thisStartIndex  = (x < 0 ?  0 : x) + (y < 0 ?  0 : y) * width();
 
         //Needed in the While-Loop, to avoid usage of repetitive multiplication (y * any_width = any_height (whereas any means image or this)). 
         //It may be faster, for that reason its here.
-        var imageHeight = 0;
-        var thisHeight  = 0;
+        int imageHeight = 0;
+        int thisHeight  = 0;
 
         //Last Index in current line
-        var imageMaxWidthIndex = imageStartIndex + width;
+        int imageMaxWidthIndex = imageStartIndex + width;
         //Last Index that has to be filled
-        var imageMaxIndex = imageStartIndex + height * image.width();
+        int imageMaxIndex = imageStartIndex + height * image.width();
         
         //Index of Image that is gonna be used to get Color and ZValue
-        var imageIndex = imageStartIndex;
+        int imageIndex = imageStartIndex;
         //Index of this that is gonna be drawn on
-        var thisIndex  = thisStartIndex;
+        int thisIndex  = thisStartIndex;
 
         while(true)
         {
@@ -266,9 +269,25 @@ public class DrawableImage extends Image
 
     public void drawImage(final Image image) { drawImage(image, 0, 0);}
 
-    //bug: Does not work with different sized Images
+    //FIXME: Does not work with different sized Images
     public void pasteImage(final Image image) { ImageUtils.imageCopy(image, this); }
     public void pasteImage(final Image image, int x0, int y0, int x1, int y1) { ImageUtils.imageCopy(image, this, x0, y0, x1, y1); }
+
+    public static DrawableImage fromUsingGraphics(Vector4 size, Action1<Graphics2D> action)
+    {
+        BufferedImage bufferedImage = ImageUtils.createCompatibleBufferedImage(size);
+
+        Graphics2D graphics = bufferedImage.createGraphics();
+    
+        graphics.setColor(new java.awt.Color(0, 0, 0, 0));
+        graphics.fillRect(0, 0, size.int_x(), size.int_y());
+
+        action.run(graphics);
+
+        graphics.dispose();
+
+        return new DrawableImage(bufferedImage);
+    }
 
     public static DrawableImage fromFile(String path)
     {
