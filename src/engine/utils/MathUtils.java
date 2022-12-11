@@ -74,7 +74,7 @@ public final class MathUtils
     
     public static double clamp(double n, double min, double max) { return n <= min ? min : n >= max ? max : n; }
 
-    public static double lerp(double a, double b, double t) { return clamp(t * (b - a) + a, a, b); }
+    public static double lerp(double a, double b, double t) { return t * (a - b) + b; } //return clamp(t * (b - a) + a, a, b); }
     public static Vector lerp(Vector4 from, Vector4 to, double t) { return Vector.lerp(from, to, t); }
 
     //https://en.wikipedia.org/wiki/Smoothstep
