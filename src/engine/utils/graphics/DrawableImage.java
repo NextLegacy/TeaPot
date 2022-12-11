@@ -88,7 +88,19 @@ public class DrawableImage extends Image
         );
     }
 
-    public DrawableImage line(int x0, int y0, double z0, int x1, int y1, double z1, Func4<Integer, Integer, Integer, Double, Double> color)
+    private void drawPixelBresenham(int x, int y, double z, double t, int size, Func4<Integer, Integer, Integer, Double, Double> color)
+    {
+        if (size == 0) return;
+
+        drawPixel(x, y, z, color.get(x, y, z, t));
+
+        drawPixelBresenham(x + 1, y    , z, t, size - 1, color); // left
+        drawPixelBresenham(x - 1, y    , z, t, size - 1, color); // right
+        drawPixelBresenham(x    , y + 1, z, t, size - 1, color); // up
+        drawPixelBresenham(x    , y - 1, z, t, size - 1, color); // down
+    }
+
+    public DrawableImage line(int x0, int y0, double z0, int x1, int y1, double z1, int size, Func4<Integer, Integer, Integer, Double, Double> color)
     {
         x0 = (int) MathUtils.clamp(x0, 0, width());
         y0 = (int) MathUtils.clamp(y0, 0, height() - 1);
@@ -119,7 +131,9 @@ public class DrawableImage extends Image
 
             final double t = distanceToOrigin / lineLength;
 
-            drawPixel(x0, y0, z0, color.get(x0, y0, z0, t));
+            //drawPixel(x0, y0, z0, color.get(x0, y0, z0, 1 - t));
+
+            drawPixelBresenham(x0, y0, z0, 1 - t, size, color);
 
             if (x0 == x1 && y0 == y1) break;
             
@@ -134,9 +148,9 @@ public class DrawableImage extends Image
         return this;
     }
 
-    public DrawableImage line(Vector4 a, Vector4 b, Func2<Integer, Vector4, Double> color)
+    public DrawableImage line(Vector4 a, Vector4 b, int size, Func2<Integer, Vector4, Double> color)
     {
-        return line(a.int_x(), a.int_y(), a.z(), b.int_x(), b.int_y(), b.z(), (x, y, z, t) -> color.get(vec(x, y, z), t));
+        return line(a.int_x(), a.int_y(), a.z(), b.int_x(), b.int_y(), b.z(), size, (x, y, z, t) -> color.get(vec(x, y, z), t));
     }
 
     public void rect(Vector4 a, Vector4 b, double z, Func3<Integer, Integer, Integer, Double> color)
