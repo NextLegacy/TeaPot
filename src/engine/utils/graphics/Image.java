@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 import javax.imageio.ImageIO;
 
@@ -31,6 +32,11 @@ public class Image
 
     protected final int   [] colorBuffer;
     protected final double[] zBuffer    ;
+
+    public Image(final FinalVector size)
+    {
+        this(new int[size.int_x() * size.int_y()], size);
+    }
 
     public Image(final int[] data, final Vector4 size)
     {
@@ -89,8 +95,15 @@ public class Image
         graphics.drawImage(toBufferedImage(), 0, 0, size.int_x(), size.int_y(), null);
 
         graphics.dispose();
-        
+
         return new Image(result);
+    }
+
+    public void export(String path, String format)
+    {
+        try {
+            ImageIO.write(toBufferedImage(), format, new File(path));
+        } catch (IOException e) { e.printStackTrace(); }
     }
 
     public static Image fromFile(String path)
