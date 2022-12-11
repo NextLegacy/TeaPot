@@ -6,10 +6,10 @@ import engine.utils.MathUtils;
 
 public final class Vector extends Vector4
 {
-    private double x;
-    private double y;
-    private double z;
-    private double w;
+    public double x; //TODO: use everywhere the fields instead of the getters and setter
+    public double y;
+    public double z;
+    public double w;
     
     public Vector(Vector4 v) { this(v.x(), v.y(), v.z(), v.w()); }
     public Vector()                             { this(0, 0, 0, 1);  }
