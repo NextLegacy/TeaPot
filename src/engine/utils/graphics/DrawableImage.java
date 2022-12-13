@@ -10,10 +10,12 @@ import javax.imageio.ImageIO;
 import engine.math.FinalVector;
 import engine.math.Vector4;
 import engine.utils.ArrayUtils;
+import engine.utils.GraphicsUtils;
 import engine.utils.ImageUtils;
 import engine.utils.MathUtils;
 import engine.utils.Lambda.Action0;
 import engine.utils.Lambda.Action1;
+import engine.utils.Lambda.Func1;
 import engine.utils.Lambda.Func2;
 import engine.utils.Lambda.Func3;
 import engine.utils.Lambda.Func4;
@@ -88,19 +90,59 @@ public class DrawableImage extends Image
         );
     }
 
-    private void drawPixelBresenham(int x, int y, double z, double t, int size, Func4<Integer, Integer, Integer, Double, Double> color)
+    public void line(Vector4 a, Vector4 b, int z, int size, int color)
     {
-        if (size == 0) return;
-
-        drawPixel(x, y, z, color.get(x, y, z, t));
-
-        drawPixelBresenham(x + 1, y    , z, t, size - 1, color); // left
-        drawPixelBresenham(x - 1, y    , z, t, size - 1, color); // right
-        drawPixelBresenham(x    , y + 1, z, t, size - 1, color); // up
-        drawPixelBresenham(x    , y - 1, z, t, size - 1, color); // down
+        line(a.int_x(), a.int_y(), b.int_x(), b.int_y(), z, size, color);
     }
 
-    public DrawableImage line(int x0, int y0, double z0, int x1, int y1, double z1, int size, Func4<Integer, Integer, Integer, Double, Double> color)
+    public void line(int x0, int y0, int x1, int y1, double z, int size, int color)
+    {
+        if (size <= 0) return;
+
+        if (size == 1) { line(x0, y0, x1, y1, z, color); return; }
+
+        final double dx = x1 - x0;
+        final double dy = y1 - y0;
+
+        final int size0 = floor(size / 2d);
+        final int size1 = round(size / 2d);
+
+        if (dx == 0)
+        {
+            rect(x0 - size0, y0, x1 + size1, y1, z, color);
+            return;
+        }
+
+        if (dy == 0)
+        {
+            rect(x0, y0 - size0, x1, y1 + size1, z, color);
+            return;
+        }
+
+        double theta = Math.atan(-dx/dy);
+
+        double vx = (double) Math.cos(theta);
+        double vy = (double) Math.sin(theta);
+
+        int x2 = (int) (vx * size0) + x0;
+        int y2 = (int) (vy * size0) + y0;
+
+        int x3 = (int) (vx * size0) + x1;
+        int y3 = (int) (vy * size0) + y1;
+
+        int x4 = (int) (-vx * size1) + x0;
+        int y4 = (int) (-vy * size1) + y0;
+
+        int x5 = (int) (-vx * size1) + x1;
+        int y5 = (int) (-vy * size1) + y1;
+
+        line(x0, y0, x1, y1, z, color);
+
+        line(x2, y2, x3, y3, z, color);
+        line(x4, y4, x5, y5, z, color);
+    }
+
+    public void line(int x0, int y0, int x1, int y1, double z, int color)
     {
         x0 = (int) MathUtils.clamp(x0, 0, width());
         y0 = (int) MathUtils.clamp(y0, 0, height() - 1);
@@ -108,64 +150,26 @@ public class DrawableImage extends Image
         x1 = (int) MathUtils.clamp(x1, 0, width());
         y1 = (int) MathUtils.clamp(y1, 0, height() - 1);
 
-        double dx =  Math.abs(x1 - x0);
-        double dy = -Math.abs(y1 - y0);
-        double dz =  Math.abs(z1 - z0);
-     
-        double lineLength = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        int[][] pixels = GraphicsUtils.bresenham(x0, y0, x1, y1);
 
-        final double sx = x0 < x1 ? 1 : -1;
-        final double sy = y0 < y1 ? 1 : -1;
-
-        double err = dx + dy;
-        double e2 = 0;
-        
-        while (true) 
-        {
-            //current distance to origin -> cd
-            final double cdx = Math.abs(x1 - x0);
-            final double cdy = Math.abs(y1 - y0);
-            final double cdz = Math.abs(z1 - z0);
-
-            final double distanceToOrigin = Math.sqrt(cdx*cdx + cdy*cdy + cdz*cdz);
-
-            final double t = distanceToOrigin / lineLength;
-
-            //drawPixel(x0, y0, z0, color.get(x0, y0, z0, 1 - t));
-
-            drawPixelBresenham(x0, y0, z0, 1 - t, size, color);
-
-            if (x0 == x1 && y0 == y1) break;
-            
-            e2 = 2 * err;
-
-            z0 = z1 * t;
-            
-            if (e2 > dy) { err += dy; x0 += sx; }
-            if (e2 < dx) { err += dx; y0 += sy; }
-        }
-
-        return this;
+        for (int i = 0; i < pixels.length; i++)
+            drawPixel(pixels[i][0], pixels[i][1], z, color);
     }
 
-    public DrawableImage line(Vector4 a, Vector4 b, int size, Func2<Integer, Vector4, Double> color)
+    public void line(Vector4 a, Vector4 b, double z, int color)
     {
-        return line(a.int_x(), a.int_y(), a.z(), b.int_x(), b.int_y(), b.z(), size, (x, y, z, t) -> color.get(vec(x, y, z), t));
+        line(a.int_x(), a.int_y(), b.int_x(), b.int_y(), z, color);
     }
 
-    public void rect(Vector4 a, Vector4 b, double z, Func3<Integer, Integer, Integer, Double> color)
+    public void rect(Vector4 a, Vector4 b, double z, int color)
     {
         a = a.toVector().clamp(FinalVector.zero, size());
         b = b.toVector().clamp(FinalVector.zero, size());
         rect(a.int_x(), a.int_y(), b.int_x(), b.int_y(), z, color);
     }
 
-    public void rect(int x0, int y0, int x1, int y1, double z, Func3<Integer, Integer, Integer, Double> color)
+    public void rect(int x0, int y0, int x1, int y1, double z, int color)
     {
-        //for (int x = x0; x < x1; x++)
-        //    for (int y = y0; y < y1; y++)
-        //        drawPixel(x, y, z, color.get(x, y, z));
-
         int x = x0;
         int y = y0;
 
@@ -202,7 +206,7 @@ public class DrawableImage extends Image
             //TODO: Even better, find a better solution to use instead of color.get(...)
 
             //draw Pixel
-            drawPixel(thisIndex, z, color.get(0, 0, 0d));
+            drawPixel(thisIndex, z, color);
             
             thisIndex++;
 
