@@ -80,6 +80,6 @@ public class ButtonScript extends Script
     @Override
     protected void render() 
     {
-        image().rect(used_a, used_b, z, (x, y, z) -> color);
+        image().rect(used_a, used_b, z, color);
     }
 }
