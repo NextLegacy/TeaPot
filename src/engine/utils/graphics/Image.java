@@ -54,7 +54,7 @@ public class Image
         this(ImageUtils.getBufferedImageDataArray(ImageUtils.toCompatibleBufferedImage(bufferedImage)), new FinalVector(bufferedImage.getWidth(), bufferedImage.getHeight()));
     }
     
-    public final int getIndex(int x, int y) { return x + y * width(); }
+    public final int getIndex(int x, int y) { return x > width() || y > height() || x < 0 || y < 0 ? -1 : x + y * width(); }
 
     public int           width        () { return size.int_x() ; }
     public int           height       () { return size.int_y() ; }
