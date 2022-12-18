@@ -20,11 +20,11 @@ public class DrawLineTest
 
         image.fillColor(0xffffffff);
 
-        image.line(vec(0,  0).plus(23, 5), vec(43, 53).plus(10, 10), 2, 5, 0xff000ff0);
+        image.line(vec(33, 34), vec(123, 60), 2, 10, 0xff000ff0);
         //image.line(vec(5,  5), size.minus(vec(5, 5)), 2, (v, t) -> 0xff000000 + Color.lerp(new int[] { 0xf35ba4, 0x11f3ff, 0x0a652f, 0xf0a343 }, t));
         //image.line(vec(size.x / 2, 0), vec(size.x / 2, size.y), 2, (v, t) -> 0xff000000 + Color.lerp(new int[] { 0xf35ba4, 0x11f3ff, 0x0a652f, 0xf0a343 }, t));
         //image.line(vec(0, size.y / 2), vec(size.x, size.y / 2), 2, (v, t) -> 0xff000000 + Color.lerp(new int[] { 0xf35ba4, 0x11f3ff, 0x0a652f, 0xf0a343 }, t));
     
-        image.export("rsc/out.png", "png");
+        //image.export("rsc/out.png", "png");
     }
 }
