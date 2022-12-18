@@ -44,30 +44,27 @@ public class GraphicsUtils
      */
     public static int[] bresenham(int x0, int y0, int x1, int y1)  
     {
-        final int dx =  abs(x1 - x0);
-        final int dy =  abs(y1 - y0);
+        final int dx = abs(x1 - x0);
+        final int dy = abs(y1 - y0);
          
         final int dxHalf = dx >> 1;
         final int dyHalf = dy >> 1;
 
         final int[] pixels = new int[abs(dy) + 1];
         
-        int error = 0;
-        int pixelsInTotal = 0;
+        int pixelsInTotal = -1;
         int pixelsInRow = 0;
-        int row = 0;
+        int row = 1;
 
-        while (pixelsInTotal <= dx)
+        while (pixelsInTotal >= -dx - 1)
         {
-            error = (pixelsInTotal * -dy + row * dx - dy + dx);
-            
-            error = (row + 1) * dx + (pixelsInTotal + 1) * -dy;
+            final int error = row * dx + pixelsInTotal * dy;
 
-            if (error > dyHalf) { pixelsInRow++; pixelsInTotal++; }
-            if (error < dxHalf) { pixels[row] = pixelsInRow; pixelsInRow = 0; row++; }
+            if (error > dyHalf) { pixelsInRow++; pixelsInTotal--; }
+            if (error < dxHalf) { pixels[row - 1] = pixelsInRow; pixelsInRow = 0; row++; }
         }
         
-        pixels[row] = pixelsInRow;
+        pixels[row - 1] = pixelsInRow;
 
         System.out.println(Arrays.toString(pixels));
 
