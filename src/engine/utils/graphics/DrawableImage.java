@@ -13,14 +13,8 @@ import engine.utils.ArrayUtils;
 import engine.utils.GraphicsUtils;
 import engine.utils.ImageUtils;
 import engine.utils.MathUtils;
-import engine.utils.Lambda.Action0;
 import engine.utils.Lambda.Action1;
-import engine.utils.Lambda.Func1;
-import engine.utils.Lambda.Func2;
-import engine.utils.Lambda.Func3;
-import engine.utils.Lambda.Func4;
 import engine.utils.color.Color;
-
 import static engine.utils.MathUtils.*;
 
 public class DrawableImage extends Image
@@ -95,7 +89,7 @@ public class DrawableImage extends Image
         line(a.int_x(), a.int_y(), b.int_x(), b.int_y(), z, size, color);
     }
 
-    public void line(int x0, int y0, int x1, int y1, double z, int size, int color)
+    public void line(int x0, int y0, int x1, int y1, double z, int size, int color) 
     {
         if (size <= 0) return;
 
@@ -107,20 +101,11 @@ public class DrawableImage extends Image
         final int size0 = floor(size / 2d);
         final int size1 = round(size / 2d);
 
-        if (dx == 0)
-        {
-            rect(x0 - size0, y0, x1 + size1, y1, z, color);
-            return;
-        }
-
-        if (dy == 0)
-        {
-            rect(x0, y0 - size0, x1, y1 + size1, z, color);
-            return;
-        }
+        if (dx == 0) { rect(x0 - size0, y0, x1 + size1, y1, z, color); return; }
+        if (dy == 0) { rect(x0, y0 - size0, x1, y1 + size1, z, color); return; }
 
         double theta = Math.atan(-dx/dy);
-
+        
         double vx = (double) Math.cos(theta);
         double vy = (double) Math.sin(theta);
 
@@ -135,25 +120,20 @@ public class DrawableImage extends Image
 
         int x5 = (int) (-vx * size1) + x1;
         int y5 = (int) (-vy * size1) + y1;
-
+        
         line(x0, y0, x1, y1, z, color);
 
         line(x2, y2, x3, y3, z, color);
         line(x4, y4, x5, y5, z, color);
     }
 
+    //TODO: some sort of clamping should happen, but in the current way, we get the wrong result so removed it for now
     public void line(int x0, int y0, int x1, int y1, double z, int color)
     {
-        x0 = (int) MathUtils.clamp(x0, 0, width());
-        y0 = (int) MathUtils.clamp(y0, 0, height() - 1);
-        
-        x1 = (int) MathUtils.clamp(x1, 0, width());
-        y1 = (int) MathUtils.clamp(y1, 0, height() - 1);
+        int[] pixels = GraphicsUtils.bresenham(x0, y0, x1, y1);
 
-        int[][] pixels = GraphicsUtils.bresenham(x0, y0, x1, y1);
-
-        for (int i = 0; i < pixels.length; i++)
-            drawPixel(pixels[i][0], pixels[i][1], z, color);
+        //for (int i = 0; i < pixels.length; i++)
+        //    drawPixel(pixels[i][0], pixels[i][1], z, color);
     }
 
     public void line(Vector4 a, Vector4 b, double z, int color)
@@ -165,6 +145,7 @@ public class DrawableImage extends Image
     {
         a = a.toVector().clamp(FinalVector.zero, size());
         b = b.toVector().clamp(FinalVector.zero, size());
+
         rect(a.int_x(), a.int_y(), b.int_x(), b.int_y(), z, color);
     }
 
