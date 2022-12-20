@@ -52,7 +52,7 @@ public final class ArrayUtils
                   length  = right - left,
                   length2 = length < SMALL_ARRAY_LENGTH ? length : SMALL_ARRAY_LENGTH;
 
-        for (int i = start; i <= length2; i++) 
+        for (int i = start; i < length2; i++) 
             array[i] = value;
 
         fastFillForTypedArrays(array, left, right, length);
