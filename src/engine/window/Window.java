@@ -44,7 +44,7 @@ public abstract class Window
         input = new Input()
             .bindToFrame(frame);
 
-        //frame.setUndecorated(true);
+        frame.setUndecorated(true);
 
         frame.setResizable(false);
         
