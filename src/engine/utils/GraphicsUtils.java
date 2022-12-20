@@ -42,32 +42,60 @@ public class GraphicsUtils
      * Which does take up twice as much memory
      * 
      */
-    public static int[] bresenham(int x0, int y0, int x1, int y1)  
-    {
-        final int dx = abs(x1 - x0);
-        final int dy = abs(y1 - y0);
-         
-        final int dxHalf = dx >> 1;
-        final int dyHalf = dy >> 1;
+    public static int[] bresenham(int x0, int y0, int x1, int y1)
+    { 
+        int dx =  abs(x1 - x0);
+        int dy = -abs(y1 - y0);
 
-        final int[] pixels = new int[abs(dy) + 1];
-        
-        int pixelsInTotal = -1;
-        int pixelsInRow = 0;
-        int row = 1;
+        final int[] result = new int[abs(dy) + 1];
 
-        while (pixelsInTotal >= -dx - 1)
+        //handle straight lines
+        if (dx == 0 || dy == 0)
         {
-            final int error = row * dx + pixelsInTotal * dy;
+            if      (dx == 0 && dy == 0) result[0] = 1;
+            else if (dx == 0           ) ArrayUtils.fill(result, 1);
+            else /*  dy == 0          */ result[0] = dx;
 
-            if (error > dyHalf) { pixelsInRow++; pixelsInTotal--; }
-            if (error < dxHalf) { pixels[row - 1] = pixelsInRow; pixelsInRow = 0; row++; }
+            return result;
         }
+
+        final int sx = x0 < x1 ? 1 : -1;
+        final int sy = y0 < y1 ? 1 : -1;
         
-        pixels[row - 1] = pixelsInRow;
+        int err = dx + dy;
+        int e2 = 0;
 
-        System.out.println(Arrays.toString(pixels));
+        int row = 0;
+        int pixelsInRow = 0;
 
-        return pixels;
-    }    
+        while (true) 
+        {
+            pixelsInRow++;
+
+            if (x0 == x1 && y0 == y1) break;
+
+            e2 = 2 * err;
+
+            if (e2 > dy) 
+            { 
+                err += dy; 
+                x0 += sx;  
+            }
+
+            if (e2 < dx)
+            { 
+                err += dx;
+                y0 += sy;
+                result[row] = pixelsInRow;
+                pixelsInRow = 0;
+                row++; 
+            }
+        }
+
+        result[row] = pixelsInRow;
+
+        System.out.println(Arrays.toString(result));
+
+        return result;
+    }   
 }
