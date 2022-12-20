@@ -130,11 +130,53 @@ public class DrawableImage extends Image
     //TODO: some sort of clamping should happen, but in the current way, we get the wrong result so removed it for now
     public void line(int x0, int y0, int x1, int y1, double z, int color)
     {
-        int[] pixels = GraphicsUtils.bresenham(x0, y0, x1, y1);
+        final int[] pixels = GraphicsUtils.bresenham(x0, y0, x1, y1);
 
-        //for (int i = 0; i < pixels.length; i++)
-        //    drawPixel(pixels[i][0], pixels[i][1], z, color);
+        final int sx = x0 < x1 ? 1 : -1;
+        final int sy = y0 < y1 ? 1 : -1;
+
+        int x = 0;
+        for (int y = 0; y < pixels.length; y++, y0+=sy)
+        {
+            for (; x < pixels[y]; x++, x0+=sx)
+            {
+                drawPixel(x0, y0, z, color);
+            }
+        }
     }
+
+    /*
+    public DrawableImage line(int x0, int y0, int x1, int y1, double z, int color)
+    {
+        x0 = (int) MathUtils.clamp(x0, 0, width());
+        y0 = (int) MathUtils.clamp(y0, 0, height() - 1);
+        
+        x1 = (int) MathUtils.clamp(x1, 0, width());
+        y1 = (int) MathUtils.clamp(y1, 0, height() - 1);
+
+        double dx =  Math.abs(x1 - x0);
+        double dy = -Math.abs(y1 - y0);
+     
+        final double sx = x0 < x1 ? 1 : -1;
+        final double sy = y0 < y1 ? 1 : -1;
+
+        double err = dx + dy;
+        double e2 = 0;
+        
+        while (true) 
+        {
+            drawPixel(x0, y0, z, color);
+
+            if (x0 == x1 && y0 == y1) break;
+
+            e2 = 2 * err;
+            
+            if (e2 > dy) { err += dy; x0 += sx; }
+            if (e2 < dx) { err += dx; y0 += sy; }
+        }
+        return this;
+    }
+     */
 
     public void line(Vector4 a, Vector4 b, double z, int color)
     {
