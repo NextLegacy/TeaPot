@@ -9,92 +9,105 @@ import engine.math.Vector;
 public class GraphicsUtils 
 {
     /*
-     * TODO:
-     * Return a two dimensional array that only contains the y values,
-     * the x value will be determined through the index 
-     * 
-     * example:
-     * Given is the following line: 
- 
-     * [][]
-     *     [][]
-     *         [][] 
      *
-     * This would be the array for it:
+     * result equlas different arrays in different situations
+     * situations are dependent on the slope of the array
+     * if it is straigt than it is equal to => [0, dx] or [0, dy]
+     * if it is a point it is equal to      => [0] (or prehaps even [] or [1])
+     * if its slope is exactly 1            => [1] (or something different) no need for more data here
+     * if it is a line with the property |slope| < 1 than => [2, pir1, pir2, pir3] (pir = pixels in row   ) (pir unprecice, its more like pixels till this row (row inclusive))
+     * if it is a line with the property |slope| > 1 than => [3, pic1, pic2, pic3] (pir = pixels in column)  
      * 
-     * [
-     *     [1, 2] // x = 0
-     *     [3, 4] // x = 1
-     *     [5, 6] // x = 2
-     * ]
+     * |slope| = 0 than => [0, dx] or [0, dy] or [dx] or [dy]
+     * |slope| = 1 than => [1]
+     * |slope| < 1 than => [2, pir1, pir2, pir3] (pir = pixels in row   ) 
+     * |slope| > 1 than => [3, pic1, pic2, pic3] (pir = pixels in column)
      * 
-     * otherwise the array does look like this:
-     * 
-     * [
-     *     [0, 1], // p = (0, 1)
-     *     [0, 2], // p = (0, 2)
-     *     [1, 3], // p = (1, 3)
-     *     [1, 4], // p = (1, 4)
-     *     [2, 5], // p = (2, 5 )
-     *     [2, 6], // p = (2, 6)
-     * ] 
-     * 
-     * Which does take up twice as much memory
-     * 
+     * [type, pixels]
      */
     public static int[] bresenham(int x0, int y0, int x1, int y1)
     { 
-        int dx =  abs(x1 - x0);
-        int dy = -abs(y1 - y0);
+        int dx = abs(x1 - x0);
+        int dy = abs(y1 - y0);
 
-        final int[] result = new int[abs(dy) + 1];
+        // [slope, pixelsInRow_1, pixelsInRow_2, ...]
+        final int[] result = new int[(dx > dy ? abs(dy) : abs(dx)) + 1 + 1]; //plus extra one for slope
 
         //handle straight lines
         if (dx == 0 || dy == 0)
         {
-            if      (dx == 0 && dy == 0) result[0] = 1;
-            else if (dx == 0           ) ArrayUtils.fill(result, 1);
-            else /*  dy == 0          */ result[0] = dx;
+            if      (dx == 0 && dy == 0) result[1] = 1 ;
+            else if (dx == 0           ) result[1] = dy;
+            else /*  dy == 0          */ result[1] = dx;
+
+            result[0] = 0;
 
             return result;
         }
 
-        final int sx = x0 < x1 ? 1 : -1;
-        final int sy = y0 < y1 ? 1 : -1;
-        
+        if (dx == dy)
+        {
+            return new int[] { 0 };
+        }
+
+        final double slope = dx / dy;
+ 
+        result[0] = (int) slope;
+
+        //final int sx = x0 < x1 ? 1 : -1;
+        //final int sy = y0 < y1 ? 1 : -1;
+
         int err = dx + dy;
         int e2 = 0;
 
-        int row = 0;
-        int pixelsInRow = 0;
+        int pixels = 0;
+        int index = 1; // 1 because of the extra index for the slope
 
-        while (true) 
-        {
-            pixelsInRow++;
-
-            if (x0 == x1 && y0 == y1) break;
-
-            e2 = 2 * err;
-
-            if (e2 > dy) 
-            { 
-                err += dy; 
-                x0 += sx;  
+        
+        if (slope < 1 && slope > -1)
+        {   
+            while (true) 
+            {
+                result[index] = ++pixels;
+    
+                if (dx > dy ? pixels >= dx : pixels >= dy) break;
+    
+                e2 = 2 * err;
+    
+                if (e2 > -dy) 
+                { 
+                    err -= dy; 
+                }
+    
+                if (e2 < dx)
+                { 
+                    err += dx;
+                    index++;
+                }
             }
-
-            if (e2 < dx)
-            { 
-                err += dx;
-                y0 += sy;
-                result[row] = pixelsInRow;
-                pixelsInRow = 0;
-                row++; 
+        } else {
+            while (true) 
+            {
+                result[index] = ++pixels;
+    
+                if (dx > dy ? pixels >= dx : pixels >= dy) break;
+    
+                e2 = 2 * err;
+    
+                if (e2 > -dy) 
+                { 
+                    err -= dy; 
+                }
+    
+                if (e2 < dx)
+                { 
+                    index++;
+                    err += dx;
+                }
             }
         }
 
-        result[row] = pixelsInRow;
-
-        System.out.println(Arrays.toString(result));
+        //System.out.println(Arrays.toString(result));
 
         return result;
     }   

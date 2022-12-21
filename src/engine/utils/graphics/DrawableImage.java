@@ -132,15 +132,31 @@ public class DrawableImage extends Image
     {
         final int[] pixels = GraphicsUtils.bresenham(x0, y0, x1, y1);
 
+        final int slope = pixels[0];
+
         final int sx = x0 < x1 ? 1 : -1;
         final int sy = y0 < y1 ? 1 : -1;
 
-        int x = 0;
-        for (int y = 0; y < pixels.length; y++, y0+=sy)
+        if (slope < 1 && slope > -1)
         {
-            for (; x < pixels[y]; x++, x0+=sx)
+            int x = 0;
+            for (int y = 1; y < pixels.length; y++, y0+=sy)
             {
-                drawPixel(x0, y0, z, color);
+                for (; x < pixels[y]; x++, x0+=sx)
+                {
+                    drawPixel(x0, y0, z, color);
+                }
+            }
+        } 
+        else 
+        {
+            int x = 0;
+            for (int y = 1; y < pixels.length; y++, x0+=sx)
+            {
+                for (; x < pixels[y]; x++, y0+=sy)
+                {
+                    drawPixel(x0, y0, z, color);
+                }
             }
         }
     }
