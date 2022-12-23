@@ -18,95 +18,94 @@ public class GraphicsUtils
      * if it is a line with the property |slope| < 1 than => [2, pir1, pir2, pir3] (pir = pixels in row   ) (pir unprecice, its more like pixels till this row (row inclusive))
      * if it is a line with the property |slope| > 1 than => [3, pic1, pic2, pic3] (pir = pixels in column)  
      * 
-     * |slope| = 0 than => [0, dx] or [0, dy] or [dx] or [dy]
-     * |slope| = 1 than => [1]
-     * |slope| < 1 than => [2, pir1, pir2, pir3] (pir = pixels in row   ) 
-     * |slope| > 1 than => [3, pic1, pic2, pic3] (pir = pixels in column)
+     * |slope| = 0 than => if dy && dx == 0 than [0] if dy == 0 than [1, dx] else [2, dy]
+     * |slope| < 1 than => [1, pir1, pir2, pir3] (pir = pixels in row   ) 
+     * |slope| > 1 than => [2, pic1, pic2, pic3] (pir = pixels in column)
+     * |slope| = 1 than => [3, dx] or [3, dy] (no difference)
      * 
-     * [type, pixels]
+     * [type, pixels...]
      */
     public static int[] bresenham(int x0, int y0, int x1, int y1)
     { 
-        int dx = abs(x1 - x0);
-        int dy = abs(y1 - y0);
+        final int dx = abs(x1 - x0);
+        final int dy = abs(y1 - y0);
 
-        // [slope, pixelsInRow_1, pixelsInRow_2, ...]
-        final int[] result = new int[(dx > dy ? abs(dy) : abs(dx)) + 1 + 1]; //plus extra one for slope
+        //handle lines with the property slope = 1
+        if (dx == dy) 
+            if   (  dx      == 0  ) return new int[] { 0,    }; // if line is just a pixel
+            else /* |slope| == 1 */ return new int[] { 3, dx };
 
         //handle straight lines
         if (dx == 0 || dy == 0)
         {
-            if      (dx == 0 && dy == 0) result[1] = 1 ;
-            else if (dx == 0           ) result[1] = dy;
-            else /*  dy == 0          */ result[1] = dx;
-
-            result[0] = 0;
-
-            return result;
+            if   (  dx == 0 ) return new int[] { 2, dy }; // if line is vertical
+            else /* dy == 0*/ return new int[] { 1, dx }; // if line is horizontal
         }
 
-        if (dx == dy)
-        {
-            return new int[] { 0 };
-        }
+        //slightly modified bresenham algorithm
 
-        final double slope = dx / dy;
- 
-        result[0] = (int) slope;
+        final int longerSide  = dx > dy ? dx : dy;
+        final int shorterSide = dx < dy ? dx : dy;
 
-        //final int sx = x0 < x1 ? 1 : -1;
-        //final int sy = y0 < y1 ? 1 : -1;
+        // [type, pixels...]
+        final int[] result = new int[shorterSide + 1 + 1 + 1 + 1]; //plus extra one for slope, and the others, idk realy
 
-        int err = dx + dy;
-        int e2 = 0;
+        final float slope = (float) dx / (float) dy;
+        final float abs_slope = abs(slope);
 
-        int pixels = 0;
-        int index = 1; // 1 because of the extra index for the slope
+        int err    = dx - dy;
+        int e2     = 0      ;
+        int pixels = 0      ;
+        int index  = 1      ; // 1 because of the extra index for the slope
 
-        
-        if (slope < 1 && slope > -1)
+        result[0] = abs_slope <= 1 ? 1 : 2;
+
+        if (abs_slope <= 1)
         {   
             while (true) 
             {
-                result[index] = ++pixels;
-    
-                if (dx > dy ? pixels >= dx : pixels >= dy) break;
-    
                 e2 = 2 * err;
     
                 if (e2 > -dy) 
                 { 
-                    err -= dy; 
+                    err -= dy;
+                    result[index] = pixels;                 
+                    index++;
                 }
     
                 if (e2 < dx)
                 { 
                     err += dx;
-                    index++;
+                    pixels++;
+                    if (pixels >= longerSide) break;
                 }
             }
-        } else {
+        } 
+        else 
+        {
             while (true) 
             {
-                result[index] = ++pixels;
-    
-                if (dx > dy ? pixels >= dx : pixels >= dy) break;
-    
                 e2 = 2 * err;
     
                 if (e2 > -dy) 
                 { 
                     err -= dy; 
+                    pixels++;
+                    if (pixels >= longerSide) break;
                 }
     
                 if (e2 < dx)
                 { 
-                    index++;
                     err += dx;
+                    result[index] = pixels; 
+                    index++;
                 }
             }
         }
 
+        result[index] = pixels;
+
+        //System.out.println(pixels + " - " + (result.length));
         //System.out.println(Arrays.toString(result));
 
         return result;
