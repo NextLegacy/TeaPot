@@ -64,9 +64,11 @@ public final class MathUtils
 
     public static int    sign(int    n) { return n >= 0 ? 1 : -1; }
     public static double sign(double n) { return n >= 0 ? 1 : -1; }
+    public static float  sign(float  n) { return n >= 0 ? 1 : -1; }
     
     public static int    abs(int    n) { return n < 0 ? -n : n; }
     public static double abs(double n) { return n < 0 ? -n : n; }
+    public static float  abs(float  n) { return n < 0 ? -n : n; }
 
     public static int floor(double n) { return (int) n; }
     public static int round(double n) { return floor(n + sign(n) * 0.5); }
