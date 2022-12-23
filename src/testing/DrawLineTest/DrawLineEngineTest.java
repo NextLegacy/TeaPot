@@ -14,7 +14,7 @@ public class DrawLineEngineTest
 {
     public static void main(String[] args)
     {
-        Engine engine = new Engine(vec(1080, 720), 60, 60, "main");
+        Engine engine = new Engine(vec(1080, 720), 40, 40, "main");
 
         engine.setActiveScene(new LineTestScene());
 
@@ -62,7 +62,8 @@ public class DrawLineEngineTest
         @Override
         protected void render() 
         {
-            image().line(a, b, 4, 1, 0xff00ff00);    
+            image().line(a.plus(0, 50), b.plus(0, 50), 4, 0xff00ff00);    
+            image().bresenham(a, b, 4, 0xff00ff00);    
         }
     }
 }
