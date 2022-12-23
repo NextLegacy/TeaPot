@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
@@ -127,17 +128,51 @@ public class DrawableImage extends Image
         line(x4, y4, x5, y5, z, color);
     }
 
-    //TODO: some sort of clamping should happen, but in the current way, we get the wrong result so removed it for now
     public void line(int x0, int y0, int x1, int y1, double z, int color)
     {
         final int[] pixels = GraphicsUtils.bresenham(x0, y0, x1, y1);
 
-        final int slope = pixels[0];
+        final int type = pixels[0];
 
         final int sx = x0 < x1 ? 1 : -1;
         final int sy = y0 < y1 ? 1 : -1;
 
-        if (slope < 1 && slope > -1)
+        if (type == 0)
+        {
+            drawPixel(x0, y0, z, color);
+            return;
+        }
+
+        if (type == 3)
+        {
+            final int length = pixels[1];
+
+            for (int i = 0; i < length; i++)
+            {
+                drawPixel(x0 + i * sx, y0 + i * sy, z, color);
+            }
+
+            return;
+        }
+
+        if (pixels.length == 2)
+        {
+            final int length = pixels[1];
+
+            if (type == 1)
+                for (int x = 0; x < length; x++)
+                {
+                    drawPixel(x0 + x * sx, y0, z, color);
+                }
+            else 
+                for (int y = 0; y < length; y++)
+                {
+                    drawPixel(x0, y0 + y * sy, z, color);
+                }
+            return;
+        }
+
+        if (type == 2)
         {
             int x = 0;
             for (int y = 1; y < pixels.length; y++, y0+=sy)
@@ -160,15 +195,19 @@ public class DrawableImage extends Image
             }
         }
     }
-
-    /*
-    public DrawableImage line(int x0, int y0, int x1, int y1, double z, int color)
+    
+    public void bresenham(Vector4 a, Vector4 b, int z, int color)
     {
-        x0 = (int) MathUtils.clamp(x0, 0, width());
-        y0 = (int) MathUtils.clamp(y0, 0, height() - 1);
-        
-        x1 = (int) MathUtils.clamp(x1, 0, width());
-        y1 = (int) MathUtils.clamp(y1, 0, height() - 1);
+        bresenham(a.int_x(), a.int_y(), b.int_x(), b.int_y(), z, color);
+    }
+
+    public DrawableImage bresenham(int x0, int y0, int x1, int y1, double z, int color)
+    {
+        //x0 = (int) MathUtils.clamp(x0, 0, width());
+        //y0 = (int) MathUtils.clamp(y0, 0, height() - 1);
+        //
+        //x1 = (int) MathUtils.clamp(x1, 0, width());
+        //y1 = (int) MathUtils.clamp(y1, 0, height() - 1);
 
         double dx =  Math.abs(x1 - x0);
         double dy = -Math.abs(y1 - y0);
@@ -192,7 +231,6 @@ public class DrawableImage extends Image
         }
         return this;
     }
-     */
 
     public void line(Vector4 a, Vector4 b, double z, int color)
     {
