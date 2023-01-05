@@ -6,7 +6,7 @@ public class MeshRenderer extends Script
 {
     private String layer;
     private Mesh mesh;
-
+    
     public MeshRenderer()
     {
         setLayer(null); setMesh(null);
