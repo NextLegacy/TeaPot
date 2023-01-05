@@ -155,6 +155,8 @@ public final class Engine implements IActivatable
 
             activeScene.init();
             
+            System.out.println("Scene loaded");
+
             //activeScene.start();
         }
 
@@ -170,6 +172,8 @@ public final class Engine implements IActivatable
 
             if (time >= 10 * Time.SECONDS_TO_NANOS)
                 throw new RuntimeException("Window not responding");
+
+            System.out.println("window started");
 
             tryLoadScene();
         }
@@ -191,7 +195,7 @@ public final class Engine implements IActivatable
         {
             tryLoadScene();
 
-            if (activeScene == null) return;
+            if (activeScene == null) { System.out.println("activeScene is null"); return; }
 
             activeScene.update();
             input().update();
