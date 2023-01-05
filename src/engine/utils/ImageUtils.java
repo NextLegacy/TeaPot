@@ -30,13 +30,13 @@ public final class ImageUtils
 
     public static void bufferedImageCopy(BufferedImage source, BufferedImage destination, int x0, int y0, int x1, int y1, int width, int height)
     {
-        ArrayUtils.copy(getBufferedImageDataArray(source), getBufferedImageDataArray(destination), x0, y0, x1, y1, width, height);
+        //ArrayUtils.copy(getBufferedImageDataArray(source), getBufferedImageDataArray(destination), x0, y0, x1, y1, width, height);
     }
 
     public static void imageCopy(Image source, Image destination, int x0, int y0, int x1, int y1)
     {
-        ArrayUtils.copy(source.colorBuffer(), destination.colorBuffer(), x0, y0, x1, y1, destination.width(), destination.height());
-        ArrayUtils.copy(source.zBuffer    (), destination.zBuffer    (), x0, y0, x1, y1, destination.width(), destination.height());
+        //ArrayUtils.copy(source.colorBuffer(), destination.colorBuffer(), x0, y0, x1, y1, destination.width(), destination.height());
+        //ArrayUtils.copy(source.zBuffer    (), destination.zBuffer    (), x0, y0, x1, y1, destination.width(), destination.height());
     }
 
     public static void imageCopy(Image source, Image destination)
