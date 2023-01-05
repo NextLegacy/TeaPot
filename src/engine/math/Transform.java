@@ -1,8 +1,4 @@
-package engine;
-
-import engine.math.Matrix;
-import engine.math.Quaternion;
-import engine.math.Vector;
+package engine.math;
 
 public final class Transform
 {
