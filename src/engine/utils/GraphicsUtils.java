@@ -32,15 +32,11 @@ public class GraphicsUtils
 
         //handle lines with the property slope = 1
         if (dx == dy) 
-            if   (  dx      == 0  ) return new int[] { 0,    }; // if line is just a pixel
+            if   (  dx      == 0  ) return new int[] { 0     }; // if line is just a pixel
             else /* |slope| == 1 */ return new int[] { 3, dx };
 
-        //handle straight lines
-        if (dx == 0 || dy == 0)
-        {
-            if   (  dx == 0 ) return new int[] { 2, dy }; // if line is vertical
-            else /* dy == 0*/ return new int[] { 1, dx }; // if line is horizontal
-        }
+        if (dx == 0) return new int[] { 2, dy }; // if line is vertical
+        if (dy == 0) return new int[] { 1, dx }; // if line is horizontal
 
         //slightly modified bresenham algorithm
 
@@ -109,5 +105,5 @@ public class GraphicsUtils
         //System.out.println(Arrays.toString(result));
 
         return result;
-    }   
+    }
 }
