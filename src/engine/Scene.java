@@ -2,8 +2,11 @@ package engine;
 
 import java.util.ArrayList;
 
+import engine.utils.ArrayUtils;
 import engine.utils.Lambda.Action1;
 import engine.window.Window;
+
+import static engine.utils.ArrayUtils.*;
 
 public abstract class Scene
 {
@@ -13,8 +16,8 @@ public abstract class Scene
     
     private Engine engine;
 
-    private final ArrayList<GameObject> gameObjects;
-    private GameObject[] gameObjectsArray;
+    //private final ArrayList<GameObject> gameObjects;
+    private GameObject[] gameObjects;
     
     public Scene() { this("Scene " + ++scenesCounter); } 
 
@@ -23,8 +26,7 @@ public abstract class Scene
         this.name = name;
 
         engine = null;
-        gameObjects = new ArrayList<>();
-        gameObjectsArray = new GameObject[0];   
+        gameObjects = new GameObject[0];   
     }
 
     void makeActiveScene(Engine engine) { this.engine = engine; }
@@ -32,8 +34,6 @@ public abstract class Scene
     final void destroy()
     {
         runForAllGameObjects(GameObject::destroy);
-        
-        updateGameObjectsArray();
 
         if (engine.sceneToLoad() == null)
             engine.setActiveScene(null);
@@ -53,13 +53,12 @@ public abstract class Scene
     {
         throwIfIsNotActiveScene();
 
-        if (gameObjects.contains(gameObject))
+        if (ArrayUtils.contains(gameObjects, gameObject))
             return;
 
         gameObject.setScene(this);
 
-        gameObjects.add(gameObject);
-        updateGameObjectsArray();
+        gameObjects = push(gameObjects, gameObject);
 
         //if (isActiveScene() && gameObject.isActive())
         //    gameObject.start();
@@ -69,23 +68,22 @@ public abstract class Scene
     {
         throwIfIsNotActiveScene();
 
-        if (!gameObjects.contains(gameObject))
+        if (!contains(gameObjects, gameObject))
             return;
 
         gameObject.setScene(null);
         gameObject.destroy();
     
-        gameObjects.remove(gameObject);
-        updateGameObjectsArray();
+        gameObjects = remove(gameObjects, gameObject);
 
         end();
     }
 
-    public final ArrayList<GameObject> getGameObjects()
+    public final GameObject[] getGameObjects()
     {
         throwIfIsNotActiveScene();
 
-        return new ArrayList<>(gameObjects);
+        return ArrayUtils.clone(gameObjects);
     }
 
     public final GameObject getGameObject(String name)
@@ -114,14 +112,9 @@ public abstract class Scene
             throw new SceneIsNotActiveException(this);
     }
 
-    private void updateGameObjectsArray()
-    {
-        gameObjectsArray = gameObjects.toArray(new GameObject[gameObjects.size()]);   
-    }
-
     private void runForAllGameObjects(Action1<GameObject> action)
     {   
-        for(GameObject gameObject : gameObjectsArray)
+        for(GameObject gameObject : gameObjects)
             if (gameObject.isActive())
                 action.run(gameObject);
     }
