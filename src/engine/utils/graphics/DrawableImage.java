@@ -1,5 +1,7 @@
 package engine.utils.graphics;
 
+import static engine.utils.MathUtils.*;
+
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -16,7 +18,6 @@ import engine.utils.ImageUtils;
 import engine.utils.MathUtils;
 import engine.utils.Lambda.Action1;
 import engine.utils.color.Color;
-import static engine.utils.MathUtils.*;
 
 public class DrawableImage extends Image
 {
@@ -99,11 +100,24 @@ public class DrawableImage extends Image
         final double dx = x1 - x0;
         final double dy = y1 - y0;
 
+        if (dx == 0 && dy == 0) { drawPixel(x0, y0, z, color); return; }
+
         final int size0 = floor(size / 2d);
         final int size1 = round(size / 2d);
 
-        if (dx == 0) { rect(x0 - size0, y0, x1 + size1, y1, z, color); return; }
-        if (dy == 0) { rect(x0, y0 - size0, x1, y1 + size1, z, color); return; }
+        if (dx == 0) 
+        {
+            rect(x0 - size0, y0, x1 + size1, y1, z, color);
+
+            return; 
+        }
+
+        if (dy == 0) 
+        { 
+            rect(x0, y0 - size0, x1, y1 + size1, z, color);
+
+            return; 
+        }
 
         double theta = Math.atan(-dx/dy);
         
@@ -121,13 +135,17 @@ public class DrawableImage extends Image
 
         int x5 = (int) (-vx * size1) + x1;
         int y5 = (int) (-vy * size1) + y1;
-        
+
         line(x0, y0, x1, y1, z, color);
 
-        line(x2, y2, x3, y3, z, color);
-        line(x4, y4, x5, y5, z, color);
+        line(x2, y2, x3, y3, z, 0xffff00ff);
+        line(x4, y4, x5, y5, z, 0xffffff00);
+
+        line(x2, y2, x4, y4, z, color);
+        line(x3, y3, x5, y5, z, color);
     }
 
+    //TODO: this was only testing mostly, so optimize to not use the function, because its just unnecessary overhead
     public void line(int x0, int y0, int x1, int y1, double z, int color)
     {
         final int[] pixels = GraphicsUtils.bresenham(x0, y0, x1, y1);
@@ -147,9 +165,9 @@ public class DrawableImage extends Image
         {
             final int length = pixels[1];
 
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < length; i++, x0 += sx, y0 += sy)
             {
-                drawPixel(x0 + i * sx, y0 + i * sy, z, color);
+                drawPixel(x0, y0, z, color);
             }
 
             return;
@@ -160,21 +178,22 @@ public class DrawableImage extends Image
             final int length = pixels[1];
 
             if (type == 1)
-                for (int x = 0; x < length; x++)
+                for (int i = 0; i < length; i++, x0 += sx)
                 {
-                    drawPixel(x0 + x * sx, y0, z, color);
+                    drawPixel(x0, y0, z, color);
                 }
             else 
-                for (int y = 0; y < length; y++)
+                for (int i = 0; i < length; i++, y0 += sy)
                 {
-                    drawPixel(x0, y0 + y * sy, z, color);
+                    drawPixel(x0, y0, z, color);
                 }
             return;
         }
 
+        int x = 0;
+
         if (type == 2)
         {
-            int x = 0;
             for (int y = 1; y < pixels.length; y++, y0+=sy)
             {
                 for (; x < pixels[y]; x++, x0+=sx)
@@ -185,7 +204,6 @@ public class DrawableImage extends Image
         } 
         else 
         {
-            int x = 0;
             for (int y = 1; y < pixels.length; y++, x0+=sx)
             {
                 for (; x < pixels[y]; x++, y0+=sy)
@@ -203,12 +221,6 @@ public class DrawableImage extends Image
 
     public DrawableImage bresenham(int x0, int y0, int x1, int y1, double z, int color)
     {
-        //x0 = (int) MathUtils.clamp(x0, 0, width());
-        //y0 = (int) MathUtils.clamp(y0, 0, height() - 1);
-        //
-        //x1 = (int) MathUtils.clamp(x1, 0, width());
-        //y1 = (int) MathUtils.clamp(y1, 0, height() - 1);
-
         double dx =  Math.abs(x1 - x0);
         double dy = -Math.abs(y1 - y0);
      
@@ -229,6 +241,7 @@ public class DrawableImage extends Image
             if (e2 > dy) { err += dy; x0 += sx; }
             if (e2 < dx) { err += dx; y0 += sy; }
         }
+
         return this;
     }
 
@@ -245,14 +258,21 @@ public class DrawableImage extends Image
         rect(a.int_x(), a.int_y(), b.int_x(), b.int_y(), z, color);
     }
 
-    public void rect(int x0, int y0, int x1, int y1, double z, int color)
+    public void rect(final int x0, final int y0, final int x1, final int y1, double z, int color)
     {
-        int x = x0;
-        int y = y0;
+        if (x0 == x1 && y0 == y1) { drawPixel(x0, y0, z, color); return; }
+
+        final int biggerX  = x0 > x1 ? x0 : x1;
+        final int biggerY  = y0 > y1 ? y0 : y1;
+        final int smallerX = x0 < x1 ? x0 : x1;
+        final int smallerY = y0 < y1 ? y0 : y1;
+
+        int x = smallerX;
+        int y = smallerY;
 
         //w and h are just the width and height of the Rectangle, width and height are the clipped version of this
-        int w = x1 - x0;
-        int h = y1 - y0;        
+        int w = biggerX - smallerX;
+        int h = biggerY - smallerY;        
 
         //Not a single Pixel is inside the Bounds of this
         if (x >= width() || y >= height() || x <= -w || y <= -h) 
@@ -263,11 +283,11 @@ public class DrawableImage extends Image
         int height = (y + h > height() ? height() - y : h) + (y < 0 ? y : 0);
 
         //Start Index
-        int thisStartIndex  = (x < 0 ?  0 : x) + (y < 0 ?  0 : y) * width();
+        int thisStartIndex = (x < 0 ? 0 : x) + (y < 0 ? 0 : y) * width();
 
         //Needed in the While-Loop, to avoid usage of repetitive multiplication (y * any_width = any_height). 
         //It may be faster, for that reason its here.
-        int thisHeight  = 0;
+        int thisHeight = 0;
 
         //Last Index in current line
         int thisMaxWidthIndex = thisStartIndex + width;
@@ -279,9 +299,6 @@ public class DrawableImage extends Image
 
         while(true)
         {
-            //TODO: find out x y z for color.get(...) | 
-            //TODO: Even better, find a better solution to use instead of color.get(...)
-
             //draw Pixel
             drawPixel(thisIndex, z, color);
             
@@ -318,7 +335,7 @@ public class DrawableImage extends Image
         int imageStartIndex = (x < 0 ? -x : 0) + (y < 0 ? -y : 0) * image.width();
         int thisStartIndex  = (x < 0 ?  0 : x) + (y < 0 ?  0 : y) * width();
 
-        //Needed in the While-Loop, to avoid usage of repetitive multiplication (y * any_width = any_height (whereas any means image or this)). 
+        //Needed in the While-Loop, to avoid usage of repetitive multiplication (y * any_width = any_height (in which any means image or this)). 
         //It may be faster, for that reason its here.
         int imageHeight = 0;
         int thisHeight  = 0;
