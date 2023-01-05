@@ -10,7 +10,7 @@ public final class StringUtils
      * </p>
      * <p>
      * This algorithm has a worst time complexity of O(s + c + sc) -> O(n^2),
-     * whereas s stands for stringLength and c for countLength
+     * in which s stands for stringLength and c for countLength
      * </p>
      * @param string the string from which the number of occurences of a given string is gonna be counted.
      * @param count the string that is getting counted.
