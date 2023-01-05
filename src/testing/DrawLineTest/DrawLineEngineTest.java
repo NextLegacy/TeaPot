@@ -31,7 +31,7 @@ public class DrawLineEngineTest
             
             gameObject.addScript(new LineTestScript());
 
-            gameObject.scripts().get(0).activate();
+            gameObject.scripts()[0].activate();
             gameObject.activate();
 
         }
@@ -62,8 +62,7 @@ public class DrawLineEngineTest
         @Override
         protected void render() 
         {
-            image().line(a.plus(0, 50), b.plus(0, 50), 4, 0xff00ff00);    
-            image().bresenham(a, b, 4, 0xff00ff00);    
+            image().line(a, b, 4, 400, 0xff00ff00);    
         }
     }
 }

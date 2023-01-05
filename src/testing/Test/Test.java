@@ -1,5 +1,7 @@
 package testing.Test;
 
+import static engine.utils.MathUtils.*;
+
 import java.util.ArrayList;
 
 import engine.math.FinalVector;
@@ -8,8 +10,6 @@ import engine.math.Vector4;
 import engine.utils.ScreenUtils;
 import engine.utils.StringUtils;
 import engine.utils.time.Time;
-
-import static engine.utils.MathUtils.*;
 
 public class Test
 {

@@ -1,5 +1,7 @@
 package testing.TestProject;
 
+import static engine.utils.MathUtils.*;
+
 import java.awt.event.KeyEvent;
 
 import engine.Script;
@@ -7,8 +9,6 @@ import engine.math.FinalVector;
 import engine.math.Vector;
 import engine.math.Vector4;
 import engine.utils.Lambda.Action0;
-
-import static engine.utils.MathUtils.*;
 
 public class ButtonScript extends Script
 {

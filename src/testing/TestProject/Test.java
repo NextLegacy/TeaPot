@@ -1,8 +1,8 @@
 package testing.TestProject;
 
-import engine.Engine;
-
 import static engine.utils.MathUtils.*;
+
+import engine.Engine;
 
 public class Test 
 {

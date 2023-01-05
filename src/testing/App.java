@@ -13,7 +13,7 @@ import engine.utils.graphics.Image;
 public class App 
 {       
     public static void main(String[] args)
-    {
+    {   
         new App().run();
     }
 
@@ -30,7 +30,7 @@ public class App
             @Override
             protected void awake()
             {
-                window().setPosition(fvec(10, 10));
+                window().setPosition(fvec(1366, 760).minus(window().size()).dividedBy(2));
 
                 position = vec(100, 200);
                 image = result = Image.fromFile("./rsc/images/A.png").scaled(vec(50, 50));
@@ -58,7 +58,8 @@ public class App
                     engine().deactivate();
 
                 n+= input().wheel().direction()*30;    
-                System.out.println(n);
+                //System.out.println(n);
+
             }
 
             double n = 0;

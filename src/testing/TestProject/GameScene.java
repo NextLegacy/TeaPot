@@ -1,9 +1,9 @@
 package testing.TestProject;
 
+import static engine.utils.MathUtils.*;
+
 import engine.GameObject;
 import engine.Scene;
-
-import static engine.utils.MathUtils.*;
 
 public class GameScene extends Scene
 {
