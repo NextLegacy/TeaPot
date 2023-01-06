@@ -11,6 +11,7 @@ import java.util.Arrays;
 import javax.imageio.ImageIO;
 
 import engine.math.FinalVector;
+import engine.math.Vector;
 import engine.math.Vector4;
 import engine.utils.ArrayUtils;
 import engine.utils.GraphicsUtils;
@@ -21,8 +22,8 @@ import engine.utils.color.Color;
 
 public class DrawableImage extends Image
 {
-    public static final int CLEAR_COLOR = 0xff000000;
-    public static final double CLEAR_Z  = -1;
+    public static final int    CLEAR_COLOR = 0xff000000;
+    public static final double CLEAR_Z     = -1        ;
 
     public DrawableImage(final int[] data, Vector4 size)
     {
@@ -97,6 +98,9 @@ public class DrawableImage extends Image
 
         if (size == 1) { line(x0, y0, x1, y1, z, color); return; }
 
+        Vector a = vec(x0, y0);
+        Vector b = vec(x1, y1);
+
         final double dx = x1 - x0;
         final double dy = y1 - y0;
 
@@ -121,28 +125,40 @@ public class DrawableImage extends Image
 
         double theta = Math.atan(-dx/dy);
         
-        double vx = (double) Math.cos(theta);
-        double vy = (double) Math.sin(theta);
+        Vector v = Vector.fromAngle(theta);
 
-        int x2 = (int) (vx * size0) + x0;
-        int y2 = (int) (vy * size0) + y0;
+        Vector p0 = vec(v).times(size0).add(a);
+        Vector p1 = vec(v).times(size0).add(b);
+        Vector p2 = vec(v).times(-size1).add(a);
+        Vector p3 = vec(v).times(-size1).add(b);
 
-        int x3 = (int) (vx * size0) + x1;
-        int y3 = (int) (vy * size0) + y1;
+        //int x2 = (int) (vx * size0) + x0;
+        //int y2 = (int) (vy * size0) + y0;
+//
+        //int x3 = (int) (vx * size0) + x1;
+        //int y3 = (int) (vy * size0) + y1;
+//
+        //int x4 = (int) (-vx * size1) + x0;
+        //int y4 = (int) (-vy * size1) + y0;
+//
+        //int x5 = (int) (-vx * size1) + x1;
+        //int y5 = (int) (-vy * size1) + y1;
 
-        int x4 = (int) (-vx * size1) + x0;
-        int y4 = (int) (-vy * size1) + y0;
-
-        int x5 = (int) (-vx * size1) + x1;
-        int y5 = (int) (-vy * size1) + y1;
+        System.out.println(theta);
 
         line(x0, y0, x1, y1, z, color);
 
-        line(x2, y2, x3, y3, z, 0xffff00ff);
-        line(x4, y4, x5, y5, z, 0xffffff00);
+        line(p0, p1, z, 0xffff00ff);
+        line(p2, p3, z, 0xffffff00);
 
-        line(x2, y2, x4, y4, z, color);
-        line(x3, y3, x5, y5, z, color);
+        line(p0, p2, z, 0xff0000ff);
+        line(p1, p3, z, 0xffff0000);
+
+        //final int[] a = GraphicsUtils.bresenham(x2, y2, x3, y3);
+        //final int[] b = GraphicsUtils.bresenham(x4, y4, x5, y5);
+//
+        //final int[] c = GraphicsUtils.bresenham(x2, y2, x4, y4);
+        //final int[] d = GraphicsUtils.bresenham(x3, y3, x5, y5);
     }
 
     //TODO: this was only testing mostly, so optimize to not use the function, because its just unnecessary overhead
