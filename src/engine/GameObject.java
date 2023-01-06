@@ -3,7 +3,6 @@ package engine;
 import java.util.ArrayList;
 
 import engine.utils.ArrayUtils;
-import engine.utils.GenericUtils;
 import engine.utils.Lambda.Action1;
 import engine.utils.activatable.IActivatable;
 import engine.utils.destroyable.IDestroyable;
