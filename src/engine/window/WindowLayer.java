@@ -1,7 +1,7 @@
 package engine.window;
 
 import engine.math.Vector4;
-import engine.utils.graphics.DrawableImage;
+import engine.graphics.DrawableImage;
 
 public final class WindowLayer extends DrawableImage
 {
