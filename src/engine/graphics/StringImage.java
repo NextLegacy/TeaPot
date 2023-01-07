@@ -1,4 +1,4 @@
-package engine.utils.graphics;
+package engine.graphics;
 
 import static engine.utils.MathUtils.*;
 

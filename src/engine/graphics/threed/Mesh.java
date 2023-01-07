@@ -1,4 +1,4 @@
-package engine.threed;
+package engine.graphics.threed;
 
 public final class Mesh 
 {
