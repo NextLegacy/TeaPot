@@ -1,13 +1,16 @@
 package engine.utils;
 
+import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
+import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
+import engine.graphics.Image;
+import engine.math.FinalVector;
 import engine.math.Vector4;
-import engine.utils.graphics.Image;
 
 public final class ImageUtils 
 {
@@ -66,5 +69,30 @@ public final class ImageUtils
         new_image.getGraphics().drawImage(image, 0, 0, null);
 
         return new_image;
+    }
+
+    public static Image scaled(final Image image, final double factor)
+    {
+        return scaled(image, image.size().times(factor));
+    }
+
+    public static Image scaled(final Image image, Vector4 size)
+    {
+        if (size.equals(image.size())) return image;
+        
+        if (size.int_x() <= 0 || size.int_y() <= 0) size = FinalVector.one;
+
+        BufferedImage result = ImageUtils.createCompatibleBufferedImage(size);
+
+        Graphics2D graphics = result.createGraphics();
+
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+
+        graphics.drawImage(image.toBufferedImage(), 0, 0, size.int_x(), size.int_y(), null);
+
+        graphics.dispose();
+
+        return Image.fromBufferedImage(result);
     }
 }
