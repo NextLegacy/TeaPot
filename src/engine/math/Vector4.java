@@ -69,7 +69,7 @@ public abstract class Vector4
 
     public final FinalVector toFinalVector() { return this instanceof FinalVector finalVector ? finalVector : new FinalVector(x(), y(), z(), w()); } //no need for a clone
     public final Vector      toVector     () { return new Vector(x(), y(), z(), w()); } //creates a clone
-
+    
     public final boolean XisInRange(double min, double max) { return x() >= min && x() <= max; }
     public final boolean YisInRange(double min, double max) { return y() >= min && y() <= max; }
     public final boolean ZisInRange(double min, double max) { return z() >= min && z() <= max; }
