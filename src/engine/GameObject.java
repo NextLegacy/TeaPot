@@ -228,10 +228,10 @@ public final class GameObject implements IActivatable, IDestroyable
     {
         GameObjectIsDestroyedException(GameObject gameObject)
         {
-            super(gameObject + " is destroyed.");
+            super(gameObject + " is destroyed, can not perform action.");
         }
 
-        private static void throwIfIsDestroyed(GameObject gameObject)
+        static void throwIfIsDestroyed(GameObject gameObject)
         {
             if (gameObject.isDestroyed())
                 throw new GameObjectIsDestroyedException(gameObject);

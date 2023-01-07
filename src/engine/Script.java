@@ -1,7 +1,5 @@
 package engine;
 
-import engine.math.Quaternion;
-import engine.math.Vector;
 import engine.utils.activatable.IActivatable;
 import engine.utils.destroyable.IDestroyable;
 import engine.window.Window;
@@ -37,12 +35,12 @@ public abstract class Script implements IActivatable, IDestroyable
     protected final Wheel       wheel     () { return input().wheel    (); }
     protected final Key         key(int keyEvent) { return input().key(keyEvent); }
 
-    protected final Scene       scene     () { return engine().activeScene(); }
-    protected final WindowLayer image     () { return engine().image      (); }
+    protected final Scene       scene    () { return engine().activeScene(); }
+    protected final WindowLayer image    () { return engine().image      (); }
 
-    protected final double deltaTime      () { return engine().deltaTime(); }
-    protected final double frameDeltaTime () { return engine().deltaTime(); }
-    protected final double tickDeltaTime  () { return engine().deltaTime(); }
+    protected final double deltaTime     () { return engine().deltaTime(); }
+    protected final double frameDeltaTime() { return engine().deltaTime(); }
+    protected final double tickDeltaTime () { return engine().deltaTime(); }
 
     protected void awake() { }
 
@@ -63,7 +61,7 @@ public abstract class Script implements IActivatable, IDestroyable
     {
         gameObject.removeScript(this);
         deactivate();
-        onDestroy();        
+        onDestroy();
     }
 
     @Override
