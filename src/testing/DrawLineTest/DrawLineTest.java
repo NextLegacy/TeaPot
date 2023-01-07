@@ -3,7 +3,7 @@ package testing.DrawLineTest;
 import engine.utils.GraphicsUtils;
 import engine.utils.Lambda.Action0;
 import engine.utils.color.Color;
-import engine.utils.graphics.DrawableImage;
+import engine.graphics.DrawableImage;
 import engine.utils.time.Time;
 
 import static engine.utils.MathUtils.*;

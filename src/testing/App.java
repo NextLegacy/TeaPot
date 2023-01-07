@@ -8,7 +8,8 @@ import engine.Engine;
 import engine.Script;
 import engine.math.FinalVector;
 import engine.math.Vector;
-import engine.utils.graphics.Image;
+import engine.utils.ImageUtils;
+import engine.graphics.Image;
 
 public class App 
 {       
@@ -33,7 +34,7 @@ public class App
                 window().setPosition(fvec(1366, 760).minus(window().size()).dividedBy(2));
 
                 position = vec(100, 200);
-                image = result = Image.fromFile("./rsc/images/A.png").scaled(vec(50, 50));
+                image = result = ImageUtils.scaled(image, vec(50, 50));
                 logo = Image.fromFile("./rsc/images/B.png");
             }
             

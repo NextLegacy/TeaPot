@@ -3,7 +3,7 @@ package testing.ImageTest;
 import java.awt.Font;
 
 import engine.utils.color.ANSICode;
-import engine.utils.graphics.StringImage;
+import engine.graphics.StringImage;
 import engine.utils.time.Time;
 
 public class StringImagTest 
