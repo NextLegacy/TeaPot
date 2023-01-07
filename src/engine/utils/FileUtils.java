@@ -30,4 +30,22 @@ public final class FileUtils
 
         return new String[0];
     }
+
+    public static String getExtension(final String path)
+    {
+        String extension = "";
+
+        int i = path.lastIndexOf('.');
+        
+        if (i > 0) extension = path.substring(i+1);
+
+        return extension;
+    }
+
+    public static String getExtension(final String path, final String defaultExtension)
+    {
+        final String extension = getExtension(path);
+        
+        return extension == "" ? defaultExtension : extension;
+    }
 }
