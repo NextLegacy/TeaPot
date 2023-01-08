@@ -24,11 +24,11 @@ public class DrawLineTest
 
         final int tests = 100;
 
-        double a = test(tests, () ->  
-        {
-            for (int i = 0; i < 9999; i++)
-                image.bresenham(Vector.random().times(size), Vector.random().times(size), 1, 0xff000000 + ((int) (0xffffff * Math.random())));
-        });
+        //double a = test(tests, () ->  
+        //{
+        //    for (int i = 0; i < 9999; i++)
+        //        image.bresenham(Vector.random().times(size), Vector.random().times(size), 1, 0xff000000 + ((int) (0xffffff * Math.random())));
+        //});
 
         //double a = test(tests, () ->
         //{
@@ -36,9 +36,9 @@ public class DrawLineTest
         //        image.line(Vector.random().times(size), Vector.random().times(size), 1, 0xff000000 + ((int) (0xffffff * Math.random())));
         //});
 
-        a *= Time.NANOS_TO_SECONDS;
-
-        System.out.println(a);
+        //a *= Time.NANOS_TO_SECONDS;
+//
+        //System.out.println(a);
 
         main(args);
 

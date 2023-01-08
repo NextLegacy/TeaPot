@@ -15,7 +15,7 @@ public class App
 {       
     public static void main(String[] args)
     {   
-        //new App().run();
+        new App().run();
     }
 
     public void run()
@@ -34,7 +34,10 @@ public class App
                 window().setPosition(fvec(1366, 760).minus(window().size()).dividedBy(2));
 
                 position = vec(100, 200);
-                image = result = ImageUtils.scaled(image, vec(50, 50));
+
+                image = result = ImageUtils.scaled(Image.fromFile("./rsc/images/A.png"), vec(50, 50));
+
+                //image = result = ImageUtils.scaled(image, vec(50, 50));
                 logo = Image.fromFile("./rsc/images/B.png");
             }
             
