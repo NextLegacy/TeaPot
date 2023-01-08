@@ -1,5 +1,11 @@
 package engine.graphics;
 
+import engine.graphics.threed.Triangle;
+import engine.graphics.threed.Vertex;
+import engine.math.FinalVector;
+import engine.math.Vector;
+import engine.utils.MathUtils;
+
 final class ImageAlgorithms 
 {
     private ImageAlgorithms() { }
@@ -30,6 +36,52 @@ final class ImageAlgorithms
             if (e2 > dy) { err += dy; x += sx; }
             if (e2 < dx) { err += dx; y += sy; }
         }
+    }
+
+    static void line(final DrawableImage image, 
+        final int x0, final int y0, final int x1, final int y1, final double z, final int size, final int color) 
+    {
+        if (size <= 0) return;
+
+        if (size == 1) { line(image, x0, y0, x1, y1, z, color); return; }
+
+        Vector a = new Vector(x0, y0);
+        Vector b = new Vector(x1, y1);
+
+        final double dx = x1 - x0;
+        final double dy = y1 - y0;
+
+        if (dx == 0 && dy == 0) { image.drawPixel(x0, y0, z, color); return; }
+
+        final int size0 = MathUtils.floor(size / 2d);
+        final int size1 = MathUtils.round(size / 2d);
+
+        double theta = Math.atan(-dx/dy);
+        
+        Vector v = Vector.fromAngle(theta);
+        
+        Vector p0 = new Vector(v).times(size0).add(a);
+        Vector p1 = new Vector(v).times(size0).add(b);
+        Vector p2 = new Vector(v).times(-size1).add(a);
+        Vector p3 = new Vector(v).times(-size1).add(b);
+
+        ImageAlgorithms.triangle(image, 
+            new Triangle
+            (
+                new Vertex(p0, FinalVector.zero, FinalVector.zero),
+                new Vertex(p1, FinalVector.zero, FinalVector.zero),
+                new Vertex(p2, FinalVector.zero, FinalVector.zero)
+            ), 0xffff00ff
+        );
+
+        ImageAlgorithms.triangle(image, 
+            new Triangle
+            (
+                new Vertex(p1, FinalVector.zero, FinalVector.zero),
+                new Vertex(p2, FinalVector.zero, FinalVector.zero),
+                new Vertex(p3, FinalVector.zero, FinalVector.zero)
+            ), 0xff00ffff
+        );
     }
 
     static void rect(final DrawableImage image,
@@ -99,11 +151,11 @@ final class ImageAlgorithms
         }
     }
 
-    public static void drawImage(final DrawableImage graphicsImage, 
+    static void drawImage(final DrawableImage graphicsImage, 
         final Image image, final int x, final int y)
     {
-        final int graphicsImageWidth  = image.width ();
-        final int graphicsImageHeight = image.height();
+        final int graphicsImageWidth  = graphicsImage.width ();
+        final int graphicsImageHeight = graphicsImage.height();
 
         //Not a single Pixel is inside the Bounds of this
         if (x >= graphicsImageWidth || y >= graphicsImageHeight || x <= -image.width() || y <= -image.height()) 
@@ -158,6 +210,85 @@ final class ImageAlgorithms
                 //If reached last Index, step out of loop
                 if (imageIndex == imageMaxIndex) break;
             }
+        }
+    }
+
+    static void triangle(final DrawableImage image, Triangle triangle, int color)
+    {
+        triangle = triangle.sortedForY();
+
+        if (triangle.b.vertex.y() == triangle.c.vertex.y())
+        {
+            fillBottomFlatTriangle(image, triangle, color);
+        }
+        else if (triangle.a.vertex.y() == triangle.b.vertex.y())
+        {
+            fillTopFlatTriangle(image, triangle, color);
+        }
+        else
+        {
+            Vertex d = new Vertex
+            (
+                new FinalVector
+                (
+                    triangle.a.vertex.x() + ((double)(triangle.b.vertex.y() - triangle.a.vertex.y()) / (double)(triangle.c.vertex.y() - triangle.a.vertex.y())) * (triangle.c.vertex.x() - triangle.a.vertex.x()),
+                    triangle.b.vertex.y()
+                ),
+                FinalVector.zero,
+                FinalVector.zero
+            );
+
+            final Triangle bottomFlat = new Triangle
+            (
+                triangle.a,
+                triangle.b,
+                d
+            );
+            
+            final Triangle topFlat = new Triangle
+            (
+                triangle.b, 
+                d,
+                triangle.c
+            );
+
+            fillBottomFlatTriangle(image, bottomFlat, color);
+            fillTopFlatTriangle   (image, topFlat,    color);
+        }
+    }
+
+    static void fillBottomFlatTriangle(final DrawableImage image, final Triangle triangle, int color)
+    {
+        double invslope1 = (triangle.b.vertex.x() - triangle.a.vertex.x()) / (triangle.b.vertex.y() - triangle.a.vertex.y());
+        double invslope2 = (triangle.c.vertex.x() - triangle.a.vertex.x()) / (triangle.c.vertex.y() - triangle.a.vertex.y());
+
+        double curx1 = triangle.a.vertex.x();
+        double curx2 = triangle.a.vertex.x();
+
+        for (int scanlineY = (int) triangle.a.vertex.y(); scanlineY <= triangle.b.vertex.y(); scanlineY++)
+        {
+            line(image, (int) curx1, scanlineY, (int) curx2, scanlineY, 1, color);
+
+            curx1 += invslope1;
+            curx2 += invslope2;
+        }
+    }
+
+    	
+    static void fillTopFlatTriangle(final DrawableImage image, final Triangle triangle, int color)
+    {
+        double invslope1 = (triangle.c.vertex.x() - triangle.a.vertex.x()) / (triangle.c.vertex.y() - triangle.a.vertex.y());
+        double invslope2 = (triangle.c.vertex.x() - triangle.b.vertex.x()) / (triangle.c.vertex.y() - triangle.b.vertex.y());
+
+        double curx1 = triangle.c.vertex.x();
+        double curx2 = triangle.c.vertex.x();
+
+        for (int scanlineY = (int) triangle.c.vertex.y(); scanlineY > triangle.a.vertex.y(); scanlineY--)
+        {
+            line(image, (int) curx1, scanlineY, (int) curx2, scanlineY, 1, color);
+
+            curx1 -= invslope1;
+            curx2 -= invslope2;
         }
     }
 }
