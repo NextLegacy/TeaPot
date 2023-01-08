@@ -30,6 +30,12 @@ public final class Vector extends Vector4
     @Override public double magnitude       () { return Math.sqrt(magnitudeSquared()); }
     @Override public Vector angle           () { return vec(angleTo(Vector.right), angleTo(Vector.up)); }
 
+    @Override 
+    public Vector clone() 
+    {
+        return new Vector(x(), y(), z(), w()); 
+    }
+
     public final double x() { return x; }
     public final double y() { return y; }
     public final double z() { return z; }

@@ -46,6 +46,12 @@ public final class FinalVector extends Vector4
     @Override public double magnitude       () { return magnitude    ; }
     @Override public Vector angle           () { return angle        ; }
 
+    @Override
+    public FinalVector clone() 
+    {
+        return new FinalVector(x(), y(), z(), w()); 
+    }
+
     public static final FinalVector zero     = fvec(Vector.zero    );
     public static final FinalVector one      = fvec(Vector.one     );
     public static final FinalVector right    = fvec(Vector.right   );

@@ -39,6 +39,8 @@ public abstract class Vector4
     public abstract double magnitude       ();
     public abstract Vector angle           ();
 
+    public abstract Vector4 clone();
+
     public final double angleTo(Vector4 vec) 
     { 
         double m = magnitude() * vec.magnitude();
