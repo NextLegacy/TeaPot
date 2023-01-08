@@ -41,7 +41,12 @@ public class Image
     protected final int   [] colorBuffer;
     protected final double[] zBuffer    ;
 
-    public Image(final FinalVector size)
+    public Image(final BufferedImage image)
+    {
+        this(ImageUtils.getBufferedImageDataArray(image), new FinalVector(image.getWidth(), image.getHeight()));
+    }
+
+    public Image(final Vector4 size)
     {
         this(new int[size.int_x() * size.int_y()], size);
     }
