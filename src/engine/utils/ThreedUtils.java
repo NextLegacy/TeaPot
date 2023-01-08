@@ -5,7 +5,7 @@ import static engine.utils.MathUtils.*;
 import java.util.ArrayList;
 
 import engine.graphics.threed.Mesh;
-import engine.graphics.threed.Polygon;
+import engine.graphics.threed.Triangle;
 import engine.graphics.threed.Vertex;
 import engine.math.Vector4;
 
@@ -17,7 +17,7 @@ public final class ThreedUtils
     {
         String[] lines = FileUtils.getLines(file);
 
-        ArrayList<Polygon> polygons = new ArrayList<>();
+        ArrayList<Triangle> polygons = new ArrayList<>();
 
         ArrayList<Vector4> vertices = new ArrayList<>();
         ArrayList<Vector4> textures  = new ArrayList<>();
@@ -52,12 +52,12 @@ public final class ThreedUtils
                         );
                     }
 
-                    polygons.add(new Polygon(polygonVertices[0], polygonVertices[1], polygonVertices[2]));
+                    polygons.add(new Triangle(polygonVertices[0], polygonVertices[1], polygonVertices[2]));
 
                     break;
             }
         }
 
-        return new Mesh(polygons.toArray(Polygon[]::new));
+        return new Mesh(polygons.toArray(Triangle[]::new));
     }
 }

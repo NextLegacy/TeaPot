@@ -2,9 +2,9 @@ package engine.graphics.threed;
 
 public final class Mesh 
 {
-    public final Polygon[] polygons;
+    public final Triangle[] polygons;
     
-    public Mesh(Polygon[] polygons)
+    public Mesh(Triangle[] polygons)
     {
         this.polygons = polygons;
     }
@@ -13,7 +13,7 @@ public final class Mesh
     {
         String str = "";
 
-        for (Polygon polygon : polygons)
+        for (Triangle polygon : polygons)
             str += polygon + "\n";
 
         return str;
