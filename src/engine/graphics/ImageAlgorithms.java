@@ -1,9 +1,8 @@
 package engine.graphics;
 
-import engine.graphics.threed.Triangle;
-import engine.graphics.threed.Vertex;
 import engine.math.FinalVector;
 import engine.math.Vector;
+import engine.math.Vector4;
 import engine.utils.MathUtils;
 
 final class ImageAlgorithms 
@@ -65,23 +64,8 @@ final class ImageAlgorithms
         Vector p2 = new Vector(v).times(-size1).add(a);
         Vector p3 = new Vector(v).times(-size1).add(b);
 
-        ImageAlgorithms.triangle(image, 
-            new Triangle
-            (
-                new Vertex(p0, FinalVector.zero, FinalVector.zero),
-                new Vertex(p1, FinalVector.zero, FinalVector.zero),
-                new Vertex(p2, FinalVector.zero, FinalVector.zero)
-            ), 0xffff00ff
-        );
-
-        ImageAlgorithms.triangle(image, 
-            new Triangle
-            (
-                new Vertex(p1, FinalVector.zero, FinalVector.zero),
-                new Vertex(p2, FinalVector.zero, FinalVector.zero),
-                new Vertex(p3, FinalVector.zero, FinalVector.zero)
-            ), 0xff00ffff
-        );
+        ImageAlgorithms.triangle(image, p0, p1, p2, color);
+        ImageAlgorithms.triangle(image, p1, p2, p3, color);
     }
 
     static void rect(final DrawableImage image,
@@ -213,59 +197,48 @@ final class ImageAlgorithms
         }
     }
 
-    static void triangle(final DrawableImage image, Triangle triangle, int color)
+    static void triangle(final DrawableImage image, Vector4 a, Vector4 b, Vector4 c, int color)
     {
-        triangle = triangle.sortedForY();
+        //Sort points for y ascending
 
-        if (triangle.b.vertex.y() == triangle.c.vertex.y())
-        {
-            fillBottomFlatTriangle(image, triangle, color);
-        }
-        else if (triangle.a.vertex.y() == triangle.b.vertex.y())
-        {
-            fillTopFlatTriangle(image, triangle, color);
-        }
+        final Vector4 _a = a.y() < b.y() && a.y() < c.y() ? a : 
+                           b.y() < c.y() ? b : 
+                           c;
+            
+        final Vector4 _b = _a == a ? (b.y() < c.y() ? b : c) :
+                           _a == b ? (a.y() < c.y() ? a : c) :
+                                     (a.y() < b.y() ? a : b) ; 
+                          
+        final Vector4 _c = _a == a ? _b == b ? c : b :
+                           _a == b ? _b == a ? c : a :
+                                     _b == a ? b : a ;
+
+        a = _a; b = _b; c = _c;
+
+        if      (b.y() == c.y()) fillBottomFlatTriangle(image, a, b, c, color);
+        else if (a.y() == b.y()) fillTopFlatTriangle   (image, a, b, c, color);
         else
         {
-            Vertex d = new Vertex
+            final Vector4 d = new FinalVector
             (
-                new FinalVector
-                (
-                    triangle.a.vertex.x() + ((double)(triangle.b.vertex.y() - triangle.a.vertex.y()) / (double)(triangle.c.vertex.y() - triangle.a.vertex.y())) * (triangle.c.vertex.x() - triangle.a.vertex.x()),
-                    triangle.b.vertex.y()
-                ),
-                FinalVector.zero,
-                FinalVector.zero
+                a.x() + ((b.y() - a.y()) / (c.y() - a.y())) * (c.x() - a.x()),
+                b.y()
             );
 
-            final Triangle bottomFlat = new Triangle
-            (
-                triangle.a,
-                triangle.b,
-                d
-            );
-            
-            final Triangle topFlat = new Triangle
-            (
-                triangle.b, 
-                d,
-                triangle.c
-            );
-
-            fillBottomFlatTriangle(image, bottomFlat, color);
-            fillTopFlatTriangle   (image, topFlat,    color);
+            fillBottomFlatTriangle(image, a, b, d, color);
+            fillTopFlatTriangle   (image, b, d, c, color);
         }
     }
 
-    static void fillBottomFlatTriangle(final DrawableImage image, final Triangle triangle, int color)
+    static void fillBottomFlatTriangle(final DrawableImage image, final Vector4 a, final Vector4 b, final Vector4 c, final int color)
     {
-        double invslope1 = (triangle.b.vertex.x() - triangle.a.vertex.x()) / (triangle.b.vertex.y() - triangle.a.vertex.y());
-        double invslope2 = (triangle.c.vertex.x() - triangle.a.vertex.x()) / (triangle.c.vertex.y() - triangle.a.vertex.y());
+        double invslope1 = (b.x() - a.x()) / (b.y() - a.y());
+        double invslope2 = (c.x() - a.x()) / (c.y() - a.y());
 
-        double curx1 = triangle.a.vertex.x();
-        double curx2 = triangle.a.vertex.x();
+        double curx1 = a.x();
+        double curx2 = a.x();
 
-        for (int scanlineY = (int) triangle.a.vertex.y(); scanlineY <= triangle.b.vertex.y(); scanlineY++)
+        for (int scanlineY = (int) a.y(); scanlineY <= b.y(); scanlineY++)
         {
             line(image, (int) curx1, scanlineY, (int) curx2, scanlineY, 1, color);
 
@@ -274,16 +247,15 @@ final class ImageAlgorithms
         }
     }
 
-    	
-    static void fillTopFlatTriangle(final DrawableImage image, final Triangle triangle, int color)
+    static void fillTopFlatTriangle(final DrawableImage image, final Vector4 a, final Vector4 b, final Vector4 c, final int color)
     {
-        double invslope1 = (triangle.c.vertex.x() - triangle.a.vertex.x()) / (triangle.c.vertex.y() - triangle.a.vertex.y());
-        double invslope2 = (triangle.c.vertex.x() - triangle.b.vertex.x()) / (triangle.c.vertex.y() - triangle.b.vertex.y());
+        double invslope1 = (c.x() - a.x()) / (c.y() - a.y());
+        double invslope2 = (c.x() - b.x()) / (c.y() - b.y());
 
-        double curx1 = triangle.c.vertex.x();
-        double curx2 = triangle.c.vertex.x();
+        double curx1 = c.x();
+        double curx2 = c.x();
 
-        for (int scanlineY = (int) triangle.c.vertex.y(); scanlineY > triangle.a.vertex.y(); scanlineY--)
+        for (int scanlineY = (int) c.y(); scanlineY > a.y(); scanlineY--)
         {
             line(image, (int) curx1, scanlineY, (int) curx2, scanlineY, 1, color);
 
