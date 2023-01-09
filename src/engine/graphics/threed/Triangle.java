@@ -25,13 +25,13 @@ public final class Triangle
 
     public Triangle sortedForY()
     {
-        final Vertex _a = a.vertex.y() < b.vertex.y() && a.vertex.y() < c.vertex.y() ? a : 
-                          b.vertex.y() < c.vertex.y() ? b : 
+        final Vertex _a = a.y() < b.y() && a.y() < c.y() ? a : 
+                          b.y() < c.y() ? b : 
                           c;
             
-        final Vertex _b = _a == a ? (b.vertex.y() < c.vertex.y() ? b : c) :
-                          _a == b ? (a.vertex.y() < c.vertex.y() ? a : c) :
-                                    (a.vertex.y() < b.vertex.y() ? a : b) ; 
+        final Vertex _b = _a == a ? (b.y() < c.y() ? b : c) :
+                          _a == b ? (a.y() < c.y() ? a : c) :
+                                    (a.y() < b.y() ? a : b) ; 
                           
         final Vertex _c = _a == a ? _b == b ? c : b :
                           _a == b ? _b == a ? c : a :
