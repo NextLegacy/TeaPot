@@ -62,7 +62,7 @@ public class DrawLineEngineTest
         @Override
         protected void render() 
         {
-            image().line(a, b, 4, 400, 0xff00ff00);    
+            image().line(a, b, 4, 0xff00ff00);    
         }
     }
 }
