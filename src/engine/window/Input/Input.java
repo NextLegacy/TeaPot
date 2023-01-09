@@ -65,9 +65,17 @@ public class Input
         final int buttonIndex = e.getButton() - 1;
 
         if (MathUtils.IsNotInRange(buttonIndex, 0, 2)) 
-            throw new RuntimeException("Unknown MouseButton: " + e.getButton());
+        {
+            System.out.println("ERROR: unknown mouse button: " + e.getButton());
+            return Button.NULL_BUTTON;
+        }
         
         return BUTTONS[buttonIndex];
+    }
+
+    private Button tryGetKey(KeyEvent e)
+    {
+        return KEYBOARD.get(e.getKeyCode());
     }
 
     public Input bindToFrame(Frame frame)
@@ -88,26 +96,19 @@ public class Input
         @Override
         public void keyPressed(KeyEvent e) 
         {
-            Key key = KEYBOARD.get(e.getKeyCode());
-    
-            key.press();
+            tryGetKey(e).press();
         }
     
         @Override
         public void keyReleased(KeyEvent e) 
         {
-            Key key = KEYBOARD.get(e.getKeyCode());
-            
-            key.release();
+            tryGetKey(e).release();
         }
 
         @Override
         public void mousePressed(MouseEvent e) 
         { 
             tryGetButton(e).press();
-    
-            //button.isDown = true;
-            //button.timeOnStart = Time.nanos();
         }
     
         @Override
