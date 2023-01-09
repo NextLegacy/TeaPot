@@ -2,7 +2,7 @@ package engine.window.Input;
 
 public class Key extends Button
 {
-    public static final Key NULL_KEY = new Key(-1);
+    static final Key NULL_KEY = new Key(-1);
 
     final int keyEvent;
     //boolean isDown;
