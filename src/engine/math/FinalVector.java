@@ -2,7 +2,7 @@ package engine.math;
 
 import static engine.utils.MathUtils.*;
 
-public final class FinalVector extends Vector4
+public class FinalVector extends Vector4
 {
     public final double x;
     public final double y;
@@ -15,6 +15,7 @@ public final class FinalVector extends Vector4
     private final double magnitude;
     private final Vector angle;
 
+    public FinalVector(Vector4 v) { this(v.x(), v.y(), v.z(), v.w()); }
     public FinalVector()                                       { this(0, 0, 0, 1);  }
     public FinalVector(double x)                               { this(x, 0, 0, 1);  }
     public FinalVector(double x, double y)                     { this(x, y, 0, 1);  }
@@ -46,7 +47,6 @@ public final class FinalVector extends Vector4
     @Override public double magnitude       () { return magnitude    ; }
     @Override public Vector angle           () { return angle        ; }
 
-    @Override
     public FinalVector clone() 
     {
         return new FinalVector(x(), y(), z(), w()); 
