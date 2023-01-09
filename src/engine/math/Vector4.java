@@ -100,12 +100,12 @@ public abstract class Vector4
                equals(vector);
     }
 
-    public final String toCompactString()
+    public String toCompactString()
     {
         return "x: " + x() + ", y: " + y() + ", z: " + z() + ", w: " + w();
     }
 
-    public final String toString()
+    public String toString()
     {
         return getClass().getSimpleName() + "(" + toCompactString() + ")";
     }
