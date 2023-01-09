@@ -4,6 +4,8 @@ import engine.utils.time.Time;
 
 public class Button
 {
+    static final Button NULL_BUTTON = new Button();
+    
     private boolean isDown;
     private double timeOnStart;
     private boolean clicked;
