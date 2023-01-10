@@ -10,6 +10,7 @@ import engine.math.FinalVector;
 import engine.math.Vector;
 import engine.utils.ImageUtils;
 import engine.graphics.Image;
+import engine.graphics.ImageAlgorithms3D;
 
 public class App 
 {       
@@ -73,6 +74,8 @@ public class App
             {
                 if (image().isNot("main")) return;
                 
+                ImageAlgorithms3D.renderTestMeshWithTestImage(image());
+
                 image().drawImage(result, position.int_x(), position.int_y());
                 image().drawImage(logo, 0, 0);
 
