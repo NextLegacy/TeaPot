@@ -531,7 +531,7 @@ public final class ArrayUtils
                   length2 = length < SMALL_ARRAY_LENGTH ? length : SMALL_ARRAY_LENGTH;
 
         //This is faster than arrayCopy for small lengths
-        for (int i = start; i <= length2; i++)
+        for (int i = start; i < length2; i++)
             array[i] = value;
 
         //This is faster than for loop for big lengths
@@ -547,7 +547,7 @@ public final class ArrayUtils
                   length2 = length < SMALL_ARRAY_LENGTH ? length : SMALL_ARRAY_LENGTH;
 
         //This is faster than arrayCopy for small lengths
-        for (int i = start; i <= length2; i++)
+        for (int i = start; i < length2; i++)
             array[i] = value;
 
         //This is faster than for loop for big lengths
@@ -563,7 +563,7 @@ public final class ArrayUtils
                   length2 = length < SMALL_ARRAY_LENGTH ? length : SMALL_ARRAY_LENGTH;
 
         //This is faster than arrayCopy for small lengths
-        for (int i = start; i <= length2; i++)
+        for (int i = start; i < length2; i++)
             array[i] = value;
 
         //This is faster than for loop for big lengths
@@ -579,7 +579,7 @@ public final class ArrayUtils
                   length2 = length < SMALL_ARRAY_LENGTH ? length : SMALL_ARRAY_LENGTH;
 
         //This is faster than arrayCopy for small lengths
-        for (int i = start; i <= length2; i++)
+        for (int i = start; i < length2; i++)
             array[i] = value;
 
         //This is faster than for loop for big lengths
@@ -595,7 +595,7 @@ public final class ArrayUtils
                   length2 = length < SMALL_ARRAY_LENGTH ? length : SMALL_ARRAY_LENGTH;
 
         //This is faster than arrayCopy for small lengths
-        for (int i = start; i <= length2; i++)
+        for (int i = start; i < length2; i++)
             array[i] = value;
 
         //This is faster than for loop for big lengths
@@ -611,7 +611,7 @@ public final class ArrayUtils
                   length2 = length < SMALL_ARRAY_LENGTH ? length : SMALL_ARRAY_LENGTH;
 
         //This is faster than arrayCopy for small lengths
-        for (int i = start; i <= length2; i++)
+        for (int i = start; i < length2; i++)
             array[i] = value;
 
         //This is faster than for loop for big lengths
@@ -627,7 +627,7 @@ public final class ArrayUtils
                   length2 = length < SMALL_ARRAY_LENGTH ? length : SMALL_ARRAY_LENGTH;
 
         //This is faster than arrayCopy for small lengths
-        for (int i = start; i <= length2; i++)
+        for (int i = start; i < length2; i++)
             array[i] = value;
 
         //This is faster than for loop for big lengths
@@ -643,7 +643,7 @@ public final class ArrayUtils
                   length2 = length < SMALL_ARRAY_LENGTH ? length : SMALL_ARRAY_LENGTH;
 
         //This is faster than arrayCopy for small lengths
-        for (int i = start; i <= length2; i++)
+        for (int i = start; i < length2; i++)
             array[i] = value;
 
         //This is faster than for loop for big lengths
@@ -659,7 +659,7 @@ public final class ArrayUtils
                   length2 = length < SMALL_ARRAY_LENGTH ? length : SMALL_ARRAY_LENGTH;
 
         //This is faster than arrayCopy for small lengths
-        for (int i = start; i <= length2; i++)
+        for (int i = start; i < length2; i++)
             array[i] = value;
 
         //This is faster than for loop for big lengths
