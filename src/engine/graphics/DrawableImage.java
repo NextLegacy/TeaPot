@@ -1,13 +1,8 @@
 package engine.graphics;
 
-import static engine.utils.MathUtils.*;
-
 import java.awt.image.BufferedImage;
 
-import engine.graphics.threed.Triangle;
-import engine.graphics.threed.Vertex;
 import engine.math.FinalVector;
-import engine.math.Vector;
 import engine.math.Vector4;
 import engine.utils.ArrayUtils;
 import engine.utils.ImageUtils;
