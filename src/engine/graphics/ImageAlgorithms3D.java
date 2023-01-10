@@ -2,13 +2,61 @@ package engine.graphics;
 
 import engine.graphics.threed.Triangle;
 import engine.graphics.threed.Vertex;
+import engine.math.FinalVector;
 import engine.math.Vector;
 import engine.utils.MathUtils;
 
-final class ImageAlgorithms3D 
+public final class ImageAlgorithms3D 
 {
     private ImageAlgorithms3D() { }
     
+    public static void renderTestMeshWithTestImage(final DrawableImage image)
+    {
+        final DrawableImage texture = new DrawableImage(new FinalVector(2, 2));
+        
+        texture.setPixel(0, 0, 0xFF0000);
+        texture.setPixel(1, 0, 0x00FF00);
+        texture.setPixel(0, 1, 0x0000FF);
+        texture.setPixel(1, 1, 0xFFFFFF);
+
+        
+        
+        final Triangle[] triangles = new Triangle[]
+        {
+            new Triangle
+            (
+                new Vertex(10, 70, 0, 1, new Vector(0, 0, 0), new Vector(0, 0, 0)),
+                new Vertex(50, 160, 0, 1, new Vector(1, 0, 0), new Vector(0, 0, 0)),
+                new Vertex(70, 80, 0, 1, new Vector(0, 1, 0), new Vector(0, 0, 0))
+            ),
+            new Triangle
+            (
+                new Vertex(180, 50, 0, 1, new Vector(1, 1, 0), new Vector(0, 0, 0)),
+                new Vertex(150, 1, 0, 1, new Vector(0, 1, 0), new Vector(0, 0, 0)),
+                new Vertex(70, 180, 0, 1, new Vector(1, 0, 0), new Vector(0, 0, 0))
+            ),
+            new Triangle
+            (
+                new Vertex(180, 150, 0, 1, new Vector(0, 0, 0), new Vector(0, 0, 0)),
+                new Vertex(120, 160, 0, 1, new Vector(1, 0, 0), new Vector(0, 0, 0)),
+                new Vertex(130, 180, 0, 1, new Vector(0, 1, 0), new Vector(0, 0, 0))
+            ),
+            new Triangle
+            (
+                new Vertex(180, 150, 0, 1, new Vector(1, 1, 0), new Vector(0, 0, 0)),
+                new Vertex(120, 160,
+                0, 1, new Vector(0, 1, 0), new Vector(0, 0, 0)),
+                new Vertex(130, 180, 0, 1, new Vector(1, 0, 0), new Vector(0, 0, 0))
+            )
+        };
+
+        for (final Triangle triangle : triangles)
+        {
+            triangle(image, triangle, texture);
+            return;
+        }
+    }
+
     static void line(final DrawableImage image, final Vertex a, final Vertex b, final Image texture)
     {
         final int dx = (int) Math.abs(b.x - a.x);
@@ -17,11 +65,13 @@ final class ImageAlgorithms3D
         final int sx = a.x < b.x ? 1 : -1;
         final int sy = a.y < b.y ? 1 : -1;
 
-        int err = dx + dy;
+        int err = dx - dy;
         int e2 = 0;
         
         int x = (int) a.x;
         int y = (int) a.y;
+
+        if ((dx > dy ? dx : dy) == 0) return;
 
         final double increment = 1 / (dx > dy ? dx : dy);
 
@@ -61,7 +111,7 @@ final class ImageAlgorithms3D
         if      (b.y == c.y) fillBottomFlatTriangle(image, a, b, c, texture);
         else if (a.y == b.y) fillTopFlatTriangle   (image, a, b, c, texture);
         else
-        {
+        {/* */
             final double x = a.x + ((b.y - a.y) / (c.y - a.y)) * (c.x - a.x);
             final double y = b.y;
             	
@@ -71,7 +121,9 @@ final class ImageAlgorithms3D
             final double pdx = (c.x - x); // distance from point to c
             final double pdy = (c.y - y);
 
-            final double t = Math.sqrt(pdx * pdx + pdx * pdy) / Math.sqrt(dx * dx + dy * dy);
+            //final double t = Math.sqrt(pdx * pdx + pdx * pdy) / Math.sqrt(dx * dx + dy * dy);
+            
+            final double t = (b.y - a.y) / (c.y - a.y);
 
             final Vertex d = new Vertex
             (
@@ -98,7 +150,29 @@ final class ImageAlgorithms3D
 
         for (int scanlineY = (int) a.y(); scanlineY <= b.y(); scanlineY++)
         {
-            line(image, (int) curx1, scanlineY, (int) curx2, scanlineY, 1, texture);
+            final double t = (scanlineY - a.y()) / (b.y() - a.y());
+            
+            final Vertex v1 = new Vertex
+            (
+                curx1,
+                scanlineY,
+                MathUtils.lerp(a.z, b.z, t),
+                MathUtils.lerp(a.w, b.w, t),
+                Vector.lerp(a.texture, b.texture, t),
+                Vector.lerp(a.normal, b.normal, t)
+            );
+
+            final Vertex v2 = new Vertex
+            (
+                curx2,
+                scanlineY,
+                MathUtils.lerp(a.z, c.z, t),
+                MathUtils.lerp(a.w, c.w, t),
+                Vector.lerp(a.texture, c.texture, t),
+                Vector.lerp(a.normal, c.normal, t)
+            );
+
+            line(image, v1, v2, texture);
 
             curx1 += invslope1;
             curx2 += invslope2;
@@ -115,8 +189,30 @@ final class ImageAlgorithms3D
 
         for (int scanlineY = (int) c.y(); scanlineY > a.y(); scanlineY--)
         {
-            line(image, (int) curx1, scanlineY, (int) curx2, scanlineY, 1, texture);
+            final double t = (scanlineY - a.y()) / (c.y() - a.y());
 
+            final Vertex v1 = new Vertex
+            (
+                curx1,
+                scanlineY,
+                MathUtils.lerp(a.z, c.z, t),
+                MathUtils.lerp(a.w, c.w, t),
+                Vector.lerp(a.texture, c.texture, t),
+                Vector.lerp(a.normal, c.normal, t)
+            );
+
+            final Vertex v2 = new Vertex
+            (
+                curx2,
+                scanlineY,
+                MathUtils.lerp(b.z, c.z, t),
+                MathUtils.lerp(b.w, c.w, t),
+                Vector.lerp(b.texture, c.texture, t),
+                Vector.lerp(b.normal, c.normal, t)
+            );
+
+            line(image, v1, v2, texture);
+            
             curx1 -= invslope1;
             curx2 -= invslope2;
         }
