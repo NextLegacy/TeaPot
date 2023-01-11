@@ -2,7 +2,6 @@ package testing.ImageTest;
 
 import java.awt.Font;
 
-import engine.utils.color.ANSICode;
 import engine.graphics.StringImage;
 import engine.utils.time.Time;
 
