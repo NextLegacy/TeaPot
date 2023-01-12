@@ -16,8 +16,8 @@ public abstract class Scene
     
     private Engine engine;
 
-    //private final ArrayList<GameObject> gameObjects;
     private GameObject[] gameObjects;
+    private GameObject[] currentGameObjects;
     
     public Scene() { this("Scene " + ++scenesCounter); } 
 
@@ -25,8 +25,10 @@ public abstract class Scene
     {
         this.name = name;
 
-        engine = null;
-        gameObjects = new GameObject[0];   
+        engine             = null             ;
+
+        gameObjects        = new GameObject[0];   
+        currentGameObjects = new GameObject[0];
     }
 
     void makeActiveScene(Engine engine) { this.engine = engine; }
@@ -100,11 +102,16 @@ public abstract class Scene
     protected void init() { }
     protected void end () { } //destroy equivalend
     
-    //void start () { runForAllGameObjects(GameObject::start ); }
+    void start () { runForAllGameObjects(GameObject::start ); }
     void update() { runForAllGameObjects(GameObject::update); }
     void render() { runForAllGameObjects(GameObject::render); }
 
     void onSceneChange() { runForAllGameObjects(GameObject::onSceneChange); }
+
+    void updateGameObjects()
+    {
+        currentGameObjects = ArrayUtils.clone(gameObjects);
+    }
 
     private void throwIfIsNotActiveScene() 
     {
@@ -112,9 +119,11 @@ public abstract class Scene
             throw new SceneIsNotActiveException(this);
     }
 
-    private void runForAllGameObjects(Action1<GameObject> action)
+    private void runForAllGameObjects(final Action1<GameObject> action)
     {   
-        for(GameObject gameObject : gameObjects)
+        updateGameObjects();
+
+        for(GameObject gameObject : currentGameObjects)
             if (gameObject.isActive())
                 action.run(gameObject);
     }

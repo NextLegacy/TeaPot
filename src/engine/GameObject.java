@@ -190,6 +190,7 @@ public final class GameObject implements IActivatable, IDestroyable
 
         runForAllScripts(Script::update); 
     }
+    
     public void render() { runForAllScripts(Script::render); }
 
     void onActivate   () { runForAllScripts(Script::onGameObjectActivate  ); }
