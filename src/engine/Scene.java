@@ -102,7 +102,6 @@ public abstract class Scene
     protected void init() { }
     protected void end () { } //destroy equivalend
     
-    void start () { runForAllGameObjects(GameObject::start ); }
     void update() { runForAllGameObjects(GameObject::update); }
     void render() { runForAllGameObjects(GameObject::render); }
 

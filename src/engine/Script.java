@@ -15,15 +15,15 @@ public abstract class Script implements IActivatable, IDestroyable
     private boolean active;
 
     boolean startedOnce;
-    boolean awakedOnce;
 
     private GameObject gameObject;
    
     public Script() { }
 
-    void setGameObject(GameObject gameObject) { this.gameObject = gameObject; }
+    //does get used in GameObject
+    /*package_private*/ void setGameObject(GameObject gameObject) { this.gameObject = gameObject; }
     
-    protected final GameObject  gameObject() { return gameObject            ; }
+    protected final GameObject  gameObject() { return gameObject         ; }
 
     protected final Engine      engine    () { return gameObject.engine(); }
     protected final Window      window    () { return engine().window  (); }
@@ -42,8 +42,6 @@ public abstract class Script implements IActivatable, IDestroyable
     protected final double frameDeltaTime() { return engine().deltaTime(); }
     protected final double tickDeltaTime () { return engine().deltaTime(); }
 
-    protected void awake() { }
-
     protected void start () { }
     protected void update() { }
     protected void render() { }
@@ -59,7 +57,9 @@ public abstract class Script implements IActivatable, IDestroyable
 
     public final void destroy()
     {
-        gameObject.removeScript(this);
+        if (gameObject != null)
+            gameObject.removeScript(this);
+
         deactivate();
         onDestroy();
     }
@@ -75,13 +75,7 @@ public abstract class Script implements IActivatable, IDestroyable
         else        onDeactivate();
     }
 
-    @Override
-    public final boolean isActive() { return active; }
+    @Override public final boolean isActive() { return active; }
 
     @Override public String toString() { return getClass().getName() + "(attached to: " + gameObject + ")"; }
-
-    @Override public final boolean equals(Object obj) { return super.equals(obj); }
-    @Override protected final Object clone() throws CloneNotSupportedException { return super.clone(); }
-    @Override @SuppressWarnings("deprecation") protected final void finalize() throws Throwable { super.finalize(); }
-    @Override public final int hashCode() { return super.hashCode(); }
 }
