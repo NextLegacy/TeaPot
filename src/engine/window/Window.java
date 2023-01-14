@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 import engine.math.FinalVector;
 import engine.math.Vector4;
 import engine.utils.ImageUtils;
-import engine.utils.ScreenUtils;
+import engine.utils.ScreenUtils.Screen;
 import engine.graphics.DrawableImage;
 import engine.window.Input.Input;
 
@@ -20,29 +20,36 @@ public abstract class Window
 
     private Input input;
 
+    private Screen screen;
+
     private BufferStrategy strategy;
 
     private String[] layers;
     
     private BufferedImage windowBufferedImage;
-    private DrawableImage windowImage;
+    private DrawableImage windowBuffer;
     private WindowLayer[] windowLayers;
 
     private FinalVector position;
     private FinalVector size;
 
-    protected Window(final Vector4 size, final String[] layers)
-    {
-        this.layers = layers;
+    private boolean isInFullScreenMode;
 
-        setSize(size);
-    } 
+    public Window(Screen screen, Vector4 size, String... layers)
+    {
+        if (screen == null) throw new NullPointerException("Screen is null!");
+
+        this.screen = screen;
+        this.layers = layers;
+        this.size   = size.toFinalVector();
+
+        initializeBuffers();
+    }
 
     private final void initializeFrame()
     {
-        frame = new Frame();
-        input = new Input()
-            .bindToFrame(frame);
+        frame = new Frame(screen.GRAPHICS_CONFIGURATION);
+        input = new Input().bindToFrame(frame);
 
         frame.setUndecorated(true);
 
@@ -56,13 +63,15 @@ public abstract class Window
 
         setFrameSize();
         setPositionToCenter();
+
+        if (isInFullScreenMode) setFullScreen(true);
     }
 
     private final void initializeBuffers()
     {
         windowBufferedImage = ImageUtils.createCompatibleBufferedImage(size);
         
-        windowImage = new DrawableImage(windowBufferedImage);
+        windowBuffer = new DrawableImage(windowBufferedImage);
 
         WindowLayer[] _windowLayers = new WindowLayer[layers.length];
 
@@ -74,15 +83,37 @@ public abstract class Window
 
     public final Window setTitle(String newTitle) { frame.setTitle(newTitle); return this; }
 
-    public final Window setSize(Vector4 size)
+    public final void setFullScreen(boolean fullScreen)
     {
+        //if (isInFullScreenMode == fullScreen) return; 
+
+        final Vector4 oldSize = size;
+
+        if   (fullScreen) screen.setFullScreen(frame, () -> { isInFullScreenMode = false; setSize(oldSize); });
+        else              screen.setFullScreen(null , null);
+
+        isInFullScreenMode = fullScreen;
+        
+        setSize(screen.SCREEN_SIZE);
+    }
+
+    public final void setScreen(final Screen screen)
+    {
+        if (screen == null) throw new NullPointerException("Screen is null!");
+        
+        this.screen = screen;
+        initializeFrame();
+    }
+
+    public final void setSize(Vector4 size)
+    {
+        if (isInFullScreenMode) size = screen.SCREEN_SIZE;
+
         this.size = size.toFinalVector();
 
         if (frame != null) setFrameSize();
         
         initializeBuffers();
-    
-        return this;
     }
 
     private final void setFrameSize()
@@ -102,8 +133,7 @@ public abstract class Window
 
     public final Window setPositionToCenter()
     {
-        return this;
-        //return setPosition(ScreenUtils.SCREEN_SIZE.dividedBy(2).minus(size.dividedBy(2)));
+        return setPosition(screen.SCREEN_SIZE.dividedBy(2).minus(size.dividedBy(2)));
     }
     
     public final FinalVector   size          () { return size            ; }
@@ -117,6 +147,9 @@ public abstract class Window
     public final FinalVector size  (double widthRatio, double heightRatio) { return size.times(widthRatio, heightRatio).toFinalVector(); }
     public final double      width (double ratio) { return width () * ratio; }
     public final double      height(double ratio) { return height() * ratio; }
+
+    public final WindowLayer[] windowLayers() { return windowLayers; }
+    public final WindowLayer windowLayer(int index) { return windowLayers[index]; }
 
     public final WindowLayer windowLayer(String name)
     {
@@ -169,7 +202,8 @@ public abstract class Window
     public void render()
     {
         renderImages();
-        renderImagesOntoWindow();
+        renderImagesOntoWindowBuffer();
+        renderWindowBufferOntoFrame();
     }
 
     public abstract void renderImage(WindowLayer image);
@@ -180,19 +214,24 @@ public abstract class Window
             renderImage(windowLayers[i]);
     }
 
-    public final void renderImagesOntoWindow()
+    public final void renderImagesOntoWindowBuffer()
     {   
+        windowBuffer.clear();
+
+        for (int i = 0; i < windowLayers.length; i++)
+            windowBuffer.pasteImage(windowLayers[i]);
+    }
+
+    public final void renderWindowBufferOntoFrame()
+    {
+        if (frame == null) return;
+
         if (strategy == null)
         {        
             frame.createBufferStrategy(2);
             
             strategy = frame.getBufferStrategy();
         }
-
-        windowImage.clear();
-
-        for (int i = 0; i < windowLayers.length; i++)
-            windowImage.pasteImage(windowLayers[i]);
 
         do 
         {
