@@ -4,22 +4,44 @@ import static engine.utils.MathUtils.*;
 
 import java.util.ArrayList;
 
-import engine.math.FinalVector;
 import engine.math.Vector;
 import engine.math.Vector4;
 import engine.utils.ScreenUtils;
-import engine.utils.StringUtils;
+import engine.utils.ScreenUtils.Screen;
 import engine.utils.time.Time;
+import engine.window.Window;
+import engine.window.WindowLayer;
 
 public class Test
 {
     public static void main(String[] args)
     {
-        System.out.println(ScreenUtils.SCREENS.length);
+        //System.out.println(ScreenUtils.SCREENS.length);
         //System.out.println(fvec(1, 2, 0).angle().times(DEGREE));
 
         //System.out.println(StringUtils.count("aaaaaa", "aa"));
         //test();
+
+        Window window = new TestWindow(ScreenUtils.getScreen(0), new Vector(1080, 720), "main");
+
+        window.start();
+
+        window.setFullScreen(true);
+
+        window.render();
+    }
+
+    public static class TestWindow extends Window 
+    {
+        public TestWindow(Screen screen, Vector4 size, String... layers)
+        {
+            super(screen, size, layers);
+        }
+
+        @Override
+        public void renderImage(WindowLayer image) {
+            image.drawPixel(20, 20, 0, 0xff00ff00);
+        }
     }
 
     public static void test()
