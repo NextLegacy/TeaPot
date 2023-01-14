@@ -1,15 +1,14 @@
 package engine.utils;
 
 import java.awt.Component;
-import java.awt.Frame;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.Window;
 
 import engine.math.FinalVector;
+import engine.utils.Lambda.Action0;
 
 public final class ScreenUtils 
 {
@@ -28,17 +27,41 @@ public final class ScreenUtils
         
         SCREENS = new Screen[GRAPHICS_DEVICES.length];
 
-        System.out.println(GRAPHICS_DEVICES[0].getConfigurations());
-
         for (int i = 0; i < GRAPHICS_DEVICES.length; i++)
         {
             SCREENS[i] = new Screen(GRAPHICS_DEVICES[i]);
         }
     }
 
+    public static Screen getScreen(final int i)
+    {
+        return SCREENS[i];
+    }
+
+    public static Screen getScreen(final String id)
+    {
+        for (int i = 0; i < SCREENS.length; i++)
+        {
+            if (SCREENS[i].GRAPHICS_DEVICE.getIDstring() == id)
+            {
+                return SCREENS[i];
+            }
+        }
+
+        return null;
+    }
+
     public static Screen getScreen(Component component)
     {
         component.getGraphicsConfiguration().getDevice();
+
+        for (int i = 0; i < SCREENS.length; i++)
+        {
+            if (SCREENS[i].GRAPHICS_DEVICE == component.getGraphicsConfiguration().getDevice())
+            {
+                return SCREENS[i];
+            }
+        }
 
         return null;
     }
@@ -60,9 +83,24 @@ public final class ScreenUtils
             SCREEN_SIZE = new FinalVector(bounds.getWidth(), bounds.getHeight());
         }
 
-        public void setFullScreen(Window window)
+        private Action0 onFullScreenEnd;
+
+        public void setFullScreen(Window window, Action0 onFullScreenEnd)
         {
+            GRAPHICS_DEVICE.setFullScreenWindow(null);
+
+            if (this.onFullScreenEnd != null) onFullScreenEnd.run();
+
+            this.onFullScreenEnd = onFullScreenEnd;
+
+            if (window == null) return;
+
             GRAPHICS_DEVICE.setFullScreenWindow(window);
+        }
+
+        public String toString() 
+        {
+            return "Screen(id: " + GRAPHICS_DEVICE.getIDstring() + " | size: " + SCREEN_SIZE.toSizeString() + ")";    
         }
     }
 }
