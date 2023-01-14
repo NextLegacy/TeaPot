@@ -100,6 +100,16 @@ public abstract class Vector4
                equals(vector);
     }
 
+    public String toCompactSizeString()
+    {
+        return "width: " + x() + ", height: " + y() + ", depth: " + z();
+    }
+
+    public String toSizeString()
+    {
+        return getClass().getSimpleName() + "(" + toCompactSizeString() + ")";
+    }
+
     public String toCompactString()
     {
         return "x: " + x() + ", y: " + y() + ", z: " + z() + ", w: " + w();
