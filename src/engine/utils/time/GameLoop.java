@@ -95,15 +95,15 @@ public abstract class GameLoop implements Runnable
     {
         isThreadRunning = true;
 
-        elapsedTime          = 0   ;
+        elapsedTime          = 0l  ;
         elapsedTimeInSeconds = 0.0d;
 
         double deltaT = 0.0d;
         double deltaF = 0.0d;
-        long   time   = 0;
+        long   time   = 0l  ;
 
         long now  = Time.nanos(); 
-        long last = now;
+        long last = now         ;
 
         int ticks  = TPS;
         int frames = FPS;
@@ -113,10 +113,8 @@ public abstract class GameLoop implements Runnable
 
         frameDeltaTime = FRAME_INTERVAL_IN_SECONDS;
         tickDeltaTime  = TICK_INTERVAL_IN_SECONDS ;
-
+        
         start();
-
-        boolean didUpdateBeforeRender = false;
 
         while(!shouldStopThread && isActive())
         {
@@ -133,13 +131,10 @@ public abstract class GameLoop implements Runnable
             deltaF += elapsedTime / FRAME_INTERVAL;
 
             while (
-                    deltaT >= 1                              && // update while respecting intended tps
-                    !(didUpdateBeforeRender && deltaF >= 1)  && // always do one update before render, but when frames stack up, do not continue. (should theoretically prevent/minimize "lags")
-                    isActive()                                  // isActive() check, because updates might turned off engine
+                    deltaT >= 1 && // update while respecting intended tps
+                    isActive()     // isActive() check, because updates might turned off engine
                   )
             {
-                didUpdateBeforeRender = true;
-
                 final long beforeUpdate = Time.nanos();
 
                 update();
@@ -153,14 +148,12 @@ public abstract class GameLoop implements Runnable
                 deltaT--;
             }
         
-            //After update, gameloop or engine might be deactivated, no need to continue, therefor break from gameloop
+            //After updates, gameloop or engine might be deactivated, no need to continue, therefore break from gameloop
             if (!isActive())
                 break;
 
-            if (deltaF >= 1 && didUpdateBeforeRender)
+            if (deltaF >= 1)
             {
-                didUpdateBeforeRender = false; // reset again for next render
-
                 final long beforeRender = Time.nanos();
 
                 render();
@@ -189,7 +182,7 @@ public abstract class GameLoop implements Runnable
 
         end();
 
-        isThreadRunning = false;
+        isThreadRunning  = false;
         shouldStopThread = false;
     }
 }
