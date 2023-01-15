@@ -1,6 +1,7 @@
 package engine.window;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -10,7 +11,7 @@ import java.awt.image.BufferedImage;
 import engine.math.FinalVector;
 import engine.math.Vector4;
 import engine.utils.ImageUtils;
-import engine.utils.ScreenUtils.Screen;
+import engine.utils.Screen;
 import engine.graphics.DrawableImage;
 import engine.window.Input.Input;
 
@@ -120,6 +121,12 @@ public abstract class Window
     {
         frame.setSize(width(), height());
         frame.setPreferredSize(new Dimension(width(), height()));
+    }
+
+    public final void setDecorated(boolean decorated)
+    {
+        frame.setUndecorated(!decorated);
+        frame.setCursor(new Cursor(Cursor.CUSTOM_CURSOR));
     }
 
     public final Window setPosition(Vector4 position)
@@ -255,5 +262,10 @@ public abstract class Window
             strategy.show();
 
         } while (strategy.contentsLost());
+    }
+
+    public String toString()
+    {
+        return "Window(" + title() + ")";
     }
 }
