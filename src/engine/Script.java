@@ -12,12 +12,13 @@ import engine.window.Input.Wheel;
 
 public abstract class Script implements IActivatable, IDestroyable
 {
-    private boolean active;
-
-    boolean startedOnce;
+    private boolean isActive;
+    private boolean isDestroyed;
 
     private GameObject gameObject;
    
+    private boolean startedOnce;
+
     public Script() { }
 
     //does get used in GameObject
@@ -55,27 +56,44 @@ public abstract class Script implements IActivatable, IDestroyable
     protected void onDestroy    () { }
     protected void onSceneChange() { }
 
+    final void tryStartOnce()
+    {
+        if (startedOnce) return;
+        if (!isActive()) return;
+
+        start();
+        startedOnce = true;
+    }
+
     public final void destroy()
     {
+        if (isDestroyed) return;
+
         if (gameObject != null)
             gameObject.removeScript(this);
 
         deactivate();
+
+        isDestroyed = true;
+        gameObject  = null;
+        
         onDestroy();
     }
 
     @Override
     public final void setActive(boolean state) 
     {
-        if (active == state) return;
+        if (isActive == state) return;
 
-        active = state;
+        isActive = state;
         
-        if (active) onActivate  ();
-        else        onDeactivate();
+        if (isActive) onActivate  ();
+        else          onDeactivate();
     }
 
-    @Override public final boolean isActive() { return active; }
+    @Override public final boolean isDestroyed() { return isDestroyed; }
+
+    @Override public final boolean isActive() { return gameObject != null && gameObject.isActive() && isActive && isNotDestroyed(); }
 
     @Override public String toString() { return getClass().getName() + "(attached to: " + gameObject + ")"; }
 }

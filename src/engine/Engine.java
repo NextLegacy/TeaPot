@@ -2,9 +2,9 @@ package engine;
 
 import engine.math.FinalVector;
 import engine.math.Vector4;
+import engine.utils.Screen;
 import engine.utils.activatable.IActivatable;
 import engine.utils.time.GameLoop;
-import engine.utils.time.Time;
 import engine.window.Window;
 import engine.window.WindowLayer;
 import engine.window.Input.Input;
@@ -21,20 +21,22 @@ public final class Engine implements IActivatable
 
     private WindowLayer currentImage; //Variable that is only defined when Script.render is executed
 
-    public Engine(Vector4 size, int tps, int fps, String... layers)
+    public Engine(Screen screen, Vector4 size, int tps, int fps, String... layers)
     {
-        window   = new GameWindow(size, layers);
+        window   = new GameWindow(screen, size, layers);
         gameLoop = new EngineGameLoop(this, tps, fps);
 
         activeScene = sceneToLoad = null;
-    
+
         active = false;
+        
+        currentImage = null;
     }
 
     public void setActiveScene(Scene scene) { sceneToLoad = scene; }
 
-    @SuppressWarnings("unchecked") public <T extends Scene> T activeScene() { return (T)activeScene; }
-    @SuppressWarnings("unchecked") public <T extends Scene> T sceneToLoad() { return (T)sceneToLoad; }
+    @SuppressWarnings("unchecked") public <T extends Scene> T activeScene() { return (T) activeScene; }
+    @SuppressWarnings("unchecked") public <T extends Scene> T sceneToLoad() { return (T) sceneToLoad; }
 
     public Window        window        () { return window                            ; }
     public Input         input         () { return window.input()                    ; }
@@ -59,9 +61,9 @@ public final class Engine implements IActivatable
 
     private final class GameWindow extends Window
     {
-        GameWindow(final Vector4 size, final String[] layers) 
+        GameWindow(final Screen screen, final Vector4 size, final String[] layers) 
         {
-            super(size, layers);
+            super(screen, size, layers);
         }
         
         public void renderImage(WindowLayer image)
@@ -79,14 +81,14 @@ public final class Engine implements IActivatable
 
     public static final Engine fastSetup(Script script)
     {
-        Engine engine = new Engine(new FinalVector(1080, 720), 120, 120, "main");
+        Engine engine = new Engine(Screen.get(0), new FinalVector(1080, 720), 60, 60, "main");
 
         Scene scene = new Scene() 
         { 
             @Override
             protected void init() 
             {
-                GameObject gameObject = new GameObject();      
+                GameObject gameObject = new GameObject();  
                 
                 addGameObject(gameObject);
             
@@ -144,20 +146,16 @@ public final class Engine implements IActivatable
             if (activeScene != null)
             {
                 activeScene.onSceneChange();
-                activeScene.destroy();
+                activeScene.destroy      ();
             }
 
-            activeScene = sceneToLoad;
+            activeScene = sceneToLoad; 
             
             sceneToLoad = null;
 
-            activeScene.makeActiveScene(engine);
+            activeScene.setEngine(engine);
 
             activeScene.init();
-            
-            System.out.println("Scene loaded");
-
-            //activeScene.start();
         }
 
         @Override
@@ -165,24 +163,14 @@ public final class Engine implements IActivatable
         {
             window.start();
 
-            //wait until Window loaded;
-            long time = 0L;
-            while(!input().isActive() || time >= 10 * Time.SECONDS_TO_NANOS) 
-                time += Time.nanos();
-
-            if (time >= 10 * Time.SECONDS_TO_NANOS)
-                throw new RuntimeException("Window not responding");
-
-            System.out.println("window started");
-
             tryLoadScene();
         }
 
         @Override
         public void end() 
         {
-            if (activeScene != null) 
-                activeScene.destroy();
+            if (activeScene != null) activeScene.destroy();
+            if (sceneToLoad != null) sceneToLoad.destroy();
 
             activeScene = null;
             sceneToLoad = null;
@@ -195,8 +183,8 @@ public final class Engine implements IActivatable
         {
             tryLoadScene();
 
-            if (activeScene == null) { System.out.println("activeScene is null"); return; }
-
+            if (activeScene == null) return;
+            
             activeScene.update();
             input().update();
         }
@@ -205,7 +193,8 @@ public final class Engine implements IActivatable
         public void render() 
         {
             window.renderImages(); 
-            window.renderImagesOntoWindow();
+            window.renderImagesOntoWindowBuffer();
+            window.renderWindowBufferOntoFrame();
         }
 
         @Override

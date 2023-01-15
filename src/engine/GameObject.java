@@ -1,28 +1,21 @@
 package engine;
 
-import java.util.ArrayList;
-
 import engine.utils.ArrayUtils;
-import engine.utils.Lambda.Action1;
 import engine.utils.activatable.IActivatable;
 import engine.utils.destroyable.IDestroyable;
 import engine.utils.destroyable.ObjectIsDestroyedException;
 
+import static engine.utils.ArrayUtils.*;
+
 public final class GameObject implements IActivatable, IDestroyable
 {
-    private static final GameObject NULL_GAMEOBJECT = new GameObject("NULL GAMEOBJECT");
-
-    static { NULL_GAMEOBJECT.destroy(); }
-
     private String name;
 
-    private boolean active   ;
-    private boolean destroyed;
+    private boolean isActive   ;
+    private boolean isDestroyed;
 
-    private GameObject   parent       ;
-
-    private GameObject[] children     ;
-    private GameObject[] childrenArray;
+    private GameObject   parent  ;
+    private GameObject[] children;
 
     private Script[] scripts       ;
     private Script[] currentScripts;
@@ -35,7 +28,7 @@ public final class GameObject implements IActivatable, IDestroyable
     {
         this.name = name;
 
-        childrenArray  = new GameObject[0];
+        children       = new GameObject[0];
         scripts        = new Script    [0];
         currentScripts = new Script    [0];
     }
@@ -43,11 +36,18 @@ public final class GameObject implements IActivatable, IDestroyable
     //does get used in Scene
     /*package_private*/ void setScene(Scene newScene) 
     { 
-        scene = newScene; 
+        if (scene == newScene) return;
+
+        scene = newScene;
+
+        if (scene == null) return;
+
+        for (int i = 0; i < children.length; i++)
+            scene.addGameObject(children[i]);
     }
 
     @Override
-    public boolean      isDestroyed() { return destroyed                 ; }
+    public boolean      isDestroyed() { return isDestroyed                 ; }
     public String       name       () { return name                      ; }
     public GameObject   parent     () { return parent                    ; }
     public GameObject[] children   () { return ArrayUtils.clone(children); }
@@ -55,49 +55,37 @@ public final class GameObject implements IActivatable, IDestroyable
     public Engine       engine     () { return scene.engine()            ; }
     public Scene        scene      () { return scene                     ; }
 
-    public boolean hasChildren(final GameObject child ) { return ArrayUtils.contains(children, child ); }
-    public boolean hasScript  (final Script     script) { return ArrayUtils.contains(scripts , script); }
+    public boolean hasChildren(final GameObject child ) { return contains(children, child ); }
+    public boolean hasScript  (final Script     script) { return contains(scripts , script); }
 
-    private final void addChildrenInternal(GameObject gameObject)
-    {
-        children = ArrayUtils.push(children, gameObject);
-    }
-
-    private final void removeChildrenInternel(GameObject gameObject)
-    {
-        children = ArrayUtils.remove(children, gameObject);
-    }
-
-    private final void setParentInternal(GameObject gameObject)
-    {
-        parent = gameObject;
-    }
+    private final void addChildrenInternal   (GameObject gameObject) { children = push  (children, gameObject); }
+    private final void removeChildrenInternel(GameObject gameObject) { children = remove(children, gameObject); }
+    private final void setParentInternal     (GameObject gameObject) { parent   = gameObject                  ; }
 
     public void setParent(GameObject newParent)
     {
         ObjectIsDestroyedException.throwIfIsDestroyed(this);
 
-        if (newParent == null) newParent = NULL_GAMEOBJECT;
-
-        if (parent    == newParent    || // don't set if already set
-            newParent == this         || // don't set if is self
-            newParent.hasChildren(this)) // don't set if new parent already has this as child
-            return;
+        if (parent    == newParent || // don't set if already set
+            newParent == this     )   // don't set if is self
+            return; 
         
         if (parent    != null) parent   .removeChildrenInternel(this);
         if (newParent != null) newParent.addChildrenInternal   (this);
 
         setParentInternal(newParent);
+        
+        if (newParent != null && newParent.scene() != scene && newParent.scene() != null)
+            newParent.scene().addGameObject(newParent);
     }
     
     public void addChildren(GameObject child)
     {
         ObjectIsDestroyedException.throwIfIsDestroyed(this);
 
-        if (hasChildren(child)     || // don't add if already has child
-            child          == null || // don't add if null
-            child          == this || // don't add if is self
-            child.parent() == this)   // don't add if already has this as parent
+        if (child          == null || // don't add if null
+            child.parent() == this || // don't add if already has this as parent
+            child          == this)   // don't add if is self
             return;
 
         child.setParent(this);
@@ -107,10 +95,9 @@ public final class GameObject implements IActivatable, IDestroyable
     {
         ObjectIsDestroyedException.throwIfIsDestroyed(this);
 
-        if (!hasChildren(child)    || // don't remove if doesn't have child
-            child          == null || // don't remove if null
-            child          == this || // don't remove if is self
-            child.parent() != this)   // don't remove if doesn't have this as parent
+        if (child          == null || // don't remove if null
+            child.parent() != this || // don't remove if doesn't have child
+            child          == this)   // don't remove if is self
             return;
 
         child.setParent(null);
@@ -120,96 +107,93 @@ public final class GameObject implements IActivatable, IDestroyable
     {
         ObjectIsDestroyedException.throwIfIsDestroyed(this);
 
-        if (script.gameObject() != null || ArrayUtils.contains(scripts, script))
-            return;
+        if (script.gameObject() != null || contains(scripts, script)) return;
 
         script.setGameObject(this);
 
-        scripts = ArrayUtils.push(scripts, script);
+        scripts = push(scripts, script);
     }
 
     public void removeScript(Script script)
     {
         ObjectIsDestroyedException.throwIfIsDestroyed(this);
 
-        if (!ArrayUtils.contains(scripts, script))
-            return;
+        if (!contains(scripts, script)) return;
 
         script.setGameObject(null);
 
-        scripts = ArrayUtils.remove(scripts, script);
+        scripts = remove(scripts, script);
     }
     
     @Override
     public void destroy()
     {
-        if (destroyed) return;
-
-        destroyed = true;
-
+        if (isDestroyed) return;
+        
         deactivate();
 
         if (scene != null) 
         {
             scene.removeGameObject(this);
             
-            for (GameObject children : childrenArray)
-                children.destroy();
+            for (GameObject children : children)
+                children.setParent(null);
         }
 
+        setParent(null);
+        
         onDestroy();
+
+        for (Script script : scripts)
+            removeScript(script);
+        
+        for (GameObject children : children)
+            children.setParent(null);
+
+        isDestroyed = true;
+
+        scripts  = null;
+        children = null;
+        parent   = null;
+
     }
     
-    public void update() 
-    { 
-        for (Script script : scripts)
-        { 
-            if (script.isActive() && !script.startedOnce)
-            { 
-                script.startedOnce = true; script.start(); 
-            }
-        }
+    void update() 
+    {
+        for (Script script : currentScripts)
+            script.tryStartOnce();
 
-        for (GameObject children : childrenArray)
-        {
-            if (children.scene() == null)
-            {
-                children.setScene(scene());
+        for (Script script : currentScripts) if (script.isActive()) script.update();
 
-                if (children.isActive())
-                    children.update();
-            }
-        }
-
-        runForAllScripts(Script::update); 
+        updateScripts();
     }
 
-    public void render() { runForAllScripts(Script::render); }
+    void render       () { for (Script script : currentScripts) if (script.isActive()) script.render(); }
 
-    void onActivate   () { runForAllScripts(Script::onGameObjectActivate  ); }
-    void onDeactivate () { runForAllScripts(Script::onGameObjectDeactivate); }
-    void onDestroy    () { runForAllScripts(Script::onGameObjectDestroy   ); }
-    void onSceneChange() { runForAllScripts(Script::onSceneChange         ); }
+    void onActivate   () { updateScripts(); for (Script script : currentScripts) script.onGameObjectActivate  (); }
+    void onDeactivate () { updateScripts(); for (Script script : currentScripts) script.onGameObjectDeactivate(); }
+    void onDestroy    () { updateScripts(); for (Script script : currentScripts) script.onDestroy             (); }
+    void onSceneChange() { updateScripts(); for (Script script : currentScripts) script.onSceneChange         (); }
+
+    void updateScripts() { currentScripts = ArrayUtils.clone(scripts); }
 
     @Override
     public void setActive(boolean state) 
     {
-        if (active == state) return;
+        if (isActive == state) return;
 
-        active = state;
+        isActive = state;
         
-        if (active) onActivate  ();
-        else        onDeactivate();
+        if   (isActive) onActivate  ();
+        else            onDeactivate();
     }
 
     @Override
-    public boolean isActive() { return active; }
-
-    private void runForAllScripts(Action1<Script> action)
+    public boolean isActive() 
     {
-        for (Script script : scripts)
-            if (script.isActive())
-                action.run(script);
+        if (parent() == null) return isActive && !isDestroyed;
+
+        return parent().isActive() && isActive && !isDestroyed;
     }
 
     @Override
