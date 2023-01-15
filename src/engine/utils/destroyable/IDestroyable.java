@@ -4,6 +4,6 @@ public interface IDestroyable
 {
     void destroy();
 
-    default boolean isDestroyed   () { return false         ; }
+    boolean isDestroyed();
     default boolean isNotDestroyed() { return !isDestroyed(); }
 }
