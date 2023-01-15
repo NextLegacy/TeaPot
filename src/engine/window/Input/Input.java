@@ -1,6 +1,7 @@
 package engine.window.Input;
 
 import java.awt.Frame;
+import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -42,6 +43,8 @@ public class Input
 
     public void update()
     {
+        KEYBOARD.update();
+
         for (int i = 0; i < BUTTONS.length; i++)
             BUTTONS[i].update();
 
@@ -78,7 +81,7 @@ public class Input
         return KEYBOARD.get(e.getKeyCode());
     }
 
-    public Input bindToFrame(Frame frame)
+    public Input bindToFrame(Window frame)
     {
         frame.addKeyListener        (listener);
         frame.addMouseListener      (listener);

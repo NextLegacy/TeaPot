@@ -16,6 +16,12 @@ public final class Keyboard
         initializeKeyMap();
     }
 
+    void update()
+    {
+        for (Key key : KEY_MAP.values())
+            key.update();
+    }
+
     public Key get(Integer keyEvent)
     {
         return !KEY_MAP.containsKey(keyEvent) ? Key.NULL_KEY : KEY_MAP.get(keyEvent);
