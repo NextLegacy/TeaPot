@@ -31,8 +31,9 @@ public class Button
 
     void update() 
     {
+
         if (!clickedHelp) return;
-        if (!isUp()) return;
+        if (!isUp())      return;
 
         if (clicked)
         {
