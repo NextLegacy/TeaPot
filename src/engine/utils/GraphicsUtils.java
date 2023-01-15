@@ -2,10 +2,6 @@ package engine.utils;
 
 import static engine.utils.MathUtils.*;
 
-import java.util.Arrays;
-
-import engine.math.Vector;
-
 public class GraphicsUtils 
 {
     /*
