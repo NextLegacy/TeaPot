@@ -18,7 +18,7 @@ public class StartScene extends Scene
         (
             new ButtonScript(window().size(0.5, 0.5).minus(vec(100, 100)), window().size(0.5, 0.5).plus(100, 100), 3, 0xffafff6d, () -> 
             {
-                engine().setActiveScene(Test.GAME_SCENE);
+                engine().setActiveScene(new GameScene());
             }
         ));
 
@@ -26,7 +26,7 @@ public class StartScene extends Scene
         (
             new ButtonScript(window().size(0.3, 0.3).minus(vec(125, 125)), window().size(0.3, 0.3).plus(125, 125), 1, 0x6fafaffd, () -> 
             {
-                engine().setActiveScene(Test.GAME_SCENE);
+                engine().setActiveScene(new GameScene());
             }
         ));
         
@@ -34,7 +34,7 @@ public class StartScene extends Scene
         (
             new ButtonScript(window().size(0.45, 0.4).minus(vec(125, 125)), window().size(0.45, 0.4).plus(125, 125), 2, 0x3ff2232d, () -> 
             {
-                engine().setActiveScene(Test.GAME_SCENE);
+                engine().setActiveScene(new GameScene());
             }
         ));
 
@@ -42,7 +42,7 @@ public class StartScene extends Scene
         (
             new ButtonScript(window().size(0.6, 0.4).minus(vec(125, 125)), window().size(0.6, 0.4).plus(125, 125), 3, 0x3fffffff, () -> 
             {
-                engine().setActiveScene(Test.GAME_SCENE);
+                engine().setActiveScene(new GameScene());
             }
         ));
 

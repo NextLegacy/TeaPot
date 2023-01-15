@@ -4,7 +4,7 @@ import engine.GameObject;
 import engine.Scene;
 import engine.Script;
 import engine.math.FinalVector;
-import engine.math.Vector;
+import engine.utils.Screen;
 
 import static engine.utils.MathUtils.*;
 
@@ -14,7 +14,7 @@ public class DrawLineEngineTest
 {
     public static void main(String[] args)
     {
-        Engine engine = new Engine(vec(1080, 720), 40, 40, "main");
+        Engine engine = new Engine(Screen.get(0), vec(1080, 720), 40, 40, "main");
 
         engine.setActiveScene(new LineTestScene());
 
@@ -39,16 +39,10 @@ public class DrawLineEngineTest
 
     public static class LineTestScript extends Script
     {
-        @Override protected void awake() { setActive(true); }
+        @Override protected void start() { setActive(true); a = b = fvec(0, 0); }
 
         private FinalVector a;
         private FinalVector b;
-
-        @Override
-        protected void start() 
-        {
-            a = b = fvec(0, 0);
-        }
 
         @Override
         protected void update() 

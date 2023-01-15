@@ -17,7 +17,7 @@ public class GameScene extends Scene
         (
             new ButtonScript(window().size(0.5, 0.5).minus(vec(100, 100)), window().size(0.5, 0.5).plus(100, 100), 1, 0xaaaf3fdd, () -> 
             {
-                engine().setActiveScene(Test.START_SCENE);
+                engine().setActiveScene(new StartScene());
             }
         ));
 

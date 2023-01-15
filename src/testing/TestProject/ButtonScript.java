@@ -27,6 +27,7 @@ public class ButtonScript extends Script
 
     public ButtonScript(Vector4 a, Vector4 b, double z, int color, Action0 onClick)
     {
+        setActive(true);
         this.a = a.toFinalVector();
         this.b = b.toFinalVector();
         da = a.minus(10).toFinalVector();
@@ -43,7 +44,7 @@ public class ButtonScript extends Script
     }
 
     @Override
-    protected void awake() {
+    protected void start() {
         setActive(true);
     }
 
@@ -80,6 +81,7 @@ public class ButtonScript extends Script
     @Override
     protected void render() 
     {
+        System.out.println("render");
         image().rect(used_a, used_b, z, color);
     }
 }

@@ -1,13 +1,10 @@
 package testing.Test;
 
-import static engine.utils.MathUtils.*;
-
 import java.util.ArrayList;
 
 import engine.math.Vector;
 import engine.math.Vector4;
-import engine.utils.ScreenUtils;
-import engine.utils.ScreenUtils.Screen;
+import engine.utils.Screen;
 import engine.utils.time.Time;
 import engine.window.Window;
 import engine.window.WindowLayer;
@@ -22,13 +19,13 @@ public class Test
         //System.out.println(StringUtils.count("aaaaaa", "aa"));
         //test();
 
-        Window window = new TestWindow(ScreenUtils.getScreen(0), new Vector(1080, 720), "main");
-
-        window.start();
-
-        window.setFullScreen(true);
-
-        window.render();
+        //Window window = new TestWindow(Screen.get(0), new Vector(1080, 720), "main");
+//
+        //window.start();
+//
+        //window.setFullScreen(true);
+//
+        //window.render();
     }
 
     public static class TestWindow extends Window 

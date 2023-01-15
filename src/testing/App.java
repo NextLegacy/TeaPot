@@ -10,7 +10,6 @@ import engine.math.FinalVector;
 import engine.math.Vector;
 import engine.utils.ImageUtils;
 import engine.graphics.Image;
-import engine.graphics.ImageAlgorithms3D;
 
 public class App 
 {       
@@ -30,7 +29,7 @@ public class App
             Vector position;
 
             @Override
-            protected void awake()
+            protected void start()
             {
                 window().setPosition(fvec(1366, 760).minus(window().size()).dividedBy(2));
 
@@ -40,6 +39,8 @@ public class App
 
                 //image = result = ImageUtils.scaled(image, vec(50, 50));
                 logo = Image.fromFile("./rsc/images/B.png");
+
+                System.out.println("sadf");
             }
             
             @Override
@@ -63,8 +64,6 @@ public class App
                     engine().deactivate();
 
                 n+= input().wheel().direction()*30;    
-                //System.out.println(n);
-
             }
 
             double n = 0;
@@ -74,7 +73,7 @@ public class App
             {
                 if (image().isNot("main")) return;
                 
-                ImageAlgorithms3D.renderTestMeshWithTestImage(image());
+                //ImageAlgorithms3D.renderTestMeshWithTestImage(image());
 
                 image().drawImage(result, position.int_x(), position.int_y());
                 image().drawImage(logo, 0, 0);

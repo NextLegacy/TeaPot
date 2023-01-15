@@ -1,14 +1,10 @@
 package testing.DrawLineTest;
 
-import engine.utils.GraphicsUtils;
 import engine.utils.Lambda.Action0;
-import engine.utils.color.Color;
 import engine.graphics.DrawableImage;
 import engine.utils.time.Time;
 
 import static engine.utils.MathUtils.*;
-
-import java.util.Arrays;
 
 import engine.math.Vector;
 
@@ -22,7 +18,7 @@ public class DrawLineTest
 
         image.fillColor(0xffffffff);
 
-        final int tests = 100;
+        //final int tests = 100;
 
         //double a = test(tests, () ->  
         //{
