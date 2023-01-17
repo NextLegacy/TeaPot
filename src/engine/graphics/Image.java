@@ -77,7 +77,7 @@ public class Image
         }
     }
 
-    public final int getIndex(int x, int y) { return x > width() || y > height() || x < 0 || y < 0 ? -1 : x + y * width(); }
+    public final int getIndex(int x, int y) { return (x >= width() || y >= height() || x < 0 || y < 0) ? -1 : x + y * width(); }
 
     public FinalVector size       () { return size        ; }
 
@@ -88,6 +88,20 @@ public class Image
 
     public int   []    colorBuffer() { return colorBuffer ; }
     public double[]    zBuffer    () { return zBuffer     ; }
+
+    public final int pixelUVW(double u, double v, double w) 
+    { 
+        final int x = (int) ((u / w) * (((double) width ()) - 1));
+        final int y = (int) ((v / w) * (((double) height()) - 1));
+
+        final int index = getIndex(x, y);
+
+        //System.out.println("x: " + x + " y: " + y + " u: " + u + " v: " + v + " index: " + index + " w: " + w);
+
+        if (index == -1) return 0xfff00fff;
+
+        return colorBuffer[index];
+    }
     
     public BufferedImage toBufferedImage()
     { 
