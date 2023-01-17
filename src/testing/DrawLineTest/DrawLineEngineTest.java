@@ -3,6 +3,7 @@ package testing.DrawLineTest;
 import engine.GameObject;
 import engine.Scene;
 import engine.Script;
+import engine.graphics.ImageAlgorithms3D;
 import engine.math.FinalVector;
 import engine.utils.Screen;
 
@@ -56,7 +57,8 @@ public class DrawLineEngineTest
         @Override
         protected void render() 
         {
-            image().line(a, b, 4, 0xff00ff00);    
+            ImageAlgorithms3D.renderTestMeshWithTestImage(image());
+            image().line(a, b, 30, 40, 0xff00ff00);    
         }
     }
 }
