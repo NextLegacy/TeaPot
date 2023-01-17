@@ -123,9 +123,9 @@ public final class Vector extends Vector4
                .absZ();
     }
 
-    public Vector lerpX(double to, double t) { t = (t < 0 ? 0 : (t > 1 ? 1 : t)); return x(MathUtils.lerp(x(), to, t)); }
-    public Vector lerpY(double to, double t) { t = (t < 0 ? 0 : (t > 1 ? 1 : t)); return y(MathUtils.lerp(y(), to, t)); }
-    public Vector lerpZ(double to, double t) { t = (t < 0 ? 0 : (t > 1 ? 1 : t)); return z(MathUtils.lerp(z(), to, t)); }
+    public Vector lerpX(double to, double t) { return x(MathUtils.lerp(x(), to, t)); }
+    public Vector lerpY(double to, double t) { return y(MathUtils.lerp(y(), to, t)); }
+    public Vector lerpZ(double to, double t) { return z(MathUtils.lerp(z(), to, t)); }
     public Vector lerpTo(double x, double y, double z, double t) { return lerpX(x, t).lerpY(y, t).lerpZ(z, t); }
     public Vector lerpTo(Vector4 to, double t) { return lerpTo(to.x(), to.y(), to.z(), t); }
 
