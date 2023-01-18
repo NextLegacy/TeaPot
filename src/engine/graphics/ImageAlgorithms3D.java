@@ -14,18 +14,18 @@ public final class ImageAlgorithms3D
     {
         final DrawableImage texture = new DrawableImage(new FinalVector(2, 2));
         
-        texture.setPixel(0, 0, 0xFFFF0000);
-        texture.setPixel(1, 0, 0xFF00FF00);
-        texture.setPixel(0, 1, 0xFF0000FF);
-        texture.setPixel(1, 1, 0xFFFFFFFF);
+        texture.setPixel(0, 1, 0xFFFF0000);
+        texture.setPixel(1, 1, 0xFF00FF00);
+        texture.setPixel(2, 1, 0xFF0000FF);
+        texture.setPixel(3, 1, 0xFFFFFFFF);
         
         final Triangle[] triangles = new Triangle[]
         {
             new Triangle
             (
-                new Vertex(10,  70, 0, 1, new Vector(0, 0, 1), new Vector(0, 0, 0)),
-                new Vertex(50, 160, 0, 1, new Vector(1, 0, 1), new Vector(0, 0, 0)),
-                new Vertex(70,  80, 0, 1, new Vector(0, 1, 1), new Vector(0, 0, 0))
+                new Vertex(42, 23, 1, 1, new Vector(0.25, 0.25, 1), new Vector(0, 0, 0)),
+                new Vertex(1452, 345, 1, 1, new Vector(0.25, 1   , 1), new Vector(0, 0, 0)),
+                new Vertex(23, 700, 1, 1, new Vector(0.75, 0.25, 1), new Vector(0, 0, 0))
             ),
             new Triangle
             (
@@ -42,18 +42,16 @@ public final class ImageAlgorithms3D
             new Triangle
             (
                 new Vertex(180, 150, 0, 1, new Vector(1, 1, 1), new Vector(0, 0, 0)),
-                new Vertex(120, 160, 0, 1, new Vector(0, 1, 1), new Vector(0, 0, 1)),
+                new Vertex(120, 160, 0, 1, new Vector(0, 1, 1), new Vector(0, 0, 0)),
                 new Vertex(130, 180, 0, 1, new Vector(1, 0, 1), new Vector(0, 0, 0))
             )
         };
 
-        Image texture2 = Image.fromFile("./rsc/images/B.png");
+        Image texture2 = Image.fromFile("./rsc/images/A.png");
 
         for (final Triangle triangle : triangles)
         {
             triangle(image, triangle, texture2);
-
-            //ImageAlgorithms.triangle(image, triangle.a, triangle.b, triangle.c, 0xff00ff00);
         }
     }
 
@@ -85,14 +83,11 @@ public final class ImageAlgorithms3D
 
         double dl = Math.sqrt(dxd * dxd + dyd * dyd);
 
-        System.out.println("a: " + a);
-        System.out.println("b: " + b);
-
         while (true)
         {
             image.drawPixel(x, y, z, texture.pixelUVW(u, v, w));
             
-            double dp = Math.sqrt((xd - a.x) * (x - a.x) + (yd - a.y) * (yd - a.y));
+            double dp = Math.sqrt((xd - x) * (xd - x) + (yd - y) * (yd - y));
 
             double t = dp / dl;
 
@@ -102,8 +97,6 @@ public final class ImageAlgorithms3D
 
             if (e2 > -dy) { err -= dy; x += sx; }
             if (e2 <  dx) { err += dx; y += sy; }
-
-            System.out.println(dxd + " " + dyd + " " + dl + " " + dp + " " + t);
 
             z = MathUtils.lerp(a.z, b.z, t);
 
@@ -152,8 +145,7 @@ public final class ImageAlgorithms3D
             (
                 MathUtils.lerp(a.texture.x, c.texture.x, t),
                 MathUtils.lerp(a.texture.y, c.texture.y, t),
-                MathUtils.lerp(a.texture.z, c.texture.z, t),
-                MathUtils.lerp(a.texture.w, c.texture.w, t)
+                MathUtils.lerp(a.texture.z, c.texture.z, t)
             ),
             new FinalVector
             (
@@ -183,8 +175,6 @@ public final class ImageAlgorithms3D
             final double dp = Math.sqrt((curx1 - a.x) * (curx1 - a.x) + (scanlineY - a.y) * (scanlineY - a.y));
 
             final double t = dp / dl;
-
-            //final double t = (scanlineY - a.y) / (b.y - a.y);
             
             final Vertex v1 = new Vertex
             (
@@ -205,8 +195,6 @@ public final class ImageAlgorithms3D
                 Vector.lerp(a.texture, c.texture, t),
                 Vector.lerp(a.normal, c.normal, t)
             );
-
-            //System.out.println(v1);
 
             line(image, v1, v2, texture);
 
