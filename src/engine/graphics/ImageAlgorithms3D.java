@@ -106,7 +106,7 @@ public final class ImageAlgorithms3D
         }
     }
 
-    static void triangle(final DrawableImage image, Triangle triangle, final Image texture)
+    public static void triangle(final DrawableImage image, Triangle triangle, final Image texture)
     {
         //Sort points for y ascending
         triangle = triangle.sortedForY();

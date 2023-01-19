@@ -5,7 +5,7 @@ import engine.math.Vector;
 import engine.math.Vector4;
 import engine.utils.MathUtils;
 
-final class ImageAlgorithms 
+public final class ImageAlgorithms 
 {
     private ImageAlgorithms() { }
     
@@ -15,8 +15,8 @@ final class ImageAlgorithms
         final double dx =  Math.abs(x1 - x0);
         final double dy = -Math.abs(y1 - y0);
      
-        final double sx = x0 < x1 ? 1 : -1;
-        final double sy = y0 < y1 ? 1 : -1;
+        final int sx = x0 < x1 ? 1 : -1;
+        final int sy = y0 < y1 ? 1 : -1;
 
         double err = dx + dy;
         double e2 = 0;
@@ -59,13 +59,22 @@ final class ImageAlgorithms
         
         Vector v = Vector.fromAngle(theta);
         
-        Vector p0 = new Vector(v).times(size0).add(a);
-        Vector p1 = new Vector(v).times(size0).add(b);
+        Vector p0 = new Vector(v).times( size0).add(a);
+        Vector p1 = new Vector(v).times( size0).add(b);
         Vector p2 = new Vector(v).times(-size1).add(a);
         Vector p3 = new Vector(v).times(-size1).add(b);
 
-        ImageAlgorithms.triangle(image, p0, p1, p2, color);
-        ImageAlgorithms.triangle(image, p1, p2, p3, color);
+        line(image, (int) p0.x, (int) p0.y, (int) p1.x, (int) p1.y, z, 0xff00ff00);
+        line(image, (int) p1.x, (int) p1.y, (int) p3.x, (int) p3.y, z, 0xff00ff00);
+        line(image, (int) p3.x, (int) p3.y, (int) p2.x, (int) p2.y, z, 0xff00ff00);
+        line(image, (int) p2.x, (int) p2.y, (int) p0.x, (int) p0.y, z, 0xff00ff00);
+        line(image, (int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y, z, 0xff00ff00);
+
+        
+
+       ImageAlgorithms.triangle(image, p0, p1, p2, color);
+       ImageAlgorithms.triangle(image, p1, p2, p3, color);
+        
     }
 
     static void rect(final DrawableImage image,
@@ -197,7 +206,7 @@ final class ImageAlgorithms
         }
     }
 
-    static void triangle(final DrawableImage image, Vector4 a, Vector4 b, Vector4 c, int color)
+    public static void triangle(final DrawableImage image, Vector4 a, Vector4 b, Vector4 c, int color)
     {
         //Sort points for y ascending
 
@@ -230,7 +239,7 @@ final class ImageAlgorithms
         }
     }
 
-    static void fillBottomFlatTriangle(final DrawableImage image, final Vector4 a, final Vector4 b, final Vector4 c, final int color)
+    static void fillBottomFlatTriangle(final DrawableImage image, Vector4 a, Vector4 b,  Vector4 c, final int color)
     {
         double invslope1 = (b.x() - a.x()) / (b.y() - a.y());
         double invslope2 = (c.x() - a.x()) / (c.y() - a.y());
@@ -240,10 +249,11 @@ final class ImageAlgorithms
 
         for (int scanlineY = (int) a.y(); scanlineY <= b.y(); scanlineY++)
         {
-            line(image, (int) curx1, scanlineY, (int) curx2, scanlineY, 1, color);
-
+            line(image, (int) curx1, scanlineY, (int) curx2, scanlineY, 1, 0xffff00ff);
+            
             curx1 += invslope1;
             curx2 += invslope2;
+
         }
     }
 
@@ -257,7 +267,7 @@ final class ImageAlgorithms
 
         for (int scanlineY = (int) c.y(); scanlineY > a.y(); scanlineY--)
         {
-            line(image, (int) curx1, scanlineY, (int) curx2, scanlineY, 1, color);
+            line(image, (int) curx1, scanlineY, (int) curx2, scanlineY, 1, 0xff0000ff);
 
             curx1 -= invslope1;
             curx2 -= invslope2;
