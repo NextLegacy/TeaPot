@@ -6,56 +6,16 @@ import engine.math.FinalVector;
 import engine.math.Vector;
 import engine.utils.MathUtils;
 
-public final class ImageAlgorithms3D 
+final class ImageAlgorithms3D 
 {
     private ImageAlgorithms3D() { }
     
-    public static void renderTestMeshWithTestImage(final DrawableImage image)
-    {
-        final DrawableImage texture = new DrawableImage(new FinalVector(2, 2));
-        
-        texture.setPixel(0, 1, 0xFFFF0000);
-        texture.setPixel(1, 1, 0xFF00FF00);
-        texture.setPixel(2, 1, 0xFF0000FF);
-        texture.setPixel(3, 1, 0xFFFFFFFF);
-        
-        final Triangle[] triangles = new Triangle[]
-        {
-            new Triangle
-            (
-                new Vertex(42, 23, 1, 1, new Vector(0.25, 0.25, 1), new Vector(0, 0, 0)),
-                new Vertex(1452, 345, 1, 1, new Vector(0.25, 1   , 1), new Vector(0, 0, 0)),
-                new Vertex(23, 700, 1, 1, new Vector(0.75, 0.25, 1), new Vector(0, 0, 0))
-            ),
-            new Triangle
-            (
-                new Vertex(180,  50, 0, 1, new Vector(1, 1, 1), new Vector(0, 0, 0)),
-                new Vertex(150,   1, 0, 1, new Vector(0, 1, 1), new Vector(0, 0, 0)),
-                new Vertex(70 , 180, 0, 1, new Vector(1, 0, 1), new Vector(0, 0, 0))
-            ),
-            new Triangle
-            (
-                new Vertex(180, 150, 0, 1, new Vector(0, 0, 1), new Vector(0, 0, 0)),
-                new Vertex(120, 160, 0, 1, new Vector(1, 0, 1), new Vector(0, 0, 0)),
-                new Vertex(130, 180, 0, 1, new Vector(0, 1, 1), new Vector(0, 0, 0))
-            ),
-            new Triangle
-            (
-                new Vertex(180, 150, 0, 1, new Vector(1, 1, 1), new Vector(0, 0, 0)),
-                new Vertex(120, 160, 0, 1, new Vector(0, 1, 1), new Vector(0, 0, 0)),
-                new Vertex(130, 180, 0, 1, new Vector(1, 0, 1), new Vector(0, 0, 0))
-            )
-        };
+    //TODO: make this class as low level as possible, and move all the high level stuff somewhere else
+    //TODO: get rid of the square roots using the inverseslope of a line -> 1 / (dy / dx) -> dx / dy
+    //TODO: just optimize and clean up
 
-        Image texture2 = Image.fromFile("./rsc/images/A.png");
-
-        for (final Triangle triangle : triangles)
-        {
-            triangle(image, triangle, texture2);
-        }
-    }
-
-    static void line(final DrawableImage image, final Vertex a, final Vertex b, final Image texture)
+    static void line(final DrawableImage image, 
+        final Vertex a, final Vertex b, final Image texture)
     {
         final double dxd = Math.abs(b.x - a.x);
         double dyd = Math.abs(b.y - a.y);
@@ -106,7 +66,8 @@ public final class ImageAlgorithms3D
         }
     }
 
-    static void triangle(final DrawableImage image, Triangle triangle, final Image texture)
+    static void triangle(final DrawableImage image, 
+        Triangle triangle, final Image texture)
     {
         //Sort points for y ascending
         triangle = triangle.sortedForY();
@@ -120,12 +81,13 @@ public final class ImageAlgorithms3D
         else                 fillNoneFlatTriangle  (image, a, b, c, texture);
     }
 
-    static void fillNoneFlatTriangle(final DrawableImage image, final Vertex a, final Vertex b, final Vertex c, final Image texture)
+    static void fillNoneFlatTriangle(final DrawableImage image, 
+        final Vertex a, final Vertex b, final Vertex c, final Image texture)
     {
         final double v_slope = (b.y - a.y) / (c.y - a.y); // slope between c and a on y axis
 
-        final double v_dcax = (c.x - a.x); // distance between c and a on x axis
-        final double v_dcay = (c.y - a.y); // distance between c and a on y axis
+        final double v_dcax = (c.x - a.x);
+        final double v_dcay = (c.y - a.y);
 
         final double x = a.x + (v_slope * v_dcax);
         final double y = b.y;
@@ -160,7 +122,8 @@ public final class ImageAlgorithms3D
         fillTopFlatTriangle   (image, b, d, c, texture);
     }
 
-    static void fillBottomFlatTriangle(final DrawableImage image, final Vertex a, final Vertex b, final Vertex c, final Image texture)
+    static void fillBottomFlatTriangle(final DrawableImage image, 
+        final Vertex a, final Vertex b, final Vertex c, final Image texture)
     {
         double invslope1 = (b.x - a.x) / (b.y - a.y);
         double invslope2 = (c.x - a.x) / (c.y - a.y);
@@ -203,7 +166,8 @@ public final class ImageAlgorithms3D
         }
     }
 
-    static void fillTopFlatTriangle(final DrawableImage image, final Vertex a, final Vertex b, final Vertex c, final Image texture)
+    static void fillTopFlatTriangle(final DrawableImage image, 
+        final Vertex a, final Vertex b, final Vertex c, final Image texture)
     {
         double invslope1 = (c.x - a.x) / (c.y - a.y);
         double invslope2 = (c.x - b.x) / (c.y - b.y);
