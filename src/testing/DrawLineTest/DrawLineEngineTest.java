@@ -9,6 +9,7 @@ import engine.graphics.threed.Triangle;
 import engine.graphics.threed.Vertex;
 import engine.math.FinalVector;
 import engine.math.Vector;
+import engine.math.Vector;
 import engine.utils.Screen;
 
 import static engine.utils.MathUtils.*;
@@ -56,6 +57,9 @@ public class DrawLineEngineTest
             if (left().isDown())
                 a = mouse().position();
             if (right().isDown())
+                b = mouse().position();  
+            if (wheel().isDown())
+                c = mouse().position();
                 b = mouse().position();  
             if (wheel().isDown())
                 c = mouse().position();
