@@ -5,7 +5,7 @@ import engine.math.Vector;
 import engine.math.Vector4;
 import engine.utils.MathUtils;
 
-final class ImageAlgorithms 
+public final class ImageAlgorithms 
 {
     private ImageAlgorithms() { }
     
@@ -68,8 +68,9 @@ final class ImageAlgorithms
         Vector p2 = new Vector(v).times(-size1).add(a);
         Vector p3 = new Vector(v).times(-size1).add(b);
 
-        ImageAlgorithms.triangle(image, p0, p1, p2, color);
-        ImageAlgorithms.triangle(image, p1, p2, p3, color);
+       ImageAlgorithms.triangle(image, p0, p1, p2, color);
+       ImageAlgorithms.triangle(image, p1, p2, p3, color);
+        
     }
 
     static void rect(final DrawableImage image,
@@ -251,10 +252,11 @@ final class ImageAlgorithms
 
         for (int scanlineY = (int) a.y(); scanlineY <= b.y(); scanlineY++)
         {
-            line(image, (int) curx1, scanlineY, (int) curx2, scanlineY, 1, color);
-
+            line(image, (int) curx1, scanlineY, (int) curx2, scanlineY, 1, 0xffff00ff);
+            
             curx1 += invslope1;
             curx2 += invslope2;
+
         }
     }
 
@@ -268,7 +270,7 @@ final class ImageAlgorithms
 
         for (int scanlineY = (int) c.y(); scanlineY > a.y(); scanlineY--)
         {
-            line(image, (int) curx1, scanlineY, (int) curx2, scanlineY, 1, color);
+            line(image, (int) curx1, scanlineY, (int) curx2, scanlineY, 1, 0xff0000ff);
 
             curx1 -= invslope1;
             curx2 -= invslope2;
