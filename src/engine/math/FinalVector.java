@@ -47,9 +47,10 @@ public class FinalVector extends Vector4
     @Override public double magnitude       () { return magnitude    ; }
     @Override public Vector angle           () { return angle        ; }
 
+    @Override
     public FinalVector clone() 
     {
-        return new FinalVector(x(), y(), z(), w()); 
+        return this; 
     }
 
     public static final FinalVector zero     = fvec(Vector.zero    );
@@ -60,9 +61,4 @@ public class FinalVector extends Vector4
     public static final FinalVector up       = fvec(Vector.up      );
     public static final FinalVector forward  = fvec(Vector.forward );
     public static final FinalVector backward = fvec(Vector.backward);
-
-    public static Vector fromAngle(double rotation)
-    {
-        return new Vector(Math.cos(rotation), Math.sin(rotation));
-    }
 }
