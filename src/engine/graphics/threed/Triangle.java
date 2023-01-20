@@ -13,14 +13,17 @@ public final class Triangle
 
     public String toString()
     {
-        return "Polygon(" + a + " \n        " + b + " \n        " + c + ")";
+        return "Triangle(" + a + " \n        " + b + " \n        " + c + ")";
     }
 
-    public void transformed(final Matrix matrix)
+    public Triangle transformed(final Matrix matrix)
     {
-        a.transform(matrix);
-        b.transform(matrix);
-        c.transform(matrix);
+        return new Triangle
+        (
+            a.transformed(matrix),
+            b.transformed(matrix),
+            c.transformed(matrix)
+        );
     }
 
     public Triangle sortedForY()
