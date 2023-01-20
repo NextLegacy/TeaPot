@@ -22,7 +22,10 @@ public final class ImageUtils
 
     public static int[] getBufferedImageDataArray(final BufferedImage bufferedImage)
     {
-        return ((DataBufferInt) bufferedImage.getRaster().getDataBuffer()).getData();
+        if (bufferedImage.getRaster().getDataBuffer() instanceof DataBufferInt dataBuffer)
+            return dataBuffer.getData();
+
+        return getBufferedImageDataArray(toCompatibleBufferedImage(bufferedImage));    
     }
 
     //bug: None of this methods work for different sized Images
@@ -93,6 +96,6 @@ public final class ImageUtils
 
         graphics.dispose();
 
-        return Image.fromBufferedImage(result);
+        return new Image(result);
     }
 }
