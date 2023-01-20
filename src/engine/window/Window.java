@@ -226,7 +226,7 @@ public abstract class Window
         windowBuffer.clear();
 
         for (int i = 0; i < windowLayers.length; i++)
-            windowBuffer.pasteImage(windowLayers[i]);
+            windowBuffer.drawImage(windowLayers[i]);
     }
 
     public final void renderWindowBufferOntoFrame()
