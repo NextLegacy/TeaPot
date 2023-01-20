@@ -5,25 +5,21 @@ import engine.math.Vector;
 import engine.math.Vector4;
 import engine.utils.MathUtils;
 
-public final class ImageAlgorithms 
+final class ImageAlgorithms 
 {
     private ImageAlgorithms() { }
-    
-    //TODO: make this class as low level as possible, and move all the high level stuff to DrawableImage
-    //TODO: change rect and image algorithm, so that it uses the 3d triangle algorithm (optimized for 2d) (maybe preserve the old ones, because they are faster)
-    //TODO: clean up the code, and make it more readable
 
     static void line(final DrawableImage image,
         final int x0, final int y0, final int x1, final int y1, final double z, final int color)
     {
-        final double dx =  Math.abs(x1 - x0);
-        final double dy = -Math.abs(y1 - y0);
+        final int dx =  Math.abs(x1 - x0);
+        final int dy = -Math.abs(y1 - y0);
      
         final int sx = x0 < x1 ? 1 : -1;
         final int sy = y0 < y1 ? 1 : -1;
 
-        double err = dx + dy;
-        double e2 = 0;
+        int err = dx + dy;
+        int e2  = 0;
         
         int x = x0;
         int y = y0;
@@ -34,7 +30,7 @@ public final class ImageAlgorithms
 
             if (x == x1 && y == y1) break;
 
-            e2 = 2 * err;
+            e2 = err * 2;
             
             if (e2 > dy) { err += dy; x += sx; }
             if (e2 < dx) { err += dx; y += sy; }
@@ -42,7 +38,7 @@ public final class ImageAlgorithms
     }
 
     static void line(final DrawableImage image, 
-        final int x0, final int y0, final int x1, final int y1, final double z, final int size, final int color) 
+        final int x0, final int y0, final int x1, final int y1, final double z, final int color, final int size) 
     {
         if (size <= 0) return;
 
@@ -51,8 +47,8 @@ public final class ImageAlgorithms
         Vector a = new Vector(x0, y0);
         Vector b = new Vector(x1, y1);
 
-        final double dx = x1 - x0;
-        final double dy = y1 - y0;
+        final int dx = x1 - x0;
+        final int dy = y1 - y0;
 
         if (dx == 0 && dy == 0) { image.drawPixel(x0, y0, z, color); return; }
 
@@ -68,12 +64,105 @@ public final class ImageAlgorithms
         Vector p2 = new Vector(v).times(-size1).add(a);
         Vector p3 = new Vector(v).times(-size1).add(b);
 
-       ImageAlgorithms.triangle(image, p0, p1, p2, color);
-       ImageAlgorithms.triangle(image, p1, p2, p3, color);
-        
+        ImageAlgorithms.triangle(image, p0, p1, p2, color);
+        ImageAlgorithms.triangle(image, p1, p2, p3, color); 
     }
 
-    static void rect(final DrawableImage image,
+    static void triangleUnchecked(final DrawableImage image, 
+        	final Vector4 a, final Vector4 b, final Vector4 c, int color)
+    {
+        if      (b.y() == c.y()) triangleBottomFlat(image, a, b, c, color);
+        else if (a.y() == b.y()) triangleTopFlat   (image, a, b, c, color);
+        else                     triangleNoneFlat  (image, a, b, c, color);
+    }
+
+    static void triangle(final DrawableImage image, 
+        final Vector4 a, final Vector4 b, final Vector4 c, int color)
+    {
+        final Vector4 _a = a.y() < b.y() && a.y() < c.y() ? a : 
+                           b.y() < c.y() ? b : 
+                           c;
+            
+        final Vector4 _b = _a == a ? (b.y() < c.y() ? b : c) :
+                           _a == b ? (a.y() < c.y() ? a : c) :
+                                     (a.y() < b.y() ? a : b) ; 
+                          
+        final Vector4 _c = _a == a ? _b == b ? c : b :
+                           _a == b ? _b == a ? c : a :
+                                     _b == a ? b : a ;
+
+        triangleUnchecked(image, _a, _b, _c, color);
+    }
+
+    static void triangleNoneFlat(final DrawableImage image,
+        Vector4 a, Vector4 b,  Vector4 c, final int color)
+    {
+        final Vector4 d = new FinalVector
+        (
+            a.x() + ((b.y() - a.y()) / (c.y() - a.y())) * (c.x() - a.x()),
+            b.y()
+        );
+
+        triangleBottomFlat(image, a, b, d, color);
+        triangleTopFlat   (image, b, d, c, color);
+    }
+
+    static void triangleBottomFlat(final DrawableImage image, 
+        Vector4 a, Vector4 b,  Vector4 c, final int color)
+    {
+        double invslope1 = (b.x() - a.x()) / (b.y() - a.y());
+        double invslope2 = (c.x() - a.x()) / (c.y() - a.y());
+
+        double curx1 = a.x();
+        double curx2 = a.x();
+
+        for (int scanlineY = (int) a.y(); scanlineY <= b.y(); scanlineY++)
+        {
+            line(image, (int) curx1, scanlineY, (int) curx2, scanlineY, 1, color);
+            
+            curx1 += invslope1;
+            curx2 += invslope2;
+
+        }
+    }
+
+    static void triangleTopFlat(final DrawableImage image, 
+        final Vector4 a, final Vector4 b, final Vector4 c, final int color)
+    {
+        double invslope1 = (c.x() - a.x()) / (c.y() - a.y());
+        double invslope2 = (c.x() - b.x()) / (c.y() - b.y());
+
+        double curx1 = c.x();
+        double curx2 = c.x();
+
+        for (int scanlineY = (int) c.y(); scanlineY > a.y(); scanlineY--)
+        {
+            line(image, (int) curx1, scanlineY, (int) curx2, scanlineY, 1, color);
+
+            curx1 -= invslope1;
+            curx2 -= invslope2;
+        }
+    }
+
+    static void drawRect(final DrawableImage image, 
+        final int x0, final int y0, final int x1, final int y1, final int z, final int color)
+    {
+        line(image, x0, y0, x1, y0, z, color);
+        line(image, x1, y0, x1, y1, z, color);
+        line(image, x1, y1, x0, y1, z, color);
+        line(image, x0, y1, x0, y0, z, color);
+    }
+
+    static void drawRect(final DrawableImage image, 
+        final int x0, final int y0, final int x1, final int y1, final int z, final int color, final int size)
+    {
+        line(image, x0, y0, x1, y0, z, color, size);
+        line(image, x1, y0, x1, y1, z, color, size);
+        line(image, x1, y1, x0, y1, z, color, size);
+        line(image, x0, y1, x0, y0, z, color, size);
+    }
+
+    static void fillRect(final DrawableImage image,
         final int x0, final int y0, final int x1, final int y1, final double z, final int color)
     {
         if (x0 == x1 && y0 == y1) { image.drawPixel(x0, y0, z, color); return; }
@@ -199,81 +288,6 @@ public final class ImageAlgorithms
                 //If reached last Index, step out of loop
                 if (imageIndex == imageMaxIndex) break;
             }
-        }
-    }
-
-    static void triangleUnchecked(final DrawableImage image, 
-        	final Vector4 a, final Vector4 b, final Vector4 c, int color)
-    {
-        if      (b.y() == c.y()) triangleBottomFlat(image, a, b, c, color);
-        else if (a.y() == b.y()) triangleTopFlat   (image, a, b, c, color);
-        else                     triangleNoneFlat  (image, a, b, c, color);
-    }
-
-    static void triangle(final DrawableImage image, final Vector4 a, final Vector4 b, final Vector4 c, int color)
-    {
-        //Sort points for y ascending
-
-        final Vector4 _a = a.y() < b.y() && a.y() < c.y() ? a : 
-                           b.y() < c.y() ? b : 
-                           c;
-            
-        final Vector4 _b = _a == a ? (b.y() < c.y() ? b : c) :
-                           _a == b ? (a.y() < c.y() ? a : c) :
-                                     (a.y() < b.y() ? a : b) ; 
-                          
-        final Vector4 _c = _a == a ? _b == b ? c : b :
-                           _a == b ? _b == a ? c : a :
-                                     _b == a ? b : a ;
-
-        triangleUnchecked(image, _a, _b, _c, color);
-    }
-
-    static void triangleNoneFlat(final DrawableImage image,
-        Vector4 a, Vector4 b,  Vector4 c, final int color)
-    {
-        final Vector4 d = new FinalVector
-        (
-            a.x() + ((b.y() - a.y()) / (c.y() - a.y())) * (c.x() - a.x()),
-            b.y()
-        );
-
-        triangleBottomFlat(image, a, b, d, color);
-        triangleTopFlat   (image, b, d, c, color);
-    }
-
-    static void triangleBottomFlat(final DrawableImage image, Vector4 a, Vector4 b,  Vector4 c, final int color)
-    {
-        double invslope1 = (b.x() - a.x()) / (b.y() - a.y());
-        double invslope2 = (c.x() - a.x()) / (c.y() - a.y());
-
-        double curx1 = a.x();
-        double curx2 = a.x();
-
-        for (int scanlineY = (int) a.y(); scanlineY <= b.y(); scanlineY++)
-        {
-            line(image, (int) curx1, scanlineY, (int) curx2, scanlineY, 1, 0xffff00ff);
-            
-            curx1 += invslope1;
-            curx2 += invslope2;
-
-        }
-    }
-
-    static void triangleTopFlat(final DrawableImage image, final Vector4 a, final Vector4 b, final Vector4 c, final int color)
-    {
-        double invslope1 = (c.x() - a.x()) / (c.y() - a.y());
-        double invslope2 = (c.x() - b.x()) / (c.y() - b.y());
-
-        double curx1 = c.x();
-        double curx2 = c.x();
-
-        for (int scanlineY = (int) c.y(); scanlineY > a.y(); scanlineY--)
-        {
-            line(image, (int) curx1, scanlineY, (int) curx2, scanlineY, 1, 0xff0000ff);
-
-            curx1 -= invslope1;
-            curx2 -= invslope2;
         }
     }
 }

@@ -10,16 +10,11 @@ final class ImageAlgorithms3D
 {
     private ImageAlgorithms3D() { }
     
-    //TODO: make this class as low level as possible, and move all the high level stuff somewhere else
-    //TODO: get rid of the square roots using the inverseslope of a line -> 1 / (dy / dx) -> dx / dy
-    //TODO: just optimize and clean up
-
     static void line(final DrawableImage image, 
         final Vertex a, final Vertex b, final Image texture)
     {
         final double dxd = Math.abs(b.x - a.x);
-        double dyd = Math.abs(b.y - a.y);
-        dyd = dyd == 0 ? 1 : dyd;
+        final double dyd = b.y == a.y ? 1 : Math.abs(b.y - a.y);
 
         final int dx = (int) Math.abs((int)b.x - (int)a.x);
         final int dy = (int) Math.abs((int)b.y - (int)a.y);
@@ -45,7 +40,7 @@ final class ImageAlgorithms3D
 
         while (true)
         {
-            image.drawPixel(x, y, z, texture.pixelUVW(u, v, w));
+            image.drawPixel(x, y, z, texture.getPixel(u, v, w));
             
             double dp = Math.sqrt((xd - x) * (xd - x) + (yd - y) * (yd - y));
 
@@ -66,25 +61,26 @@ final class ImageAlgorithms3D
         }
     }
 
-    static void triangle(final DrawableImage image, 
-        Triangle triangle, final Image texture)
+    static void triangleUnchecked(final DrawableImage image,
+        final Triangle triangle, final Image texture)
     {
-        //Sort points for y ascending
-        triangle = triangle.sortedForY();
-
-        final Vertex a = triangle.a;
-        final Vertex b = triangle.b;
-        final Vertex c = triangle.c;
+        Vertex a = triangle.a; Vertex b = triangle.b; Vertex c = triangle.c;
 
         if      (b.y == c.y) fillBottomFlatTriangle(image, a, b, c, texture);
         else if (a.y == b.y) fillTopFlatTriangle   (image, a, b, c, texture);
         else                 fillNoneFlatTriangle  (image, a, b, c, texture);
     }
 
+    static void triangle(final DrawableImage image, 
+        final Triangle triangle, final Image texture)
+    {
+        triangleUnchecked(image, triangle.sortedForY(), texture);
+    }
+
     static void fillNoneFlatTriangle(final DrawableImage image, 
         final Vertex a, final Vertex b, final Vertex c, final Image texture)
     {
-        final double v_slope = (b.y - a.y) / (c.y - a.y); // slope between c and a on y axis
+        final double v_slope = (b.y - a.y) / (c.y - a.y);
 
         final double v_dcax = (c.x - a.x);
         final double v_dcay = (c.y - a.y);
@@ -99,10 +95,12 @@ final class ImageAlgorithms3D
 
         Vertex d = new Vertex
         (
-            a.x + (v_slope * v_dcax),
-            b.y,
-            MathUtils.lerp(a.z, c.z, t),
-            MathUtils.lerp(a.w, c.w, t),
+            new FinalVector(
+                a.x + (v_slope * v_dcax),
+                b.y,
+                MathUtils.lerp(a.z, c.z, t),
+                MathUtils.lerp(a.w, c.w, t)
+            ),
             new FinalVector
             (
                 MathUtils.lerp(a.texture.x, c.texture.x, t),
@@ -141,20 +139,24 @@ final class ImageAlgorithms3D
             
             final Vertex v1 = new Vertex
             (
-                curx1,
-                scanlineY,
-                MathUtils.lerp(a.z, b.z, t),
-                MathUtils.lerp(a.w, b.w, t),
+                new FinalVector(
+                    curx1,
+                    scanlineY,
+                    MathUtils.lerp(a.z, b.z, t),
+                    MathUtils.lerp(a.w, b.w, t)
+                ),
                 Vector.lerp(a.texture, b.texture, t),
                 Vector.lerp(a.normal, b.normal, t)
             );
 
             final Vertex v2 = new Vertex
             (
-                curx2,
-                scanlineY,
-                MathUtils.lerp(a.z, c.z, t),
-                MathUtils.lerp(a.w, c.w, t),
+                new FinalVector(
+                    curx2,
+                    scanlineY,
+                    MathUtils.lerp(a.z, c.z, t),
+                    MathUtils.lerp(a.w, c.w, t)
+                ),
                 Vector.lerp(a.texture, c.texture, t),
                 Vector.lerp(a.normal, c.normal, t)
             );
@@ -184,20 +186,24 @@ final class ImageAlgorithms3D
 
             final Vertex v1 = new Vertex
             (
-                curx1,
-                scanlineY,
-                MathUtils.lerp(a.z, c.z, t),
-                MathUtils.lerp(a.w, c.w, t),
+                new FinalVector(
+                    curx1,
+                    scanlineY,
+                    MathUtils.lerp(a.z, c.z, t),
+                    MathUtils.lerp(a.w, c.w, t)
+                ),
                 Vector.lerp(a.texture, c.texture, t),
                 Vector.lerp(a.normal , c.normal, t)
             );
 
             final Vertex v2 = new Vertex
             (
-                curx2,
-                scanlineY,
-                MathUtils.lerp(b.z, c.z, t),
-                MathUtils.lerp(b.w, c.w, t),
+                new FinalVector(
+                    curx2,
+                    scanlineY,
+                    MathUtils.lerp(b.z, c.z, t),
+                    MathUtils.lerp(b.w, c.w, t)
+                ),
                 Vector.lerp(b.texture, c.texture, t),
                 Vector.lerp(b.normal , c.normal, t)
             );

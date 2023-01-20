@@ -2,6 +2,8 @@ package engine.graphics;
 
 import java.awt.image.BufferedImage;
 
+import engine.graphics.threed.Triangle;
+import engine.graphics.threed.Vertex;
 import engine.math.FinalVector;
 import engine.math.Vector4;
 import engine.utils.ArrayUtils;
@@ -10,27 +12,13 @@ import engine.utils.color.Color;
 
 public class DrawableImage extends Image
 {
+    public static final int    ERROR_COLOR = 0xffff00ff;
     public static final int    CLEAR_COLOR = 0xff000000;
     public static final double CLEAR_Z     = -1        ;
 
-    public DrawableImage(final BufferedImage image)
-    {
-        super(ImageUtils.getBufferedImageDataArray(image), new FinalVector(image.getWidth(), image.getHeight()));
-    }
-
-    public DrawableImage(final Vector4 size)
-    {
-        super(size);
-
-        clear();
-    }
-
-    public DrawableImage(final Image image)
-    {
-        super(image.colorBuffer, image.zBuffer, image.size);
-
-        clear();
-    }
+    public DrawableImage(final BufferedImage image) { super(ImageUtils.getBufferedImageDataArray(image), new FinalVector(image.getWidth(), image.getHeight())); }
+    public DrawableImage(final Vector4       size ) { super(size); clear(); }
+    public DrawableImage(final Image         image) { super(image.colorBuffer, image.zBuffer, image.size); }
 
     public void fillColor(final int    color) { ArrayUtils.fill(colorBuffer, color); }
     public void fillZ    (final double z    ) { ArrayUtils.fill(zBuffer    , z    ); }
@@ -39,15 +27,13 @@ public class DrawableImage extends Image
 
     public void clear() { fill(CLEAR_Z, CLEAR_COLOR); }
 
-    boolean isPixelValid(final int index) { return index >= 0 && index < pixels; }
-
-    void overridePixel(final int index, final double z, final int argb)
+    final void overridePixel(final int index, final double z, final int argb)
     { 
         zBuffer    [index] = z   ; 
         colorBuffer[index] = argb; 
     }
 
-    public void setPixel(int index, double z, int argb)
+    public final void setPixel(int index, double z, int argb)
     {
         if (isPixelValid(index))
             overridePixel(index, z, argb);
@@ -72,50 +58,86 @@ public class DrawableImage extends Image
         );
     }
 
-    public void line(final int x0, final int y0, final int x1, final int y1, final double z, final int color) 
+    //
+    // BEGIN OF 2D GRAPHICS
+    //
+
+    public void drawLine(int x1, int y1, int x2, int y2, int z, int color) 
     { 
-        ImageAlgorithms.line(this, x0, y0, x1, y1, z, color); 
+        ImageAlgorithms.line(this, x1, y1, x2, y2, z, color); 
     }
 
-    public void line(int x0, int y0, int x1, int y1, double z, int size, int color) 
-    {
-        ImageAlgorithms.line(this, x0, y0, x1, y1, z, size, color);
+    public void drawLine(int x1, int y1, int x2, int y2, int z, int color, int size) 
+    { 
+        ImageAlgorithms.line(this, x1, y1, x2, y2, z, color, size); 
     }
 
-    public void rect(final int x0, final int y0, final int x1, final int y1, final double z, final int color)
-    {
-        ImageAlgorithms.rect(this, x0, y0, x1, y1, z, color);
+    public void drawLine(Vector4 p1, Vector4 p2, int z, int color) 
+    { 
+        drawLine((int) p1.x(), (int) p1.y(), (int) p2.x(), (int) p2.y(), z, color);
     }
 
-    public void drawImage(final Image image, final int x, final int y)
-    {
-        ImageAlgorithms.drawImage(this, image, x, y);
+    public void drawLine(Vector4 p1, Vector4 p2, int z, int color, int size) 
+    { 
+        drawLine((int) p1.x(), (int) p1.y(), (int) p2.x(), (int) p2.y(), z, color, size);
     }
 
-    public void line(final Vector4 a, final Vector4 b, final int z, final int size, final int color)
-    {
-        line((int) a.x(), (int) a.y(), (int) b.x(), (int) b.y(), z, size, color);
+    public void fillTriangle(Vector4 a, Vector4 b, Vector4 c, int color) 
+    { 
+        ImageAlgorithms.triangle(this, a, b, c, color); 
     }
 
-    public void line(Vector4 a, Vector4 b, double z, int color)
-    {
-        line(a.int_x(), a.int_y(), b.int_x(), b.int_y(), z, color);
+    public void drawRect(int x0, int y0, int x1, int y1, int z, int color) 
+    { 
+        ImageAlgorithms.drawRect(this, x0, y0, x1, y1, z, color); 
     }
 
-    public void rect(Vector4 a, Vector4 b, double z, int color)
-    {
-        a = a.toVector().clamp(FinalVector.zero, size());
-        b = b.toVector().clamp(FinalVector.zero, size());
-
-        rect(a.int_x(), a.int_y(), b.int_x(), b.int_y(), z, color);
+    public void drawRect(int x0, int y0, int x1, int y1, int z, int color, int size) 
+    { 
+        ImageAlgorithms.drawRect(this, x0, y0, x1, y1, z, color, size); 
     }
 
-    public void drawImage(final Image image) { drawImage(image, 0, 0);}
+    public void drawRect(Vector4 p0, Vector4 p1, int z, int color) 
+    { 
+        drawRect((int) p0.x(), (int) p0.y(), (int) p1.x(), (int) p1.y(), z, color);
+    }
 
-    //FIXME: Does not work with different sized Images
-    //Goal of this implementation is fast image rendering, but disregardes z-buffering and transparancy
-    //but should be super fast
-    //TODO: Implmenent already, should not be too hard
-    public void pasteImage(final Image image) { ImageUtils.imageCopy(image, this); }
-    public void pasteImage(final Image image, int x0, int y0, int x1, int y1) { ImageUtils.imageCopy(image, this, x0, y0, x1, y1); }
+    public void drawRect(Vector4 p0, Vector4 p1, int z, int color, int size) 
+    { 
+        drawRect((int) p0.x(), (int) p0.y(), (int) p1.x(), (int) p1.y(), z, color, size);
+    }
+
+    public void fillRect(int x0, int y0, int x1, int y1, int z, int color) 
+    { 
+        ImageAlgorithms.fillRect(this, x0, y0, x1, y1, z, color); 
+    }
+
+    public void fillRect(Vector4 p0, Vector4 p1, int z, int color) 
+    { 
+        fillRect((int) p0.x(), (int) p0.y(), (int) p1.x(), (int) p1.y(), z, color);
+    }
+
+    public void drawImage(Image image, int x, int y) 
+    { 
+        ImageAlgorithms.drawImage(this, image, x, y); 
+    }
+
+    public void drawImage(Image image) 
+    { 
+        ImageAlgorithms.drawImage(this, image, 0, 0); 
+    }
+
+    //
+    // BEGIN OF 3D GRAPHICS
+    //
+
+    public void drawLine(Vertex p1, Vertex p2, Image texture) 
+    { 
+        ImageAlgorithms3D.line(this, p1, p2, texture); 
+    }
+
+    public void fillTriangle(Triangle t, Image texture) 
+    { 
+        ImageAlgorithms3D.triangle(this, t, texture); 
+    }
 }
