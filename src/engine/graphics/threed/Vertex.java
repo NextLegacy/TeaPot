@@ -7,7 +7,11 @@ import engine.math.Vector4;
 public final class Vertex extends FinalVector
 {
     public final FinalVector texture; //vertex texture
-    public final FinalVector normal ; //vertex normal
+    public final FinalVector normal ; //vertex normal 
+
+    public Vertex(                                           ) { this(new FinalVector(), null   , null); }
+    public Vertex(final Vector4 vertex                       ) { this(vertex           , null   , null); }
+    public Vertex(final Vector4 vertex, final Vector4 texture) { this(vertex           , texture, null); }
 
     public Vertex(final Vector4 vertex, final Vector4 texture, final Vector4 normal)
     {
@@ -17,15 +21,7 @@ public final class Vertex extends FinalVector
         this.normal  = normal .toFinalVector();
     }
 
-    public Vertex(final double x, final double y, final double z, final double w, final Vector4 texture, final Vector4 normal)
-    {
-        super(x, y, z, w);
-
-        this.texture = texture.toFinalVector();
-        this.normal  = normal .toFinalVector();
-    }
-
-    public Vertex transform(Matrix transformation)
+    public Vertex transformed(Matrix transformation)
     {
         return new Vertex
         (
