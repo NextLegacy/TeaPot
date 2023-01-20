@@ -2,20 +2,20 @@ package engine.graphics.threed;
 
 public final class Mesh 
 {
-    public final Triangle[] polygons;
+    public final Triangle[] triangles;
     
-    public Mesh(Triangle[] polygons)
+    public Mesh(Triangle[] triangles)
     {
-        this.polygons = polygons;
+        this.triangles = triangles;
     }
 
     public String toString()
     {
-        String str = "";
+        String result = "";
 
-        for (Triangle polygon : polygons)
-            str += polygon + "\n";
+        for (Triangle triangle : triangles)
+            result += triangle + "\n";
 
-        return str;
+        return result;
     }
 }
