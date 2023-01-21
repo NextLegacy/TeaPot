@@ -4,10 +4,10 @@ import static engine.utils.MathUtils.*;
 
 import java.util.ArrayList;
 
-import engine.graphics.threed.Mesh;
-import engine.graphics.threed.Triangle;
-import engine.graphics.threed.Vertex;
 import engine.math.Vector4;
+import engine.threed.Mesh;
+import engine.threed.Triangle;
+import engine.threed.Vertex;
 
 public final class ThreedUtils 
 {

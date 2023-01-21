@@ -1,9 +1,9 @@
 package engine.graphics;
 
-import engine.graphics.threed.Triangle;
-import engine.graphics.threed.Vertex;
 import engine.math.FinalVector;
 import engine.math.Vector;
+import engine.threed.Triangle;
+import engine.threed.Vertex;
 import engine.utils.MathUtils;
 
 final class ImageAlgorithms3D 

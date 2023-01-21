@@ -1,7 +1,7 @@
 package engine.scripts.threed;
 
 import engine.Script;
-import engine.graphics.threed.Mesh;
+import engine.threed.Mesh;
 
 public class MeshRenderer extends Script
 {

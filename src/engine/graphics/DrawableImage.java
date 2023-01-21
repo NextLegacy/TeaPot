@@ -2,10 +2,10 @@ package engine.graphics;
 
 import java.awt.image.BufferedImage;
 
-import engine.graphics.threed.Triangle;
-import engine.graphics.threed.Vertex;
 import engine.math.FinalVector;
 import engine.math.Vector4;
+import engine.threed.Triangle;
+import engine.threed.Vertex;
 import engine.utils.ArrayUtils;
 import engine.utils.ImageUtils;
 import engine.utils.color.Color;

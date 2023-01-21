@@ -2,10 +2,10 @@ package engine.utils.io;
 
 import java.util.HashMap;
 
-import engine.graphics.threed.Mesh;
 import engine.utils.ThreedUtils;
 import engine.utils.Lambda.Func1;
 import engine.graphics.Image;
+import engine.threed.Mesh;
 
 public final class Resources 
 {

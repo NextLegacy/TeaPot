@@ -1,4 +1,4 @@
-package engine.graphics.threed;
+package engine.threed;
 
 import engine.math.FinalVector;
 import engine.math.Matrix;
