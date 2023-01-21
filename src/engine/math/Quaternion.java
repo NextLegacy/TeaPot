@@ -4,9 +4,34 @@ import static engine.utils.MathUtils.*;
 
 //Immutable Quaternion Class
 public class Quaternion
-{
+{    
+    public static final Quaternion IDENTITY = new Quaternion(0, 0, 0, 1);
+
     private final FinalVector q;
     
+    // angles in radians
+    public Quaternion(double roll, double pitch, double yaw)
+    {
+        roll  *= 0.5;
+        pitch *= 0.5;
+        yaw   *= 0.5;
+        
+        double cosX = Math.cos(roll);
+        double cosY = Math.cos(pitch);
+        double cosZ = Math.cos(yaw);
+    
+        double sinX = Math.sin(roll);
+        double sinY = Math.sin(pitch);
+        double sinZ = Math.sin(yaw);
+
+        q = fvec(
+            cosY * cosZ * sinX + cosX * sinY * sinZ,
+            cosX * cosZ * sinY - cosY * sinX * sinZ,
+            cosX * cosY * sinZ + cosZ * sinX * sinY,
+            cosX * cosY * cosZ - sinX * sinY * sinZ
+        );
+    }
+
     private Quaternion(double x, double y, double z, double w) { q = fvec(x, y, z, w); }
 
     public Quaternion plus(Quaternion quaternion)
@@ -99,7 +124,7 @@ public class Quaternion
         double norm = norm();
 
         if (norm < EPSILON) 
-            return Quaternion.zero;
+            return Quaternion.IDENTITY;
 
         return times(norm);
     }
@@ -109,7 +134,7 @@ public class Quaternion
         double normSq = normSq();
 
         if (normSq < EPSILON || normSq == 0) 
-            return Quaternion.zero;
+            return Quaternion.IDENTITY;
         
         normSq = 1 / normSq;
 
@@ -222,6 +247,4 @@ public class Quaternion
             cos_2
         );
     }
-
-    public static Quaternion zero = new Quaternion(0, 0, 0, 1);
 }
