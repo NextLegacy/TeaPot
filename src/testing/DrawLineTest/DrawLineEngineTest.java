@@ -4,10 +4,10 @@ import engine.GameObject;
 import engine.Scene;
 import engine.Script;
 import engine.graphics.Image;
-import engine.graphics.threed.Triangle;
-import engine.graphics.threed.Vertex;
 import engine.math.FinalVector;
 import engine.math.Vector;
+import engine.threed.Triangle;
+import engine.threed.Vertex;
 import engine.math.Vector;
 import engine.utils.Screen;
 
