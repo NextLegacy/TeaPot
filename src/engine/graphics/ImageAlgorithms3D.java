@@ -3,11 +3,14 @@ package engine.graphics;
 import engine.math.FinalVector;
 import engine.math.Matrix;
 import engine.math.Vector;
+import engine.math.Vector4;
 import engine.threed.Camera;
 import engine.threed.Mesh;
 import engine.threed.Triangle;
 import engine.threed.Vertex;
 import engine.utils.MathUtils;
+
+import static engine.utils.MathUtils.*;
 
 final class ImageAlgorithms3D 
 {
@@ -218,9 +221,10 @@ final class ImageAlgorithms3D
         }
     }
 
-    static Triangle clipAgainstPlane(
+    //TODO: Implement later
+    static Triangle[] clipAgainstPlane(Vector4 planePosition, Vector4 planeNormal, Triangle triangle) { return null; }
 
-    static void mesh(final DrawableImage image, final Mesh mesh, final Matrix world, final Matrix projection, final Matrix view, final Image texture)
+    static void mesh(final DrawableImage image, final Mesh mesh, final Matrix transform, final Matrix projection, final Matrix view, final Vector4 cameraPosition, final Image texture)
     {
         Triangle[] triangles = new Triangle[0];
 
@@ -228,7 +232,21 @@ final class ImageAlgorithms3D
         {
             final Triangle triangle = mesh.triangles[i];
 
-            triangles = ArrayUtils.add(triangles, triangle.transform(transform, projection, view));
+            Triangle transformedTriangle = triangle.transformed(transform);
+
+            Vector4 line1 = transformedTriangle.b.minus(transformedTriangle.a);
+            Vector4 line2 = transformedTriangle.c.minus(transformedTriangle.a);
+
+            Vector4 normal = line1.cross(line2).normalized();
+
+            Vector4 cameraRay = transformedTriangle.a.minus(cameraPosition);
+
+            if (normal.dot(cameraRay) < 0.0)
+            {
+                Triangle viewTriangle = transformedTriangle.transformed(view);
+
+                Triangle[] clippedTriangles = clipAgainstPlane(vec(0, 0, 0.1), vec(0, 0, 1), viewTriangle);
+            }
         }
     }
 }
