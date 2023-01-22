@@ -9,13 +9,15 @@ public class Camera
 {
     public Vector position;
     public Quaternion rotation;
-    
-    private double fov;
-    private double aspectRatio;
-    private double near;
-    private double far;
+
+    public double fov;
+    public double aspectRatio;
+    public double near;
+    public double far;
 
     private Matrix lookAtMatrix;
+    private Matrix viewMatrix;
+    private Matrix projectionMatrix;
     
     public Camera(double fov, double aspectRatio, double near, double far)
     {
@@ -33,13 +35,17 @@ public class Camera
         target = position.plus(rotation.rotateVector(target));
 
         lookAtMatrix = Matrix.MakeLookAt(position, target, FinalVector.up);
+        viewMatrix = lookAtMatrix.quickInverse();
     }
 
-    public Matrix getProjectionMatrix()
+    public Matrix lookAtMatrix    () { return lookAtMatrix    ; }
+    public Matrix viewMatrix      () { return viewMatrix      ; }
+    public Matrix projectionMatrix() { return projectionMatrix; }
+ 
+    public void updateProjectionMatrix()
     {
-        return Matrix.MakeProjection(fov, aspectRatio, near, far);
+        projectionMatrix = Matrix.MakeProjection(fov, aspectRatio, near, far);
     }
-
 
     public String toString()
     {
