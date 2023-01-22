@@ -19,7 +19,7 @@ public final class Transform
     public Transform()
     {
         position = Vector.zero();
-        rotation = Quaternion.zero;
+        rotation = Quaternion.IDENTITY;
         scale    = Vector.zero();
     }
 
