@@ -1,7 +1,10 @@
 package engine.graphics;
 
 import engine.math.FinalVector;
+import engine.math.Matrix;
 import engine.math.Vector;
+import engine.threed.Camera;
+import engine.threed.Mesh;
 import engine.threed.Triangle;
 import engine.threed.Vertex;
 import engine.utils.MathUtils;
@@ -212,6 +215,20 @@ final class ImageAlgorithms3D
             
             curx1 -= invslope1;
             curx2 -= invslope2;
+        }
+    }
+
+    static Triangle clipAgainstPlane(
+
+    static void mesh(final DrawableImage image, final Mesh mesh, final Matrix world, final Matrix projection, final Matrix view, final Image texture)
+    {
+        Triangle[] triangles = new Triangle[0];
+
+        for (int i = 0; i < mesh.triangles.length; i++)
+        {
+            final Triangle triangle = mesh.triangles[i];
+
+            triangles = ArrayUtils.add(triangles, triangle.transform(transform, projection, view));
         }
     }
 }
