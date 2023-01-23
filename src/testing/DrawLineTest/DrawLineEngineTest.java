@@ -4,12 +4,17 @@ import engine.GameObject;
 import engine.Scene;
 import engine.Script;
 import engine.graphics.Image;
+import engine.graphics.ImageAlgorithms3D;
 import engine.math.FinalVector;
+import engine.math.Matrix;
+import engine.math.Quaternion;
 import engine.math.Vector;
+import engine.threed.Mesh;
 import engine.threed.Triangle;
 import engine.threed.Vertex;
 import engine.math.Vector;
 import engine.utils.Screen;
+import engine.utils.ThreedUtils;
 
 import static engine.utils.MathUtils.*;
 
@@ -38,7 +43,6 @@ public class DrawLineEngineTest
 
             gameObject.scripts()[0].activate();
             gameObject.activate();
-
         }
     }
 
@@ -59,19 +63,32 @@ public class DrawLineEngineTest
                 b = mouse().position();  
             if (wheel().isDown())
                 c = mouse().position();
+
+            t += 1;
         }
+
+        int t = 0;
 
         @Override
         protected void render() 
         {
-            image().fillTriangle(
-                new Triangle
-                (
-                    new Vertex(a, new Vector(0.25, 0.25, 1), a), 
-                    new Vertex(b, new Vector(0.25, 1   , 1), b), 
-                    new Vertex(c, new Vector(0.75, 0.25, 1), c)
-                ), 
-                Image.fromFile("./rsc/out.png")
+            //image().fillTriangle(
+            //    new Triangle
+            //    (
+            //        new Vertex(a, new Vector(0.25, 0.25, 1), a), 
+            //        new Vertex(b, new Vector(0.25, 1   , 1), b), 
+            //        new Vertex(c, new Vector(0.75, 0.25, 1), c)
+            //    ), 
+            //    Image.fromFile("./rsc/out.png")
+            //);
+            ImageAlgorithms3D.mesh(
+                image(), 
+                ThreedUtils.MeshFromObjFile("./rsc/meshes/monkey.obj"),
+                Matrix.MakeTransformation(vec(0, 0, 10), vec(3, 3, 3), Quaternion.FromEuler(vec(0, t, 0))),
+                Matrix.makeProjection(80, 720d/1080d, 0.1, 1000),
+                Matrix.MakeView(vec(0, 0, 0), vec(0, 0, 1), vec(0, 1, 0)),
+                vec(0, 0, 0),
+                Image.fromFile("./rsc/images/A.png")
             );
         }
     }
