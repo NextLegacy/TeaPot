@@ -62,22 +62,22 @@ public class DrawableImage extends Image
     // BEGIN OF 2D GRAPHICS
     //
 
-    public void drawLine(int x1, int y1, int x2, int y2, int z, int color) 
+    public void drawLine(int x1, int y1, int x2, int y2, double z, int color) 
     { 
         ImageAlgorithms.line(this, x1, y1, x2, y2, z, color); 
     }
 
-    public void drawLine(int x1, int y1, int x2, int y2, int z, int color, int size) 
+    public void drawLine(int x1, int y1, int x2, int y2, double z, int color, int size) 
     { 
         ImageAlgorithms.line(this, x1, y1, x2, y2, z, color, size); 
     }
 
-    public void drawLine(Vector4 p1, Vector4 p2, int z, int color) 
+    public void drawLine(Vector4 p1, Vector4 p2, double z, int color) 
     { 
         drawLine((int) p1.x(), (int) p1.y(), (int) p2.x(), (int) p2.y(), z, color);
     }
 
-    public void drawLine(Vector4 p1, Vector4 p2, int z, int color, int size) 
+    public void drawLine(Vector4 p1, Vector4 p2, double z, int color, int size) 
     { 
         drawLine((int) p1.x(), (int) p1.y(), (int) p2.x(), (int) p2.y(), z, color, size);
     }
@@ -87,32 +87,32 @@ public class DrawableImage extends Image
         ImageAlgorithms.triangle(this, a, b, c, color); 
     }
 
-    public void drawRect(int x0, int y0, int x1, int y1, int z, int color) 
+    public void drawRect(int x0, int y0, int x1, int y1, double z, int color) 
     { 
         ImageAlgorithms.drawRect(this, x0, y0, x1, y1, z, color); 
     }
 
-    public void drawRect(int x0, int y0, int x1, int y1, int z, int color, int size) 
+    public void drawRect(int x0, int y0, int x1, int y1, double z, int color, int size) 
     { 
         ImageAlgorithms.drawRect(this, x0, y0, x1, y1, z, color, size); 
     }
 
-    public void drawRect(Vector4 p0, Vector4 p1, int z, int color) 
+    public void drawRect(Vector4 p0, Vector4 p1, double z, int color) 
     { 
         drawRect((int) p0.x(), (int) p0.y(), (int) p1.x(), (int) p1.y(), z, color);
     }
 
-    public void drawRect(Vector4 p0, Vector4 p1, int z, int color, int size) 
+    public void drawRect(Vector4 p0, Vector4 p1, double z, int color, int size) 
     { 
         drawRect((int) p0.x(), (int) p0.y(), (int) p1.x(), (int) p1.y(), z, color, size);
     }
 
-    public void fillRect(int x0, int y0, int x1, int y1, int z, int color) 
+    public void fillRect(int x0, int y0, int x1, int y1, double z, int color) 
     { 
         ImageAlgorithms.fillRect(this, x0, y0, x1, y1, z, color); 
     }
 
-    public void fillRect(Vector4 p0, Vector4 p1, int z, int color) 
+    public void fillRect(Vector4 p0, Vector4 p1, double z, int color) 
     { 
         fillRect((int) p0.x(), (int) p0.y(), (int) p1.x(), (int) p1.y(), z, color);
     }

@@ -145,7 +145,7 @@ final class ImageAlgorithms
     }
 
     static void drawRect(final DrawableImage image, 
-        final int x0, final int y0, final int x1, final int y1, final int z, final int color)
+        final int x0, final int y0, final int x1, final int y1, final double z, final int color)
     {
         line(image, x0, y0, x1, y0, z, color);
         line(image, x1, y0, x1, y1, z, color);
@@ -154,7 +154,7 @@ final class ImageAlgorithms
     }
 
     static void drawRect(final DrawableImage image, 
-        final int x0, final int y0, final int x1, final int y1, final int z, final int color, final int size)
+        final int x0, final int y0, final int x1, final int y1, final double z, final int color, final int size)
     {
         line(image, x0, y0, x1, y0, z, color, size);
         line(image, x1, y0, x1, y1, z, color, size);
