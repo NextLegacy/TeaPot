@@ -1,7 +1,5 @@
 package engine.utils.color;
 
-import static engine.utils.MathUtils.*;
-
 import engine.utils.MathUtils;
 
 public final class Color 
