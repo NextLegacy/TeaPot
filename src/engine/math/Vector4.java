@@ -62,7 +62,7 @@ public abstract class Vector4
         );
     }
 
-    public final double distanceTo(Vector4 vector) { return this.minus(vector).magnitude(); }
+    public final double distanceTo(Vector4 vector) { return vector.minus(this).magnitude(); }
 
     public final Vector directionTo(Vector4 vector)
     {
