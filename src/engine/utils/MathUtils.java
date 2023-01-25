@@ -62,6 +62,8 @@ public final class MathUtils
         return result;
     }
 
+    public static double sqrt(double n) { return Math.sqrt(n); }
+
     public static int    sign(int    n) { return n >= 0 ? 1 : -1; }
     public static double sign(double n) { return n >= 0 ? 1 : -1; }
     public static float  sign(float  n) { return n >= 0 ? 1 : -1; }
