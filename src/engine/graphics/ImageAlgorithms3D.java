@@ -8,7 +8,6 @@ import engine.threed.Mesh;
 import engine.threed.Triangle;
 import engine.threed.Vertex;
 import engine.utils.ArrayUtils;
-import engine.utils.MathUtils;
 
 import static engine.utils.MathUtils.*;
 

@@ -9,11 +9,8 @@ import engine.math.FinalVector;
 import engine.math.Matrix;
 import engine.math.Quaternion;
 import engine.math.Vector;
-import engine.math.Vector4;
-import engine.threed.Mesh;
 import engine.threed.Triangle;
 import engine.threed.Vertex;
-import engine.math.Vector;
 import engine.utils.Screen;
 import engine.utils.ThreedUtils;
 
