@@ -10,6 +10,7 @@ import engine.math.FinalVector;
 import engine.math.Vector4;
 import engine.utils.ArrayUtils;
 import engine.utils.ImageUtils;
+import engine.utils.MathUtils;
 
 /**
  * This Image class does store colors and depths in form of a {@link #colorBuffer} and {@link #zBuffer}.
@@ -79,12 +80,19 @@ public class Image
         //This image starts at the top left corner, so we need to flip the v coordinate
         v = 1 - v;
 
+        //clamp u and v to [0, 1)
+
+        u = MathUtils.clamp(u, 0, 0.99999999);
+        v = MathUtils.clamp(v, 0, 0.99999999);
+
         if (u < 0 || u > 1 || v < 0 || v > 1) System.out.println("u: " + u + " v: " + v + " w: " + w);
 
-        double x = u * width();
-        double y = v * height();
+        double x = u * (width());
+        double y = v * (height());
 
         int index = getIndex((int) x, (int) y);
+
+        if (!isPixelValid(index)) System.out.println("u: " + u + " v: " + v + " w: " + w + " x: " + x + " y: " + y + " index: " + index);
 
         return index;
     }
