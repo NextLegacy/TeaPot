@@ -48,7 +48,7 @@ public class DrawableImage extends Image
 
         //if current z is higher and current color is not transparent, do not draw the Pixel
         //even if current z is higher, if the current color is transparent, the Pixel must be drawn 
-        if (t && colorBuffer[index] >>> 24 == 0xff) return; 
+        if (t && colorBuffer[index] >>> 24 == 0xff) return;
 
         overridePixel(
             index, 
