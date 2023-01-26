@@ -20,12 +20,10 @@ public final class ImageAlgorithms3D
         final Vertex a, final Vertex b, final Image texture)
     {
         double dxd = abs(b.x - a.x);
-        double dyd = abs(b.y - a.y);
         
-        final int dx = round(dxd - 0.5);
-        final int dy = round(dyd - 0.5);
+        int dx = (int) abs((int)b.x - (int)a.x);
+        int dy = (int) abs((int)b.y - (int)a.y);
 
-        if (dyd == 0) dyd = 1;
         if (dxd == 0) dxd = 1;
         
         double invdxd = 1 / dxd;
@@ -83,6 +81,8 @@ public final class ImageAlgorithms3D
     static void triangle(final DrawableImage image, 
         final Triangle triangle, final Image texture)
     {
+        //System.out.println(triangle);
+
         triangleUnchecked(image, triangle.sortedForY(), texture);
     }
 
@@ -121,17 +121,12 @@ public final class ImageAlgorithms3D
     static void fillBottomFlatTriangle(final DrawableImage image, 
         final Vertex a, final Vertex b, final Vertex c, final Image texture)
     {
-        double dab = a.distanceTo(b);
-        double dac = a.distanceTo(c);
+        line(image, a, b, texture);
+        line(image, b, c, texture);
+        line(image, c, a, texture);
 
-        double invdab = 1 / dab;
-        double invdac = 1 / dac;
-
-        double invslope1 = (b.x - a.x) / (b.y - a.y);
-        double invslope2 = (c.x - a.x) / (c.y - a.y);
-
-        double curx1 = a.x;
-        double curx2 = a.x;
+        double x1 = a.x;
+        double x2 = a.x;
 
         double z1 = a.z;
         double z2 = a.z;
@@ -155,44 +150,54 @@ public final class ImageAlgorithms3D
         double ny2 = a.normal.y;
         double nz2 = a.normal.z;
 
-        double z1_slope = (b.z - a.z) * invdab;
-        double z2_slope = (c.z - a.z) * invdac;
+        double invdy1 = 1 / (b.y - a.y);
+        double invdy2 = 1 / (c.y - a.y);
 
-        double w1_slope = (b.w - a.w) * invdab;
-        double w2_slope = (c.w - a.w) * invdac;
+        double x1_slope = (b.x - a.x) * invdy1;
+        double x2_slope = (c.x - a.x) * invdy2;
 
-        double u1_slope = (b.texture.x - a.texture.x) * invdab;
-        double v1_slope = (b.texture.y - a.texture.y) * invdab;
-        double tw1_slope = (b.texture.z - a.texture.z) * invdab;
+        double z1_slope = (b.z - a.z) * invdy1;
+        double z2_slope = (c.z - a.z) * invdy2;
 
-        double u2_slope = (c.texture.x - a.texture.x) * invdac;
-        double v2_slope = (c.texture.y - a.texture.y) * invdac;
-        double tw2_slope = (c.texture.z - a.texture.z) * invdac;
+        double w1_slope = (b.w - a.w) * invdy1;
+        double w2_slope = (c.w - a.w) * invdy2;
 
-        double nx1_slope = (b.normal.x - a.normal.x) * invdab;
-        double ny1_slope = (b.normal.y - a.normal.y) * invdab;
-        double nz1_slope = (b.normal.z - a.normal.z) * invdab;
+        double u1_slope = (b.texture.x - a.texture.x) * invdy1;
+        double v1_slope = (b.texture.y - a.texture.y) * invdy1;
+        double tw1_slope = (b.texture.z - a.texture.z) * invdy1;
 
-        for (int scanlineY = (int) a.y; scanlineY <= b.y; scanlineY++)
+        double u2_slope = (c.texture.x - a.texture.x) * invdy2;
+        double v2_slope = (c.texture.y - a.texture.y) * invdy2;
+        double tw2_slope = (c.texture.z - a.texture.z) * invdy2;
+
+        double nx1_slope = (b.normal.x - a.normal.x) * invdy1;
+        double ny1_slope = (b.normal.y - a.normal.y) * invdy1;
+        double nz1_slope = (b.normal.z - a.normal.z) * invdy1;
+
+        double nx2_slope = (c.normal.x - a.normal.x) * invdy2;
+        double ny2_slope = (c.normal.y - a.normal.y) * invdy2;
+        double nz2_slope = (c.normal.z - a.normal.z) * invdy2;
+
+        for (double scanlineY = a.y; scanlineY <= b.y; scanlineY++)
         {
             final Vertex vertex1 = new Vertex
             (
-                fvec(curx1, scanlineY, z1, w1),
+                fvec(x1, scanlineY, z1, w1),
                 fvec(u1, v1, tw1),
                 fvec(nx1, ny1, nz1)
             );
 
             final Vertex vertex2 = new Vertex
             (
-                fvec(curx2, scanlineY, z2, w2),
+                fvec(x2, scanlineY, z2, w2),
                 fvec(u2, v2, tw2),
                 fvec(nx2, ny2, nz2)
             );
 
             line(image, vertex1, vertex2, texture);
 
-            curx1 += invslope1;
-            curx2 += invslope2;
+            x1 += x1_slope;
+            x2 += x2_slope;
 
             z1 += z1_slope;
             z2 += z2_slope;
@@ -211,23 +216,18 @@ public final class ImageAlgorithms3D
             nx1 += nx1_slope;
             ny1 += ny1_slope;
             nz1 += nz1_slope;
+
+            nx2 += nx2_slope;
+            ny2 += ny2_slope;
+            nz2 += nz2_slope;
         }
     }
 
     static void fillTopFlatTriangle(final DrawableImage image, 
         final Vertex a, final Vertex b, final Vertex c, final Image texture)
     {
-        double dac = a.distanceTo(c);
-        double dbc = b.distanceTo(c);
-
-        double invdac = 1 / dac;
-        double invdbc = 1 / dbc;
-
-        double invslope1 = (c.x - a.x) / (c.y - a.y);
-        double invslope2 = (c.x - b.x) / (c.y - b.y);
-
-        double curx1 = c.x;
-        double curx2 = c.x;
+        double x1 = c.x;
+        double x2 = c.x;
 
         double z1 = c.z;
         double z2 = c.z;
@@ -251,48 +251,54 @@ public final class ImageAlgorithms3D
         double ny2 = c.normal.y;
         double nz2 = c.normal.z;
 
-        double z1_slope = (c.z - a.z) * invdac;
-        double z2_slope = (c.z - b.z) * invdbc;
+        double invdy1 = 1.0 / (c.y - a.y);
+        double invdy2 = 1.0 / (c.y - b.y);
 
-        double w1_slope = (c.w - a.w) * invdac;
-        double w2_slope = (c.w - b.w) * invdbc;
+        double x1_slope = (c.x - a.x) * invdy1;
+        double x2_slope = (c.x - b.x) * invdy2;
 
-        double u1_slope = (c.texture.x - a.texture.x) * invdac;
-        double v1_slope = (c.texture.y - a.texture.y) * invdac;
-        double tw1_slope = (c.texture.z - a.texture.z) * invdac;
+        double z1_slope = (c.z - a.z) * invdy1;
+        double z2_slope = (c.w - b.w) * invdy2;
 
-        double u2_slope = (c.texture.x - b.texture.x) * invdbc;
-        double v2_slope = (c.texture.y - b.texture.y) * invdbc;
-        double tw2_slope = (c.texture.z - b.texture.z) * invdbc;
+        double w1_slope = (c.z - a.z) * invdy1;
+        double w2_slope = (c.w - b.w) * invdy2;
 
-        double nx1_slope = (c.normal.x - a.normal.x) * invdac;
-        double ny1_slope = (c.normal.y - a.normal.y) * invdac;
-        double nz1_slope = (c.normal.z - a.normal.z) * invdac;
+        double u1_slope = (c.texture.x - a.texture.x) * invdy1;
+        double v1_slope = (c.texture.y - a.texture.y) * invdy1;
+        double tw1_slope = (c.texture.z - a.texture.z) * invdy1;
 
-        double nx2_slope = (c.normal.x - b.normal.x) * invdbc;
-        double ny2_slope = (c.normal.y - b.normal.y) * invdbc;
-        double nz2_slope = (c.normal.z - b.normal.z) * invdbc;
+        double u2_slope = (c.texture.x - b.texture.x) * invdy2;
+        double v2_slope = (c.texture.y - b.texture.y) * invdy2;
+        double tw2_slope = (c.texture.z - b.texture.z) * invdy2;
 
-        for (int scanlineY = (int) c.y; scanlineY > a.y; scanlineY--)
+        double nx1_slope = (c.normal.x - a.normal.x) * invdy1;
+        double ny1_slope = (c.normal.y - a.normal.y) * invdy1;
+        double nz1_slope = (c.normal.z - a.normal.z) * invdy1;
+
+        double nx2_slope = (c.normal.x - b.normal.x) * invdy2;
+        double ny2_slope = (c.normal.y - b.normal.y) * invdy2;
+        double nz2_slope = (c.normal.z - b.normal.z) * invdy2;
+
+        for (double scanlineY = c.y; scanlineY >= a.y; scanlineY--)
         {
             final Vertex vertex1 = new Vertex
             (
-                fvec(curx1, scanlineY, z1, w1),
+                fvec(x1, scanlineY, z1, w1),
                 fvec(u1, v1, tw1),
                 fvec(nx1, ny1, nz1)
             );
 
             final Vertex vertex2 = new Vertex
             (
-                fvec(curx2, scanlineY, z2, w2),
+                fvec(x2, scanlineY, z2, w2),
                 fvec(u2, v2, tw2),
                 fvec(nx2, ny2, nz2)
             );
 
             line(image, vertex1, vertex2, texture);
 
-            curx1 -= invslope1;
-            curx2 -= invslope2;
+            x1 -= x1_slope;
+            x2 -= x2_slope;
 
             z1 -= z1_slope;
             z2 -= z2_slope;
@@ -579,11 +585,11 @@ public final class ImageAlgorithms3D
             clippedTriangles = ArrayUtils.push(clippedTriangles, clipped);
         }
 
-        for (int i = 0; i < triangles.length; i++)
+        for (int i = 0; i < clippedTriangles.length; i++)
         {
             //System.out.println(triangles[i]);
 
-            triangle(image, triangles[i], texture);
+            triangle(image, clippedTriangles[i], texture);
         }
     }
 }
