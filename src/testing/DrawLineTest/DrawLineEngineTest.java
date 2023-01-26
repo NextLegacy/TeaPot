@@ -9,6 +9,7 @@ import engine.math.FinalVector;
 import engine.math.Matrix;
 import engine.math.Quaternion;
 import engine.math.Vector;
+import engine.math.Vector4;
 import engine.threed.Mesh;
 import engine.threed.Triangle;
 import engine.threed.Vertex;
@@ -54,6 +55,8 @@ public class DrawLineEngineTest
         private FinalVector b;
         private FinalVector c;
 
+        private FinalVector cameraTarget = fvec(0, 0, 1);
+
         @Override
         protected void update() 
         {
@@ -64,10 +67,10 @@ public class DrawLineEngineTest
             if (wheel().isDown())
                 c = mouse().position();
 
-            t += 1;
+            t += 32 * deltaTime();
         }
 
-        int t = 0;
+        double t = 0;
 
         @Override
         protected void render() 
@@ -81,15 +84,15 @@ public class DrawLineEngineTest
                 ), 
                 Image.fromFile("./rsc/images/A.png")
             );
-            //ImageAlgorithms3D.mesh(
-            //    image(), 
-            //    ThreedUtils.MeshFromObjFile("./rsc/meshes/cube.obj"),
-            //    Matrix.MakeTransformation(vec(0, 0, 10), vec(3, 3, 3), Quaternion.FromEuler(vec(t, t, t))),
-            //    Matrix.makeProjection(80, 720d/1080d, 0.1, 1000),
-            //    Matrix.MakeView(vec(0, 0, 0), vec(0, 0, 1), vec(0, 1, 0)),
-            //    vec(0, 0, 0),
-            //    Image.fromFile("./rsc/images/monk.png")
-            //);
+            ImageAlgorithms3D.mesh(
+                image(), 
+                ThreedUtils.MeshFromObjFile("./rsc/meshes/monkey.obj"),
+                Matrix.MakeTransformation(vec(0, 0, 10), vec(3, 3, 3), Quaternion.FromEuler(vec(t, t, t).times(0.1))),
+                Matrix.makeProjection(90, 720d/1080d, 0.1, 1000),
+                Matrix.MakeView(vec(0, 0, 0), cameraTarget, vec(0, 1, 0)),
+                vec(0, 0, 0),
+                Image.fromFile("./rsc/images/monk.png")
+            );
         }
     }
 }
