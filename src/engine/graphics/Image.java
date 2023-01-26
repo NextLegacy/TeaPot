@@ -72,11 +72,21 @@ public class Image
     public final int getIndex(int x, int y) { return isPixelValid(x, y) ? x + y * width() : -1; }
 
     public final int getIndex(double u, double v, double w) 
-    { 
-        return getIndex(
-            (int) ((u / w) * (((double) (width () - 1)))),
-            (int) ((v / w) * (((double) (height() - 1))))
-        );
+    {
+        u /= w;
+        v /= w;
+        
+        //This image starts at the top left corner, so we need to flip the v coordinate
+        v = 1 - v;
+
+        if (u < 0 || u > 1 || v < 0 || v > 1) System.out.println("u: " + u + " v: " + v + " w: " + w);
+
+        double x = u * width();
+        double y = v * height();
+
+        int index = getIndex((int) x, (int) y);
+
+        return index;
     }
 
     boolean isPixelValid(final int x, final int y) { return (x < width() && y < height() && x >= 0 && y >= 0); }
