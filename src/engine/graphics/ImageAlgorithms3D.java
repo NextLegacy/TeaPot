@@ -15,7 +15,7 @@ public final class ImageAlgorithms3D
 {
     private ImageAlgorithms3D() { }
     
-    static void line(final DrawableImage image, 
+    public static void line(final DrawableImage image, 
         final Vertex a, final Vertex b, final Image texture)
     {
         double dxd = abs(b.x - a.x);
@@ -120,10 +120,6 @@ public final class ImageAlgorithms3D
     static void fillBottomFlatTriangle(final DrawableImage image, 
         final Vertex a, final Vertex b, final Vertex c, final Image texture)
     {
-        line(image, a, b, texture);
-        line(image, b, c, texture);
-        line(image, c, a, texture);
-
         double x1 = a.x;
         double x2 = a.x;
 
@@ -176,6 +172,8 @@ public final class ImageAlgorithms3D
         double nx2_slope = (c.normal.x - a.normal.x) * invdy2;
         double ny2_slope = (c.normal.y - a.normal.y) * invdy2;
         double nz2_slope = (c.normal.z - a.normal.z) * invdy2;
+
+        //TODO: this gets executed ones too less
 
         for (double scanlineY = a.y; scanlineY <= b.y; scanlineY++)
         {
@@ -278,7 +276,7 @@ public final class ImageAlgorithms3D
         double ny2_slope = (c.normal.y - b.normal.y) * invdy2;
         double nz2_slope = (c.normal.z - b.normal.z) * invdy2;
 
-        for (double scanlineY = c.y; scanlineY >= a.y; scanlineY--)
+        for (double scanlineY = (int) c.y; scanlineY >= a.y; scanlineY--)
         {
             final Vertex vertex1 = new Vertex
             (
@@ -586,8 +584,6 @@ public final class ImageAlgorithms3D
 
         for (int i = 0; i < clippedTriangles.length; i++)
         {
-            //System.out.println(triangles[i]);
-
             triangle(image, clippedTriangles[i], texture);
         }
     }
