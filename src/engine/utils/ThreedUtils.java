@@ -33,8 +33,8 @@ public final class ThreedUtils
 
             switch(type)
             {
-                case "v ": vertices.add(fvec(toDouble(args[0]), toDouble(args[1]), toDouble(args[2])));  break;
-                case "vt": textures .add(fvec(toDouble(args[0]), toDouble(args[1])                   )); break;
+                case "v ": vertices.add(fvec(toDouble(args[0]), toDouble(args[1]), toDouble(args[2] ))); break;
+                case "vt": textures .add(fvec(toDouble(args[0]), toDouble(args[1]), 1                )); break;
                 case "vn": normals  .add(fvec(toDouble(args[0]), toDouble(args[1]), toDouble(args[2]))); break;
 
                 case "f ":
