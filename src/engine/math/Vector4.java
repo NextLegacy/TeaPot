@@ -28,10 +28,10 @@ public abstract class Vector4
     public final Vector plus     (double x, double y) { return plus     (x, y, 0); }
     public final Vector minus    (double x, double y) { return minus    (x, y, 0); }
 
-    public final Vector times    (double x, double y, double z) { return new Vector(this.x() * x, this.y() * y, this.z() * z, w()); }
-    public final Vector dividedBy(double x, double y, double z) { return new Vector(this.x() / (x==0?1:x), this.y() / (y==0?1:y), this.z() / (z==0?1:z), w()); }
-    public final Vector plus     (double x, double y, double z) { return new Vector(this.x() + x, this.y() + y, this.z() + z, w()); }
-    public final Vector minus    (double x, double y, double z) { return new Vector(this.x() - x, this.y() - y, this.z() - z, w()); }
+    public final Vector times    (double x, double y, double z) { return new Vector(this.x() * x, this.y() * y, this.z() * z); }
+    public final Vector dividedBy(double x, double y, double z) { return new Vector(this.x() / (x==0?1:x), this.y() / (y==0?1:y), this.z() / (z==0?1:z)); }
+    public final Vector plus     (double x, double y, double z) { return new Vector(this.x() + x, this.y() + y, this.z() + z); }
+    public final Vector minus    (double x, double y, double z) { return new Vector(this.x() - x, this.y() - y, this.z() - z); }
 
     public abstract Vector inverted        ();
     public abstract Vector normalized      ();
