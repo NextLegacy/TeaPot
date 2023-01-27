@@ -82,6 +82,6 @@ public class ButtonScript extends Script
     protected void render() 
     {
         System.out.println("render");
-        image().drawRect(used_a, used_b, z, color);
+        image().fillRect(used_a, used_b, z, color);
     }
 }
