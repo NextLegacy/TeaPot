@@ -64,31 +64,52 @@ public class DrawLineEngineTest
             if (wheel().isDown())
                 c = mouse().position();
 
-            t += 32 * deltaTime();
+            t += 112 * deltaTime();
+
+            z += wheel().direction();
         }
 
         double t = 0;
 
+        double z = 0;
+
         @Override
         protected void render() 
         {
+            ImageAlgorithms3D.line(
+                image(), 
+                new Vertex(a.plus(0, 0, 5), new Vector(0.25, 0.25, 1), a), 
+                new Vertex(b.plus(0, 0, 20), new Vector(0.25, 1   , 1), b), 
+                Image.fromFile("./rsc/images/A.png")
+            );
+
             image().fillTriangle(
                 new Triangle
                 (
-                    new Vertex(a, new Vector(0.25, 0.25, 1), a), 
-                    new Vertex(b, new Vector(0.25, 1   , 1), b), 
-                    new Vertex(c, new Vector(0.75, 0.25, 1), c)
+                    new Vertex(a.plus(0, 0, 5), new Vector(0.25, 0.25, 1), a), 
+                    new Vertex(b.plus(0, 0, -20), new Vector(0.25, 1   , 1), b), 
+                    new Vertex(c.plus(0, 0, 20), new Vector(0.75, 0.25, 1), c)
                 ), 
                 Image.fromFile("./rsc/images/A.png")
             );
             ImageAlgorithms3D.mesh(
                 image(), 
                 ThreedUtils.MeshFromObjFile("./rsc/meshes/monkey.obj"),
-                Matrix.MakeTransformation(vec(0, 0, 10), vec(3, 3, 3), Quaternion.FromEuler(vec(t, t, t).times(0.1))),
+                Matrix.MakeTransformation(vec(0, 0, z), vec(3, 3, 3), Quaternion.FromEuler(vec(-t, t, -t).times(0.1))),
                 Matrix.makeProjection(90, 720d/1080d, 0.1, 1000),
                 Matrix.MakeView(vec(0, 0, 0), cameraTarget, vec(0, 1, 0)),
                 vec(0, 0, 0),
-                Image.fromFile("./rsc/images/monk.png")
+                Image.fromFile("./rsc/out.png")
+            );
+
+            ImageAlgorithms3D.mesh(
+                image(), 
+                ThreedUtils.MeshFromObjFile("./rsc/meshes/cube.obj"),
+                Matrix.MakeTransformation(vec(0, 0, 20), vec(3, 3, 3), Quaternion.FromEuler(vec(t, t, t).times(0.1))),
+                Matrix.makeProjection(90, 720d/1080d, 0.1, 1000),
+                Matrix.MakeView(vec(0, 0, 0), cameraTarget, vec(0, 1, 0)),
+                vec(0, 0, 0),
+                Image.fromFile("./rsc/images/A.png")
             );
         }
     }
