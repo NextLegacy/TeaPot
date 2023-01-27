@@ -14,7 +14,7 @@ public class DrawableImage extends Image
 {
     public static final int    ERROR_COLOR = 0xffff00ff;
     public static final int    CLEAR_COLOR = 0xff000000;
-    public static final double CLEAR_Z     = -1        ;
+    public static final double CLEAR_Z     = Double.MAX_VALUE;
 
     public DrawableImage(final BufferedImage image) { super(ImageUtils.getBufferedImageDataArray(image), new FinalVector(image.getWidth(), image.getHeight())); }
     public DrawableImage(final Vector4       size ) { super(size); clear(); }
@@ -44,17 +44,15 @@ public class DrawableImage extends Image
     {
         if (!isPixelValid(index)) return; 
 
-        final boolean t = zBuffer[index] > z; 
+        final boolean nearer = z < zBuffer[index]; 
 
-        //if current z is higher and current color is not transparent, do not draw the Pixel
-        //even if current z is higher, if the current color is transparent, the Pixel must be drawn 
-        if (t && colorBuffer[index] >>> 24 == 0xff) return;
+        if (!nearer && colorBuffer[index] >> 24 == 0xff) return;
 
         overridePixel(
             index, 
-            z,
-            t ? Color.mix(argb, colorBuffer[index]) :
-                Color.mix(colorBuffer[index], argb)  
+            nearer ? z : zBuffer[index],
+            nearer ? Color.mix(colorBuffer[index], argb) :
+                     Color.mix(argb, colorBuffer[index])  
         );
     }
 
