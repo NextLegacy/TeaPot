@@ -79,7 +79,7 @@ public class App
                 image().drawImage(logo, 0, 0);
 
                 //Error when n is smaller than -250
-                image().drawRect(vec(250, 250), vec(500, 500).plus(n), 5, 0x4bff00ff);
+                image().fillRect(vec(250, 250), vec(500, 500).plus(n), 5, 0x4bff00ff);
             }
         });
 
