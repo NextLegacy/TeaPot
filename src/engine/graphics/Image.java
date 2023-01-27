@@ -3,6 +3,7 @@ package engine.graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
@@ -82,17 +83,17 @@ public class Image
 
         //clamp u and v to [0, 1)
 
-        u = MathUtils.clamp(u, 0, 0.99999999);
-        v = MathUtils.clamp(v, 0, 0.99999999);
+        //if (u < 0 || u > 1 || v < 0 || v > 1) 
+        //    System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()).replace( ',', '\n' ));
 
-        if (u < 0 || u > 1 || v < 0 || v > 1) System.out.println("u: " + u + " v: " + v + " w: " + w);
+        //u = MathUtils.clamp(u, 0, 0.9999999);
+        //v = MathUtils.clamp(v, 0, 0.9999999);
+
 
         double x = u * (width());
         double y = v * (height());
 
         int index = getIndex((int) x, (int) y);
-
-        if (!isPixelValid(index)) System.out.println("u: " + u + " v: " + v + " w: " + w + " x: " + x + " y: " + y + " index: " + index);
 
         return index;
     }
