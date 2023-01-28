@@ -84,7 +84,7 @@ public class Image
         //clamp u and v to [0, 1)
 
         //if (u < 0 || u > 1 || v < 0 || v > 1) 
-        //    System.out.println(Arrays.toString(Thread.currentThread().getStackTrace()).replace( ',', '\n' ));
+        //    System.out.println(u + " " + v);
 
         //u = MathUtils.clamp(u, 0, 0.9999999);
         //v = MathUtils.clamp(v, 0, 0.9999999);
