@@ -1,40 +1,44 @@
 package engine.utils.logger;
 
-import engine.utils.Lambda.Func1;
 import engine.utils.color.ANSICode;
 
 public final class LoggerInformation 
 {
     private String level;
 
-    private final Func1<Object, String>[] parts;
+    private final LoggerLabel[] labels;
 
-    private final Func1<ANSICode, String> messageColorCode;
-
-    LoggerInformation(Func1<Object, String>[] parts, Func1<ANSICode, String> messageColorCode) 
+    LoggerInformation(LoggerLabel[] labels) 
     { 
-        this.parts = parts;
-        this.messageColorCode = messageColorCode;
+        this.labels = labels;
+
+        level = "NONE";
     }
 
-    public final String useOn(String message)
-    {
-        return this + messageColorCode.get(level).useOn(message);
-    }
-
-    public final String useOn(Object object)
-    {
-        return useOn(object);
-    }
-
-    public final String toString() 
+    public final LoggedString useOn(final String message, final String join) 
     { 
         String information = "";
         
-        for (int i = 0; i < parts.length; i++)
-            information += parts[i].get(level).toString();
+        ANSICode messageANSICode = ANSICode.NONE;
 
-        return information;
+        for (int i = 0; i < labels.length; i++)
+        {
+            if (!labels[i].condition.get(level)) continue;
+
+            information += labels[i].getLabel(level) + join;
+
+            if (labels[i].messageColorCode != ANSICode.NONE)
+                messageANSICode = labels[i].messageColorCode;
+        }
+
+        if (information.length() > 0)
+            information = information.substring(0, information.length() - join.length());
+
+        return new LoggedString
+        (
+            level,
+            information + " " + messageANSICode + message + ANSICode.NONE
+        );
     }
 
     public final String getLevel() { return level; }
