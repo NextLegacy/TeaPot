@@ -14,5 +14,10 @@ public final class LoggedString
         plainMessage = message.replaceAll("\u001B\\[[;\\d]*m", "");
     }
 
-    @Override public String toString() { return message; }
+    @Override public String toString() { return toString(true); }
+
+    public String toString(boolean includeColorCodes) 
+    { 
+        return includeColorCodes ? message : plainMessage;
+    }
 }
