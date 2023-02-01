@@ -10,7 +10,7 @@ public class LoggerLabel
     final ANSICode messageColorCode;
     final Func1<String, String> label;
 
-    LoggerLabel(Func1<Boolean, String> condition, Func1<String, String> label, ANSICode labelColorCode, ANSICode messageColorCode) 
+    public LoggerLabel(Func1<Boolean, String> condition, Func1<String, String> label, ANSICode labelColorCode, ANSICode messageColorCode) 
     { 
         this.condition = condition;
         this.labelColorCode = labelColorCode;
@@ -19,6 +19,4 @@ public class LoggerLabel
     }
 
     final String getLabel(String level) { return labelColorCode + label.get(level) + ANSICode.NONE; }
-
-    public static final LoggerLabelBuilder build() { return new LoggerLabelBuilder(); }
 }
