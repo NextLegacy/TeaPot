@@ -18,11 +18,11 @@ public final class ImageAlgorithms3D
     public static void line(final DrawableImage image, 
         final Vertex a, final Vertex b, final Image texture)
     {
-        double dxd = abs(b.x - a.x);
+        double dxd = abs(b.x - a.x)+1;
         double dyd = abs(b.y - a.y);
         
-        int dx = (int) abs((int)b.x - (int)a.x);
-        int dy = (int) abs((int)b.y - (int)a.y);
+        int dx = (int) abs((int) b.x - (int) a.x);
+        int dy = (int) abs((int) b.y - (int) a.y);
 
         double longerSideLength = dxd > dyd ? dxd : dyd;
         double inversedLongerSideLength = 1 / longerSideLength;
@@ -52,7 +52,7 @@ public final class ImageAlgorithms3D
         {
             image.drawPixel(x, y, z, texture.getPixel(u, v, w));
 
-            if (x == (int) b.x && y == (int) b.y) break;
+            if (x == (int)b.x && y == (int)b.y) break;
 
             e2 = 2 * err;
 
@@ -120,6 +120,10 @@ public final class ImageAlgorithms3D
     public static void fillBottomFlatTriangle(final DrawableImage image, 
         final Vertex a, final Vertex b, final Vertex c, final Image texture)
     {
+        double ay = floor(a.y);
+        double by = floor(b.y);
+        double cy = floor(c.y);
+
         double x1 = a.x;
         double x2 = a.x;
 
@@ -145,8 +149,11 @@ public final class ImageAlgorithms3D
         double ny2 = a.normal.y;
         double nz2 = a.normal.z;
 
-        double invdy1 = 1 / (b.y - a.y);
-        double invdy2 = 1 / (c.y - a.y);
+        double invdy1 = 1 / (by - ay);
+        double invdy2 = 1 / (cy - ay);
+
+        //System.out.println("invdy1: " + invdy1);
+        //System.out.println("invdy2: " + invdy2);
 
         double x1_slope = (b.x - a.x) * invdy1;
         double z1_slope = (b.z - a.z) * invdy1;
@@ -174,7 +181,7 @@ public final class ImageAlgorithms3D
 
         //TODO: this gets executed ones too less
 
-        for (int scanlineY = (int) round(a.y); scanlineY <= (int) b.y; scanlineY++)
+        for (int scanlineY = (int) ay; scanlineY <= by; scanlineY++)
         {
             final Vertex vertex1 = new Vertex
             (
@@ -221,6 +228,10 @@ public final class ImageAlgorithms3D
     public static void fillTopFlatTriangle(final DrawableImage image, 
         final Vertex a, final Vertex b, final Vertex c, final Image texture)
     {
+        double ay = floor(a.y);
+        double by = floor(b.y);
+        double cy = floor(c.y);
+
         double x1 = c.x;
         double x2 = c.x;
 
@@ -246,8 +257,8 @@ public final class ImageAlgorithms3D
         double ny2 = c.normal.y;
         double nz2 = c.normal.z;
 
-        double invdy1 = 1.0 / (c.y - a.y);
-        double invdy2 = 1.0 / (c.y - b.y);
+        double invdy1 = 1.0 / (cy - ay);
+        double invdy2 = 1.0 / (cy - by);
 
         double x1_slope = (c.x - a.x) * invdy1;
         double z1_slope = (c.z - a.z) * invdy1;
@@ -273,7 +284,7 @@ public final class ImageAlgorithms3D
         double ny2_slope = (c.normal.y - b.normal.y) * invdy2;
         double nz2_slope = (c.normal.z - b.normal.z) * invdy2;
 
-        for (int scanlineY = (int) c.y; scanlineY > (int) a.y; scanlineY--)
+        for (int scanlineY = (int) cy; scanlineY > ay; scanlineY--)
         {
             final Vertex vertex1 = new Vertex
             (
