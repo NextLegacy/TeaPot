@@ -10,6 +10,7 @@ import engine.math.FinalVector;
 import engine.math.Matrix;
 import engine.math.Quaternion;
 import engine.math.Vector;
+import engine.math.Vector4;
 import engine.threed.Triangle;
 import engine.threed.Vertex;
 import engine.utils.Screen;
@@ -49,21 +50,21 @@ public class DrawLineEngineTest
     {
         @Override protected void start() { setActive(true); a = b = c = fvec(0, 0); }
 
-        private FinalVector a;
-        private FinalVector b;
-        private FinalVector c;
+        private Vector4 a;
+        private Vector4 b;
+        private Vector4 c;
 
-        private FinalVector cameraTarget = fvec(0, 0, 1);
+        private Vector4 cameraTarget = fvec(0, 0, 1);
 
         @Override
         protected void update() 
         {
             if (left().isDown())
-                a = mouse().position();
+                a = mouse().position().plus(Math.random(), Math.random(), Math.random());
             if (right().isDown())
-                b = mouse().position();  
+                b = mouse().position().plus(Math.random(), Math.random(), Math.random());
             if (wheel().isDown())
-                c = mouse().position();
+                c = mouse().position().plus(Math.random(), Math.random(), Math.random());
 
             t += 112 * deltaTime();
 
@@ -103,8 +104,10 @@ public class DrawLineEngineTest
                     new Vertex(b.plus(0, 0, -20), new Vector(0.25, 1   , 1), b), 
                     new Vertex(c.plus(0, 0, 20), new Vector(0.75, 0.25, 1), c)
                 ), 
-                Image.fromFile("./rsc/images/A.png")
+                img
+                //Image.fromFile("./rsc/out.png")
             );
+
             ImageAlgorithms3D.mesh(
                 image(), 
                 ThreedUtils.MeshFromObjFile("./rsc/meshes/monkey.obj"),
@@ -112,7 +115,7 @@ public class DrawLineEngineTest
                 Matrix.makeProjection(90, 720d/1080d, 0.1, 1000),
                 Matrix.MakeView(vec(0, 0, 0), cameraTarget, vec(0, 1, 0)),
                 vec(0, 0, 0),
-                Image.fromFile("./rsc/images/monk.png")
+                Image.fromFile("./rsc/out.png")
             );
 //
             //ImageAlgorithms3D.mesh(
