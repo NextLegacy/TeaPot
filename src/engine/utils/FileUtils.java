@@ -2,6 +2,7 @@ package engine.utils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -47,5 +48,16 @@ public final class FileUtils
         final String extension = getExtension(path);
         
         return extension == "" ? defaultExtension : extension;
+    }
+
+    public static void write(String file, String content)
+    {
+        FileWriter fileWriter;
+        try 
+        {
+            fileWriter = new FileWriter(file);
+            fileWriter.write(content);
+            fileWriter.close();
+        } catch (IOException e) { e.printStackTrace(); }
     }
 }
