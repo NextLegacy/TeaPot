@@ -81,17 +81,8 @@ public class Image
         //This image starts at the top left corner, so we need to flip the v coordinate
         v = 1 - v;
 
-        //clamp u and v to [0, 1)
-
-        //if (u < 0 || u > 1 || v < 0 || v > 1) 
-        //    System.out.println(u + " " + v);
-
-        //u = MathUtils.clamp(u, 0, 0.9999999);
-        //v = MathUtils.clamp(v, 0, 0.9999999);
-
-
-        double x = u * (width());
-        double y = v * (height());
+        double x = u * width();
+        double y = v * height();
 
         int index = getIndex((int) x, (int) y);
 
