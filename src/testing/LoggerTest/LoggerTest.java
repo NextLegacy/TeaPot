@@ -27,31 +27,33 @@ public class LoggerTest
         
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
-        LoggerLabel timeLabel = LoggerLabel.build()
-            .setLabelColorCode(cyan)
-            .setLabel(level -> "[" + dateFormat.format(new Date()) + "]")
-        .done();
+        LoggerLabel timeLabel = new LoggerLabel(
+            (level) -> true,
+            (level) -> dateFormat.format(new Date()),
+            cyan,
+            cyan
+        );
 
-        LoggerLabel infoLabel = LoggerLabel.build()
-            .setCondition("info"::equalsIgnoreCase)
-            .setLabelColorCode(green)
-            .setLabel(level -> "[INFO]")
-            .setMessageColorCode(green)
-        .done();
+        LoggerLabel infoLabel = new LoggerLabel(
+            (level) -> level.equals("info"),
+            (level) -> "INFO",
+            green,
+            green
+        );
 
-        LoggerLabel warningLabel = LoggerLabel.build()
-            .setCondition("warning"::equalsIgnoreCase)
-            .setLabelColorCode(yellow)
-            .setLabel(level -> "[WARNING]")
-            .setMessageColorCode(yellow)
-        .done();
+        LoggerLabel warningLabel = new LoggerLabel(
+            (level) -> level.equals("warning"),
+            (level) -> "WARNING",
+            yellow,
+            yellow
+        );
 
-        LoggerLabel errorLabel = LoggerLabel.build()
-            .setCondition("error"::equalsIgnoreCase)
-            .setLabelColorCode(red)
-            .setLabel(level -> "[ERROR]")
-            .setMessageColorCode(red)
-        .done();
+        LoggerLabel errorLabel = new LoggerLabel(
+            (level) -> level.equals("error"),
+            (level) -> "ERROR",
+            red,
+            red
+        );
 
         logger.setLoggerInformations(
             LoggerInformation.build()
