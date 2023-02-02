@@ -3,7 +3,9 @@ package engine.graphics;
 import java.awt.image.BufferedImage;
 
 import engine.math.FinalVector;
+import engine.math.Matrix;
 import engine.math.Vector4;
+import engine.threed.Mesh;
 import engine.threed.Triangle;
 import engine.threed.Vertex;
 import engine.utils.ArrayUtils;
@@ -137,5 +139,10 @@ public class DrawableImage extends Image
     public void fillTriangle(Triangle t, Image texture) 
     { 
         ImageAlgorithms3D.triangle(this, t, texture); 
+    }
+
+    public void mesh(final Mesh mesh, final Matrix transform, final Matrix projection, final Matrix view, final Vector4 cameraPosition, final Image texture)
+    { 
+        ImageAlgorithms3D.mesh(this, mesh, transform, projection, view, cameraPosition, texture);
     }
 }
