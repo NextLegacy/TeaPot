@@ -11,11 +11,11 @@ import engine.utils.ArrayUtils;
 
 import static engine.utils.MathUtils.*;
 
-public final class ImageAlgorithms3D 
+final class ImageAlgorithms3D 
 {
-    private ImageAlgorithms3D() { }
+    ImageAlgorithms3D() { }
     
-    public static void line(final DrawableImage image, 
+    static void line(final DrawableImage image, 
         final Vertex a, final Vertex b, final Image texture)
     {
         double dxd = abs(b.x - a.x)+1;
@@ -117,7 +117,7 @@ public final class ImageAlgorithms3D
         fillTopFlatTriangle   (image, b, d, c, texture);
     }
 
-    public static void fillBottomFlatTriangle(final DrawableImage image, 
+    static void fillBottomFlatTriangle(final DrawableImage image, 
         final Vertex a, final Vertex b, final Vertex c, final Image texture)
     {
         double ay = floor(a.y);
@@ -225,7 +225,7 @@ public final class ImageAlgorithms3D
         }
     }
 
-    public static void fillTopFlatTriangle(final DrawableImage image, 
+    static void fillTopFlatTriangle(final DrawableImage image, 
         final Vertex a, final Vertex b, final Vertex c, final Image texture)
     {
         double ay = floor(a.y);
@@ -478,7 +478,7 @@ public final class ImageAlgorithms3D
         return result;
     }
 
-    public static void mesh(final DrawableImage image, final Mesh mesh, final Matrix transform, final Matrix projection, final Matrix view, final Vector4 cameraPosition, final Image texture)
+    static void mesh(final DrawableImage image, final Mesh mesh, final Matrix transform, final Matrix projection, final Matrix view, final Vector4 cameraPosition, final Image texture)
     {
         Triangle[] triangles = new Triangle[0];
 
