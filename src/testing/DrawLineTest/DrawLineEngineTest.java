@@ -5,8 +5,6 @@ import engine.Scene;
 import engine.Script;
 import engine.graphics.DrawableImage;
 import engine.graphics.Image;
-import engine.graphics.ImageAlgorithms3D;
-import engine.math.FinalVector;
 import engine.math.Matrix;
 import engine.math.Quaternion;
 import engine.math.Vector;
@@ -108,14 +106,13 @@ public class DrawLineEngineTest
                 //Image.fromFile("./rsc/out.png")
             );
 
-            ImageAlgorithms3D.mesh(
-                image(), 
+            image().mesh(
                 ThreedUtils.MeshFromObjFile("./rsc/meshes/monkey.obj"),
                 Matrix.MakeTransformation(vec(0, 0, 10), vec(3, 3, 3), Quaternion.FromEuler(vec(23.3145, 204, 15.3245).times(t * 0.01).times(0.1))),
                 Matrix.makeProjection(90, 720d/1080d, 0.1, 1000),
                 Matrix.MakeView(vec(0, 0, 0), cameraTarget, vec(0, 1, 0)),
                 vec(0, 0, 0),
-                Image.fromFile("./rsc/out.png")
+                Image.fromFile("./rsc/images/monk.png")
             );
 //
             //ImageAlgorithms3D.mesh(
