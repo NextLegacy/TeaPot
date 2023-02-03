@@ -5,7 +5,7 @@ import static engine.utils.MathUtils.*;
 //Immutable Quaternion Class
 public class Quaternion
 {    
-    public static final Quaternion IDENTITY = new Quaternion(0, 0, 0, 1);
+    public static final Quaternion IDENTITY = Quaternion.FromEuler(FinalVector.zero);
 
     private final FinalVector q;
     
