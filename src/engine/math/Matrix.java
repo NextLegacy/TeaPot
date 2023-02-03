@@ -99,7 +99,7 @@ public final class Matrix
         );
     }
 
-    public static Matrix makeLookAt(Vector4 pos, Vector4 target, Vector4 up)
+    public static Matrix MakeLookAt(Vector4 pos, Vector4 target, Vector4 up)
     {
         Vector newForward = target.minus(pos).normalize();
 
@@ -117,7 +117,7 @@ public final class Matrix
         return lookAtMatrix.quickInverse();
     }
 
-    public static Matrix makeProjection(double fovDeg, double aspectRatio, double near, double far)
+    public static Matrix MakeProjection(double fovDeg, double aspectRatio, double near, double far)
     {
         double fovRad = 1 / Math.tan(fovDeg * 0.5 * RADIANT);
         
@@ -184,18 +184,6 @@ public final class Matrix
         return S.times(R).times(T);
     }
 
-    public static Matrix MakeProjection(double fovDeg, double aspectRatio, double near, double far)
-    {
-        double fovRad = 1 / Math.tan(fovDeg * 0.5 / DEGREE);
-        
-        return new Matrix(
-            aspectRatio * fovRad , 0      , 0                            , 0 ,
-            0                    , fovRad , 0                            , 0 ,
-            0                    , 0      , far / (far - near)           , 1 ,
-            0                    , 0      , (-far * near) / (far - near) , 0
-        );
-    }
-
     public static Matrix MakeOrthographic(double left, double right, double bottom, double top, double near, double far)
     {
         return new Matrix(
@@ -209,24 +197,6 @@ public final class Matrix
     public static Matrix MakeView(Vector4 pos, Vector4 target, Vector4 up)
     {
         return MakeLookAt(pos, target, up).quickInverse();
-    }
-
-    public static Matrix MakeLookAt(Vector4 pos, Vector4 target, Vector4 up)
-    {
-        Vector newForward = target.minus(pos).normalize();
-
-        Vector newUp = up.minus(newForward.times(up.dot(newForward))).normalize();
-
-        Vector newRight = newUp.cross(newForward);
-
-        Matrix lookAtMatrix = new Matrix(
-            newRight.x  (), newRight.y  (), newRight.z  (), 0 ,
-            newUp.x     (), newUp.y     (), newUp.z     (), 0 ,
-            newForward.x(), newForward.y(), newForward.z(), 0 ,
-            pos.x       (), pos.y       (), pos.z       (), 1 
-        );
-
-        return lookAtMatrix;
     }
 
     public boolean equals(double[] m)
