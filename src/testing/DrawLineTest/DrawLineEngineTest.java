@@ -9,6 +9,8 @@ import engine.math.Matrix;
 import engine.math.Quaternion;
 import engine.math.Vector;
 import engine.math.Vector4;
+import engine.threed.Camera;
+import engine.threed.Mesh;
 import engine.threed.Triangle;
 import engine.threed.Vertex;
 import engine.utils.Screen;
@@ -52,7 +54,21 @@ public class DrawLineEngineTest
         private Vector4 b;
         private Vector4 c;
 
-        private Vector4 cameraTarget = fvec(0, 0, 1);
+        private Mesh mesh;
+        private Camera camera;
+
+        public LineTestScript()
+        {
+            mesh = ThreedUtils.MeshFromObjFile("./rsc/meshes/monkey.obj");
+
+            camera = new Camera(
+                90,
+                720d / 1080d,
+                0.1,
+                1000
+            );
+
+        }
 
         @Override
         protected void update() 
@@ -76,24 +92,8 @@ public class DrawLineEngineTest
         @Override
         protected void render() 
         {
-            //Create white image
             DrawableImage img = new DrawableImage(vec(1080, 720));
             img.fillColor(0xff00ffff);
-
-            //ImageAlgorithms3D.line(
-            //    image(), 
-            //    new Vertex(a, new Vector(0.25, 0.25, 1), a), 
-            //    new Vertex(b, new Vector(0.25, 0.5   , 1), b), 
-            //    img
-            //);
-
-            //Triangle triangle = new Triangle(
-            //    new Vertex(a, new Vector(0.25, 0.25, 1), a), 
-            //    new Vertex(b, new Vector(0.25, 1 , 1), b), 
-            //    new Vertex(c, new Vector(0.75, 0.25, 1), c)
-            //);
-
-            //image().fillTriangle(triangle, img);
 
             image().fillTriangle(
                 new Triangle
@@ -106,24 +106,11 @@ public class DrawLineEngineTest
                 //Image.fromFile("./rsc/out.png")
             );
 
-            image().mesh(
-                ThreedUtils.MeshFromObjFile("./rsc/meshes/monkey.obj"),
+            image().mesh(camera,
+                mesh,
                 Matrix.MakeTransformation(vec(0, 0, 10), vec(3, 3, 3), Quaternion.FromEuler(vec(23.3145, 204, 15.3245).times(t * 0.01).times(0.1))),
-                Matrix.makeProjection(90, 720d/1080d, 0.1, 1000),
-                Matrix.MakeView(vec(0, 0, 0), cameraTarget, vec(0, 1, 0)),
-                vec(0, 0, 0),
                 Image.fromFile("./rsc/images/monk.png")
             );
-//
-            //ImageAlgorithms3D.mesh(
-            //    image(), 
-            //    ThreedUtils.MeshFromObjFile("./rsc/meshes/cube.obj"),
-            //    Matrix.MakeTransformation(vec(0, 0, 20), vec(3, 3, 3), Quaternion.FromEuler(vec(t, t, t).times(0.1))),
-            //    Matrix.makeProjection(90, 720d/1080d, 0.1, 1000),
-            //    Matrix.MakeView(vec(0, 0, 0), cameraTarget, vec(0, 1, 0)),
-            //    vec(0, 0, 0),
-            //    Image.fromFile("./rsc/images/A.png")
-            //);
         }
     }
 }
