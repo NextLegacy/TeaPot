@@ -142,10 +142,10 @@ public final class Vector extends Vector4
     static final Vector one      = new Vector( 1,  1,  1,  1);
     static final Vector right    = new Vector( 1,  0,  0,  1);
     static final Vector left     = new Vector(-1,  0,  0,  1);
-    static final Vector down     = new Vector( 0, -1,  0,  1);
     static final Vector up       = new Vector( 0,  1,  0,  1);
-    static final Vector forward  = new Vector( 0,  1, -1,  1);
-    static final Vector backward = new Vector( 0,  1,  1,  1);
+    static final Vector down     = new Vector( 0, -1,  0,  1);
+    static final Vector forward  = new Vector( 0,  0,  1,  1);
+    static final Vector backward = new Vector( 0,  0, -1,  1);
     
     public static final Vector zero() { return new Vector(zero); }
     public static final Vector one () { return new Vector(one ); }
