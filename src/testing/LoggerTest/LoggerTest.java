@@ -7,7 +7,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import engine.utils.Lambda;
 import engine.utils.color.ANSICode;
 import engine.utils.logger.Logger;
 import engine.utils.logger.LoggerInformation;
