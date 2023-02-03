@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import engine.math.FinalVector;
 import engine.math.Matrix;
 import engine.math.Vector4;
+import engine.threed.Camera;
 import engine.threed.Mesh;
 import engine.threed.Triangle;
 import engine.threed.Vertex;
@@ -141,8 +142,8 @@ public class DrawableImage extends Image
         ImageAlgorithms3D.triangle(this, t, texture); 
     }
 
-    public void mesh(final Mesh mesh, final Matrix transform, final Matrix projection, final Matrix view, final Vector4 cameraPosition, final Image texture)
+    public void mesh(final Camera camera, final Mesh mesh, final Matrix transform, final Image texture)
     { 
-        ImageAlgorithms3D.mesh(this, mesh, transform, projection, view, cameraPosition, texture);
+        ImageAlgorithms3D.mesh(this, mesh, transform, camera.projectionMatrix(), camera.viewMatrix(), camera.position, texture);
     }
 }
