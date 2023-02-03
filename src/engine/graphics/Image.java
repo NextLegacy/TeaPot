@@ -11,7 +11,6 @@ import engine.math.FinalVector;
 import engine.math.Vector4;
 import engine.utils.ArrayUtils;
 import engine.utils.ImageUtils;
-import engine.utils.MathUtils;
 
 /**
  * This Image class does store colors and depths in form of a {@link #colorBuffer} and {@link #zBuffer}.
