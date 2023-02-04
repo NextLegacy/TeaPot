@@ -73,6 +73,8 @@ public class DrawLineEngineTest
         @Override
         protected void update() 
         {
+            System.out.println(engine());
+
             if (left().isDown())
                 a = mouse().position().plus(Math.random(), Math.random(), Math.random());
             if (right().isDown())
