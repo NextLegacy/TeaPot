@@ -29,7 +29,7 @@ public class FinalVector extends Vector4
 
         Vector self = vec(this);
 
-        inverted      = self.inverted        ();             
+        inverted      = self.inverted        ();  //TODO: remove precomputed values, because they are not needed           
         magnitude     = self.magnitude       ();
         normalized    = self.normalized      ();
         normalSquared = self.magnitudeSquared();
