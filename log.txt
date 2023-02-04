@@ -1,6 +1,0 @@
-23:43:24 Hello World!Hello World!
-23:43:24 INFO Hello World!
-23:43:24 ERROR Hello World!
-23:43:50 Hello World!Hello World!
-23:43:50 INFO Hello World!
-23:43:50 ERROR Hello World!
