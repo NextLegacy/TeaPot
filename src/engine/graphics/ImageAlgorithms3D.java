@@ -152,9 +152,6 @@ final class ImageAlgorithms3D
         double invdy1 = 1 / (by - ay);
         double invdy2 = 1 / (cy - ay);
 
-        //System.out.println("invdy1: " + invdy1);
-        //System.out.println("invdy2: " + invdy2);
-
         double x1_slope = (b.x - a.x) * invdy1;
         double z1_slope = (b.z - a.z) * invdy1;
         double w1_slope = (b.w - a.w) * invdy1;
@@ -178,8 +175,6 @@ final class ImageAlgorithms3D
         double nx2_slope = (c.normal.x - a.normal.x) * invdy2;
         double ny2_slope = (c.normal.y - a.normal.y) * invdy2;
         double nz2_slope = (c.normal.z - a.normal.z) * invdy2;
-
-        //TODO: this gets executed ones too less
 
         for (int scanlineY = (int) ay; scanlineY <= by; scanlineY++)
         {
@@ -331,12 +326,17 @@ final class ImageAlgorithms3D
     static Vector4 intersectPlane(Vector4 planePosition, Vector4 planeNormal, Vector4 lineStart, Vector4 lineEnd) 
     { 
         planeNormal = planeNormal.normalized(); 
+
         double planeD = -planeNormal.dot(planePosition); 
+
         double ad = lineStart.dot(planeNormal); 
-        double bd = lineEnd.dot(planeNormal); 
+        double bd = lineEnd  .dot(planeNormal); 
+
         double t = (-planeD - ad) / (bd - ad); 
-        Vector4 lineStartToEnd = lineEnd.minus(lineStart); 
+
+        Vector4 lineStartToEnd  = lineEnd.minus(lineStart); 
         Vector4 lineToIntersect = lineStartToEnd.times(t); 
+
         return lineStart.plus(lineToIntersect); 
     }
 
@@ -347,8 +347,6 @@ final class ImageAlgorithms3D
     
     static Triangle[] clipAgainstPlane(Vector4 planePosition, Vector4 planeNormal, Triangle triangle) 
     { 
-        Triangle[] result = new Triangle[0];
-
 		planeNormal = planeNormal.normalized();
 
 		Vertex[] inside_points  = new Vertex[3]; int nInsidePointCount = 0;
@@ -358,56 +356,42 @@ final class ImageAlgorithms3D
 		double d1 = dist(triangle.b, planePosition, planeNormal);
 		double d2 = dist(triangle.c, planePosition, planeNormal);
 
-		if (d0 >= 0) { inside_points[nInsidePointCount++] = triangle.a; }
-		else {
-			outside_points[nOutsidePointCount++] = triangle.a;
-		}
-		if (d1 >= 0) {
-			inside_points[nInsidePointCount++] = triangle.b; 
-		}
-		else {
-			outside_points[nOutsidePointCount++] = triangle.b;
-		}
-		if (d2 >= 0) {
-			inside_points[nInsidePointCount++] = triangle.c;
-		}
-		else {
-			outside_points[nOutsidePointCount++] = triangle.c;
-		}
+		if (d0 >= 0) inside_points [nInsidePointCount ++] = triangle.a;
+		else         outside_points[nOutsidePointCount++] = triangle.a;
 
-		if (nInsidePointCount == 0)
-        {
-			return result;
-		}
+		if (d1 >= 0) inside_points [nInsidePointCount ++] = triangle.b;
+		else         outside_points[nOutsidePointCount++] = triangle.b;
 
-		if (nInsidePointCount == 3)
-		{
-            result = ArrayUtils.push(result, triangle);
+		if (d2 >= 0) inside_points [nInsidePointCount ++] = triangle.c;
+		else         outside_points[nOutsidePointCount++] = triangle.c;
 
-			return result;
-		}
+		if (nInsidePointCount == 0) return new Triangle[] { }; 
+		if (nInsidePointCount == 3) return new Triangle[] { triangle };
 
 		if (nInsidePointCount == 1 && nOutsidePointCount == 2)
 		{
             double t = (planePosition.minus(inside_points[0])).dot(planeNormal) / (outside_points[0].minus(inside_points[0])).dot(planeNormal);
 
+            Vector4 intersection1 = intersectPlane(planePosition, planeNormal, inside_points[0], outside_points[0]);
+            Vector4 intersection2 = intersectPlane(planePosition, planeNormal, inside_points[0], outside_points[0]);
+            
             Triangle newTriangle = new Triangle(
                 inside_points[0],
-                new Vertex(
-                    intersectPlane(planePosition, planeNormal, inside_points[0], outside_points[0]),
+                new Vertex
+                (
+                    intersection1,
                     Vector.lerp(inside_points[0].texture, outside_points[0].texture, t),
                     Vector.lerp(inside_points[0].texture, outside_points[0].texture, t)
                 ),
-                new Vertex(
-                    intersectPlane(planePosition, planeNormal, inside_points[0], outside_points[0]),
+                new Vertex
+                (
+                    intersection2,
                     Vector.lerp(inside_points[0].texture, outside_points[1].texture, t),
                     Vector.lerp(inside_points[0].texture, outside_points[1].texture, t)
                 )
             );
 
-            result = ArrayUtils.push(result, newTriangle);
-
-			return result; // Return the newly formed single triangle
+			return new Triangle[] { newTriangle };
 		}
 
 		if (nInsidePointCount == 2 && nOutsidePointCount == 1)
@@ -426,11 +410,7 @@ final class ImageAlgorithms3D
 
             Triangle b = new Triangle(
                 inside_points[1],
-                new Vertex(
-                    intersectPlane(planePosition, planeNormal, inside_points[0], outside_points[0]),
-                    Vector.lerp(inside_points[0].texture, outside_points[0].texture, t),
-                    Vector.lerp(inside_points[0].texture, outside_points[0].texture, t)
-                ),
+                a.b,
                 new Vertex(
                     intersectPlane(planePosition, planeNormal, inside_points[1], outside_points[0]),
                     Vector.lerp(inside_points[1].texture, outside_points[0].texture, t),
@@ -438,44 +418,10 @@ final class ImageAlgorithms3D
                 )
             );
 
-            result = ArrayUtils.push(result, a, b);
-
-			// Copy appearance info to new triangles
-			//out_tri1.col =  in_tri.col;
-			//out_tri1.sym = in_tri.sym;
-//
-			//out_tri2.col =  in_tri.col;
-			//out_tri2.sym = in_tri.sym;
-//
-			//// The first triangle consists of the two inside points and a new
-			//// point determined by the location where one side of the triangle
-			//// intersects with the plane
-			//out_tri1.p[0] = *inside_points[0];
-			//out_tri1.p[1] = *inside_points[1];
-			//out_tri1.t[0] = *inside_tex[0];
-			//out_tri1.t[1] = *inside_tex[1];
-//
-			//float t;
-			//out_tri1.p[2] = Vector_IntersectPlane(plane_p, plane_n, *inside_points[0], *outside_points[0], t);
-			//out_tri1.t[2].u = t * (outside_tex[0]->u - inside_tex[0]->u) + inside_tex[0]->u;
-			//out_tri1.t[2].v = t * (outside_tex[0]->v - inside_tex[0]->v) + inside_tex[0]->v;
-			//out_tri1.t[2].w = t * (outside_tex[0]->w - inside_tex[0]->w) + inside_tex[0]->w;
-//
-			//// The second triangle is composed of one of he inside points, a
-			//// new point determined by the intersection of the other side of the 
-			//// triangle and the plane, and the newly created point above
-			//out_tri2.p[0] = *inside_points[1];
-			//out_tri2.t[0] = *inside_tex[1];
-			//out_tri2.p[1] = out_tri1.p[2];
-			//out_tri2.t[1] = out_tri1.t[2];
-			//out_tri2.p[2] = Vector_IntersectPlane(plane_p, plane_n, *inside_points[1], *outside_points[0], t);
-			//out_tri2.t[2].u = t * (outside_tex[0]->u - inside_tex[1]->u) + inside_tex[1]->u;
-			//out_tri2.t[2].v = t * (outside_tex[0]->v - inside_tex[1]->v) + inside_tex[1]->v;
-			//out_tri2.t[2].w = t * (outside_tex[0]->w - inside_tex[1]->w) + inside_tex[1]->w;
-			return result; // Return two newly formed triangles which form a quad
+			return new Triangle[] { a, b };
 		}
 
-        return result;
+        return new Triangle[] { };
     }
 
     static void mesh(final DrawableImage image, final Mesh mesh, final Matrix transform, final Matrix projection, final Matrix view, final Vector4 cameraPosition, final Image texture)
