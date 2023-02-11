@@ -12,10 +12,10 @@ public class LoggerLabel
 
     public LoggerLabel(Func1<Boolean, String> condition, Func1<String, String> label, ANSICode labelColorCode, ANSICode messageColorCode) 
     { 
-        this.condition = condition;
-        this.labelColorCode = labelColorCode;
-        this.messageColorCode = messageColorCode;
-        this.label = label;
+        this.condition        = condition        == null ? (level) -> true : condition       ;
+        this.labelColorCode   = labelColorCode   == null ? ANSICode.NONE   : labelColorCode  ;
+        this.messageColorCode = messageColorCode == null ? ANSICode.NONE   : messageColorCode;
+        this.label            = label            == null ? (level) -> ""   : label           ;
     }
 
     final String getLabel(String level) { return labelColorCode + label.get(level) + ANSICode.NONE; }
