@@ -1,17 +1,24 @@
 package testing.TestProject3D;
 
 import engine.Script;
-import engine.math.Vector;
+import engine.math.Transform;
 
 import static engine.utils.MathUtils.*;
 
 public class GameScript extends Script
 {
+    GameScene scene;
+    Transform transform;
+
     public GameScript() { activate(); }
 
-    Vector position = vec(0, 0, 0);
-    Vector rotation = vec(0, 0, 0);
-    Vector scale    = vec(1, 1, 1);
+    @Override
+    protected void start() 
+    {
+        scene = scene();
+
+        transform = new Transform();    
+    }
 
     protected void update()
     {

@@ -3,7 +3,6 @@ package testing.LoggerTest;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -21,7 +20,7 @@ public class LoggerTest
         ANSICode green  = ANSICode.build().foreground(0x0fff00).done();
         ANSICode red    = ANSICode.build().foreground(0xff0000).done();
         ANSICode cyan   = ANSICode.build().foreground(0x00ffff).done();
-        ANSICode blue   = ANSICode.build().foreground(0x0000ff).done();
+        //ANSICode blue   = ANSICode.build().foreground(0x0000ff).done();
         ANSICode yellow = ANSICode.build().foreground(0xffff00).done();
         
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
@@ -30,7 +29,7 @@ public class LoggerTest
             (level) -> true,
             (level) -> dateFormat.format(new Date()),
             cyan,
-            cyan
+            null
         );
 
         LoggerLabel infoLabel = new LoggerLabel(
@@ -77,7 +76,6 @@ public class LoggerTest
                 writer.close();
 
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         });

@@ -2,8 +2,6 @@ package testing.arrayListTest;
 
 import static engine.utils.ArrayUtils.*;
 
-import javax.swing.JFrame;
-
 import engine.utils.ArrayUtils;
 
 public class ArrayListTest 
