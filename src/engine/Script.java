@@ -36,8 +36,8 @@ public abstract class Script implements IActivatable, IDestroyable
     protected final Wheel       wheel     () { return input().wheel    (); }
     protected final Key         key(int keyEvent) { return input().key(keyEvent); }
 
-    protected final Scene       scene    () { return engine().activeScene(); }
-    protected final WindowLayer image    () { return engine().image      (); }
+    protected final <T extends Scene> T           scene    () { return engine().activeScene(); }
+    protected final                   WindowLayer image    () { return engine().image      (); }
 
     protected final double deltaTime     () { return engine().deltaTime(); }
     protected final double frameDeltaTime() { return engine().deltaTime(); }

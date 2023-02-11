@@ -12,9 +12,9 @@ public final class Transform
     private Quaternion lastRotation;
     private Vector     lastScale;
 
-    public final Vector     position;
-    public final Quaternion rotation;
-    public final Vector     scale;
+    public Vector     position;
+    public Quaternion rotation;
+    public Vector     scale;
 
     public Transform()
     {
