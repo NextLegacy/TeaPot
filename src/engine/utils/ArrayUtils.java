@@ -760,7 +760,7 @@ public final class ArrayUtils
         if (depth > array.length) return toString(array, array.length);
         if (depth == 0) return toString("", array.length);
 
-        String innerPart = "[";
+        String innerPart = "";
 
         for (int i = 0; i < depth - 1; i++) innerPart += array[i].toString() + ", ";
 
@@ -774,7 +774,7 @@ public final class ArrayUtils
         if (depth > array.length) return toString(array, array.length);
         if (depth == 0) return toString("", array.length);
 
-        String innerPart = "[";
+        String innerPart = "";
 
         for (int i = 0; i < depth - 1; i++) innerPart += array[i] + ", ";
 
@@ -788,7 +788,7 @@ public final class ArrayUtils
         if (depth > array.length) return toString(array, array.length);
         if (depth == 0) return toString("", array.length);
 
-        String innerPart = "[";
+        String innerPart = "";
 
         for (int i = 0; i < depth - 1; i++) innerPart += array[i] + ", ";
 
@@ -802,7 +802,7 @@ public final class ArrayUtils
         if (depth > array.length) return toString(array, array.length);
         if (depth == 0) return toString("", array.length);
 
-        String innerPart = "[";
+        String innerPart = "";
 
         for (int i = 0; i < depth - 1; i++) innerPart += array[i] + ", ";
 
@@ -816,7 +816,7 @@ public final class ArrayUtils
         if (depth > array.length) return toString(array, array.length);
         if (depth == 0) return toString("", array.length);
 
-        String innerPart = "[";
+        String innerPart = "";
 
         for (int i = 0; i < depth - 1; i++) innerPart += array[i] + ", ";
 
@@ -830,7 +830,7 @@ public final class ArrayUtils
         if (depth > array.length) return toString(array, array.length);
         if (depth == 0) return toString("", array.length);
 
-        String innerPart = "[";
+        String innerPart = "";
 
         for (int i = 0; i < depth - 1; i++) innerPart += array[i] + ", ";
 
@@ -844,7 +844,7 @@ public final class ArrayUtils
         if (depth > array.length) return toString(array, array.length);
         if (depth == 0) return toString("", array.length);
 
-        String innerPart = "[";
+        String innerPart = "";
 
         for (int i = 0; i < depth - 1; i++) innerPart += array[i] + ", ";
 
@@ -858,7 +858,7 @@ public final class ArrayUtils
         if (depth > array.length) return toString(array, array.length);
         if (depth == 0) return toString("", array.length);
 
-        String innerPart = "[";
+        String innerPart = "";
 
         for (int i = 0; i < depth - 1; i++) innerPart += array[i] + ", ";
 
@@ -872,7 +872,7 @@ public final class ArrayUtils
         if (depth > array.length) return toString(array, array.length);
         if (depth == 0) return toString("", array.length);
 
-        String innerPart = "[";
+        String innerPart = "";
 
         for (int i = 0; i < depth - 1; i++) innerPart += array[i] + ", ";
 
