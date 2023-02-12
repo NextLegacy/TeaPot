@@ -9,6 +9,16 @@ import engine.window.Window;
 import engine.window.WindowLayer;
 import engine.window.Input.Input;
 
+/**
+ * The Engine class is the main class of the engine. It is responsible for the window, the active scene and the game loop. <p>
+ * 
+ * For a fast setup you can use {@link Engine#fastSetup(Script)} which will create a window with a single layer, a scene with a single game object and a script attached to it. <p>
+ * 
+ * For a more complex setup you can create a new Engine object and set the active scene with {@link Engine#setActiveScene(Scene)}. <p>
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public final class Engine implements IActivatable
 {
     private final GameWindow window;
