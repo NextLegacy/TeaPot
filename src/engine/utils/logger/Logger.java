@@ -1,8 +1,11 @@
 package engine.utils.logger;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import engine.utils.Lambda.Action1;
+import engine.utils.color.ANSICode;
 
 public final class Logger
 {
@@ -97,5 +100,34 @@ public final class Logger
             outputStream.run(log.get(i));
 
         return this;
+    }
+
+    public static final Logger DEFAULT;
+
+    static
+    {
+        DEFAULT = new Logger(System.out::print);
+
+        ANSICode green  = ANSICode.build().foreground(0x013A12).done();
+        ANSICode red    = ANSICode.build().foreground(0xF94A29).done();
+        ANSICode cyan   = ANSICode.build().foreground(0x30E3DF).done();
+        ANSICode yellow = ANSICode.build().foreground(0xFCE22A).done();
+        
+        LoggerLabel timeLabel = new LoggerLabel((str) -> true, (str) -> "[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "]", null, null);
+        LoggerLabel infoLabel = new LoggerLabel("info"::equals, (str) -> "[INFO]", cyan, cyan);
+        LoggerLabel warnLabel = new LoggerLabel("warn"::equals, (str) -> "[WARN]", yellow, yellow);
+        LoggerLabel errorLabel = new LoggerLabel("error"::equals, (str) -> "[ERROR]", red, red);
+        LoggerLabel debugLabel = new LoggerLabel("debug"::equals, (str) -> "[DEBUG]", green, green);
+
+        DEFAULT.setLoggerInformations
+        (
+            LoggerInformation.build()
+                .addLabel(timeLabel)
+                .addLabel(infoLabel)
+                .addLabel(warnLabel)
+                .addLabel(errorLabel)
+                .addLabel(debugLabel)
+            .done()
+        );
     }
 }
