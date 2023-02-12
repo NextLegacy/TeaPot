@@ -66,11 +66,37 @@ public class Image
         }
     }
 
-    public final int getPixel(int index                   ) {                                return isPixelValid(index) ? colorBuffer[index] : ERROR_COLOR; }
+    /**
+     * @param index The index of the pixel.
+     * 
+     * @return The color of the pixel at the given index.
+     */
+    public final int getPixel(int index) { return isPixelValid(index) ? colorBuffer[index] : ERROR_COLOR; }
+
+    /**
+     * @param u The u coordinate, in range [0, 1].
+     * @param v The v coordinate, in range [0, 1].
+     * @param w The w coordinate, in range [0, 1].
+     * 
+     * @return The color of the pixel at the given uvw coordinates.
+     */
     public final int getPixel(double u, double v, double w) { int index = getIndex(u, v, w); return isPixelValid(index) ? colorBuffer[index] : ERROR_COLOR; }
 
+    /**
+     * @param x The x coordinate, in range [0, width].
+     * @param y The y coordinate, in range [0, height].
+     * 
+     * @return returns the index of the pixel at the given x and y coordinates or -1 if the pixel is out of bounds.
+     */
     public final int getIndex(int x, int y) { return isPixelValid(x, y) ? x + y * width() : -1; }
 
+    /**
+     * @param u The u coordinate, in range [0, 1].
+     * @param v The v coordinate, in range [0, 1].
+     * @param w The w coordinate, in range [0, 1].
+     * 
+     * @return returns the index of the pixel at the given uvw coordinates or -1 if the pixel is out of bounds.
+     */
     public final int getIndex(double u, double v, double w) 
     {
         u /= w;
@@ -87,6 +113,12 @@ public class Image
         return index;
     }
 
+    /**
+     * @param x The x coordinate, in range [0, width].
+     * @param y The y coordinate, in range [0, height].
+     * 
+     * @return true if the coordinates are in image bounds
+     */
     boolean isPixelValid(final int x, final int y) { return (x < width() && y < height() && x >= 0 && y >= 0); }
     boolean isPixelValid(final int index) { return index >= 0 && index < pixels; }
 
