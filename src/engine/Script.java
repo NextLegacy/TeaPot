@@ -10,6 +10,11 @@ import engine.window.Input.Key;
 import engine.window.Input.Mouse;
 import engine.window.Input.Wheel;
 
+/**
+ * A script that can be attached to a GameObject.
+ * 
+ * @author NextLegacy
+ */
 public abstract class Script implements IActivatable, IDestroyable
 {
     private boolean isActive;
