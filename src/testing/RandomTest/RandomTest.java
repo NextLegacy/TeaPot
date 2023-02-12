@@ -2,7 +2,6 @@ package testing.RandomTest;
 
 import engine.graphics.DrawableImage;
 import engine.math.Vector;
-import engine.utils.logger.Logger;
 import engine.utils.random.Random;
 
 public class RandomTest 
