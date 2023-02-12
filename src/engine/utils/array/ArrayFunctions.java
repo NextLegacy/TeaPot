@@ -4,16 +4,6 @@ public final class ArrayFunctions
 {
     private ArrayFunctions() { }
 
-    //@FunctionalInterface public static interface BooleanComparator    { public int compare(final boolean a, final boolean b); }
-    //@FunctionalInterface public static interface ByteComparator       { public int compare(final byte    a, final byte    b); }
-    //@FunctionalInterface public static interface CharComparator       { public int compare(final char    a, final char    b); }
-    //@FunctionalInterface public static interface ShortComparator      { public int compare(final short   a, final short   b); }
-    //@FunctionalInterface public static interface IntComparator        { public int compare(final int     a, final int     b); }
-    //@FunctionalInterface public static interface LongComparator       { public int compare(final long    a, final long    b); }
-    //@FunctionalInterface public static interface FloatComparator      { public int compare(final float   a, final float   b); }
-    //@FunctionalInterface public static interface DoubleComparator     { public int compare(final double  a, final double  b); }
-    //@FunctionalInterface public static interface GenericComparator<T> { public int compare(final T       a, final T       b); }
-
     @FunctionalInterface public static interface GenericMapper<T, U>   { U map(T value); }
 
     @FunctionalInterface public static interface GenericToBooleanMapper<T> { boolean map(T value); }
