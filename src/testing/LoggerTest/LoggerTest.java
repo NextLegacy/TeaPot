@@ -54,12 +54,7 @@ public class LoggerTest
         );
 
         logger.setLoggerInformations(
-            LoggerInformation.build()
-                .addLabel(timeLabel)
-                .addLabel(infoLabel)
-                .addLabel(warningLabel)
-                .addLabel(errorLabel)
-            .done()
+            new LoggerInformation(new LoggerLabel[] { timeLabel, infoLabel, warningLabel, errorLabel })
         );
         
         logger.log("Hello World!");

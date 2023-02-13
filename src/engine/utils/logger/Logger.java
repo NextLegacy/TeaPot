@@ -119,15 +119,9 @@ public final class Logger
         LoggerLabel errorLabel = new LoggerLabel("error"::equals, (str) -> "[ERROR]", red, red);
         LoggerLabel debugLabel = new LoggerLabel("debug"::equals, (str) -> "[DEBUG]", green, green);
 
-        DEFAULT.setLoggerInformations
-        (
-            LoggerInformation.build()
-                .addLabel(timeLabel)
-                .addLabel(infoLabel)
-                .addLabel(warnLabel)
-                .addLabel(errorLabel)
-                .addLabel(debugLabel)
-            .done()
-        );
+        DEFAULT.setLoggerInformations(new LoggerInformation(new LoggerLabel[] 
+        { 
+            timeLabel, infoLabel, warnLabel, errorLabel, debugLabel 
+        }));
     }
 }
