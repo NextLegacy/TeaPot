@@ -8,7 +8,7 @@ public final class LoggerInformation
 
     private final LoggerLabel[] labels;
 
-    LoggerInformation(LoggerLabel[] labels) 
+    public LoggerInformation(final LoggerLabel[] labels) 
     { 
         this.labels = labels;
 
@@ -44,7 +44,5 @@ public final class LoggerInformation
     public final String getLevel() { return level; }
     public final LoggerInformation setLevel(String level) { this.level = level; return this; }
 
-    public static final LoggerInformationBuilder build() { return new LoggerInformationBuilder(); }
-
-    public static final LoggerInformation NONE = build().done();
+    public static final LoggerInformation NONE = new LoggerInformation(new LoggerLabel[0]);
 }
