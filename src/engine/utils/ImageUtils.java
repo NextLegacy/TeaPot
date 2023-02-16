@@ -16,9 +16,14 @@ public final class ImageUtils
 {
     private ImageUtils() { }
 
-    private final static GraphicsConfiguration gfx_config = GraphicsEnvironment
-        .getLocalGraphicsEnvironment().getDefaultScreenDevice()
-        .getDefaultConfiguration();
+    private final static GraphicsConfiguration gfx_config;
+
+    static 
+    {
+        gfx_config = GraphicsEnvironment
+            .getLocalGraphicsEnvironment().getDefaultScreenDevice()
+            .getDefaultConfiguration();
+    }
 
     public static int[] getBufferedImageDataArray(final BufferedImage bufferedImage)
     {
@@ -59,7 +64,7 @@ public final class ImageUtils
 
     public static BufferedImage createCompatibleBufferedImage(Vector4 size)
     {
-        return createCompatibleBufferedImage(size.int_x(), size.int_y());
+        return createCompatibleBufferedImage((int) size.x(), (int) size.y());
     }
 
     public static BufferedImage toCompatibleBufferedImage(BufferedImage image) 
@@ -83,7 +88,7 @@ public final class ImageUtils
     {
         if (size.equals(image.size())) return image;
         
-        if (size.int_x() <= 0 || size.int_y() <= 0) size = FinalVector.one;
+        if ((int) size.x() <= 0 || (int) size.y() <= 0) size = FinalVector.one;
 
         BufferedImage result = ImageUtils.createCompatibleBufferedImage(size);
 
@@ -92,7 +97,7 @@ public final class ImageUtils
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
-        graphics.drawImage(image.toBufferedImage(), 0, 0, size.int_x(), size.int_y(), null);
+        graphics.drawImage(image.toBufferedImage(), 0, 0, (int) size.x(), (int) size.y(), null);
 
         graphics.dispose();
 

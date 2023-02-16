@@ -38,16 +38,16 @@ public class Image
 
     public Image(final Vector4  size) 
     { 
-        this(new int[size.int_x() * size.int_y()], size); 
+        this(new int[(int) size.x() * (int) size.y()], size); 
     }
     public Image(final int[] colorBuffer, final Vector4 size) 
     {
-        this(colorBuffer, new double[size.int_x() * size.int_y()], size);
+        this(colorBuffer, new double[(int) size.x() * (int) size.y()], size);
     }
 
     public Image(final double[] zBuffer, final Vector4 size) 
     { 
-        this(new int[size.int_x() * size.int_y()], zBuffer, size);
+        this(new int[(int) size.x() * (int) size.y()], zBuffer, size);
     }
 
     public Image(final int[] colorBuffer, final double[] zBuffer, final Vector4 size)
@@ -122,12 +122,12 @@ public class Image
     boolean isPixelValid(final int x, final int y) { return (x < width() && y < height() && x >= 0 && y >= 0); }
     boolean isPixelValid(final int index) { return index >= 0 && index < pixels; }
 
-    public FinalVector size       () { return size        ; }
-    public int         width      () { return size.int_x(); }
-    public int         height     () { return size.int_y(); }
-    public int         pixels     () { return pixels      ; }
-    public int   []    colorBuffer() { return colorBuffer ; }
-    public double[]    zBuffer    () { return zBuffer     ; }
+    public FinalVector size       () { return size          ; }
+    public int         width      () { return (int) size.x(); }
+    public int         height     () { return (int) size.y(); }
+    public int         pixels     () { return pixels        ; }
+    public int   []    colorBuffer() { return colorBuffer   ; }
+    public double[]    zBuffer    () { return zBuffer       ; }
     
     public BufferedImage toBufferedImage()
     { 

@@ -133,7 +133,7 @@ public abstract class Window
     {
         this.position = position.toFinalVector();
 
-        frame.setLocation(position.int_x(), position.int_y());
+        frame.setLocation((int) position.x(), (int) position.y());
 
         return this;
     }
@@ -143,10 +143,10 @@ public abstract class Window
         return setPosition(screen.SCREEN_SIZE.dividedBy(2).minus(size.dividedBy(2)));
     }
     
-    public final FinalVector   size          () { return size            ; }
-    public final FinalVector   position      () { return position        ; }
-    public final int           width         () { return size.int_x()    ; }
-    public final int           height        () { return size.int_y()    ; }
+    public final FinalVector   size          () { return size          ; }
+    public final FinalVector   position      () { return position      ; }
+    public final int           width         () { return (int) size.x(); }
+    public final int           height        () { return (int) size.y(); }
     public final int           verticalBorder() { return frame.getInsets().top + frame.getInsets().bottom; }
     public final Input         input         () { return input   ; }
     public final String        title         () { return frame.getTitle(); }
