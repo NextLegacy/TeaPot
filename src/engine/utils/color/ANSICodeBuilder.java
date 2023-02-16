@@ -16,6 +16,11 @@ public final class ANSICodeBuilder
     public ANSICodeBuilder underline() { underline = true; return this; }
     public ANSICodeBuilder strike   () { strike    = true; return this; }
 
+    public ANSICodeBuilder bold     (boolean state) { bold      = state; return this; }
+    public ANSICodeBuilder italic   (boolean state) { italic    = state; return this; }
+    public ANSICodeBuilder underline(boolean state) { underline = state; return this; }
+    public ANSICodeBuilder strike   (boolean state) { strike    = state; return this; }
+
     public ANSICodeBuilder foreground(int r, int g, int b) { fR = r; fG = g; fB = b; return this; }
     public ANSICodeBuilder background(int r, int g, int b) { bR = r; bG = g; bB = b; return this; }
 
