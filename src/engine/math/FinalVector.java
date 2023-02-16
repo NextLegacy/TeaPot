@@ -2,6 +2,15 @@ package engine.math;
 
 import static engine.utils.MathUtils.*;
 
+/**
+ * A immutable version of the {@link Vector4} class. <p>
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ * @since 1.0
+ * @see Vector4
+ * @see Vector
+ */
 public class FinalVector extends Vector4
 {
     public final double x;
