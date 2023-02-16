@@ -4,6 +4,15 @@ import static engine.utils.MathUtils.*;
 
 import engine.utils.MathUtils;
 
+/**
+ * A mutable version of the {@link Vector4} class. <p>
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ * @since 1.0
+ * @see Vector4
+ * @see FinalVector
+ */
 public final class Vector extends Vector4
 {
     public double x; //TODO: use everywhere the fields instead of the getters and setter
