@@ -1,5 +1,24 @@
 package engine.math;
 
+/**
+ * Vector4 is a class that represents a 4D vector. <p>
+ * It is abstract and must be extended to be used. <p>
+ * It only contains the basic operations. <p>
+ * 
+ * The {@link FinalVector} class is a immutable version of this class. <p>
+ * The {@link Vector} class is a mutable version of this class. <p>
+ * 
+ * You can use the {@link Vector4#toFinalVector()} method to convert this vector to a immutable vector. <p>
+ * You can use the {@link Vector4#toVector()} method to convert this vector to a mutable vector. <p>
+ * 
+ * You can use the {@link Vector4} type as a parameter to a method to accept both {@link FinalVector} and {@link Vector} types. <p>
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ * @since 1.0
+ * @see FinalVector
+ * @see Vector
+ */
 public abstract class Vector4
 {
     //Getters are getting optimized at compilation to direct access
@@ -7,11 +26,6 @@ public abstract class Vector4
     public abstract double y();
     public abstract double z();
     public abstract double w();
-
-    public final int int_x() { return (int) x(); }
-    public final int int_y() { return (int) y(); }
-    public final int int_z() { return (int) z(); }
-    public final int int_w() { return (int) w(); }
 
     public final Vector times    (Vector4 vector) { return times    (vector.x(), vector.y(), vector.z()); }
     public final Vector dividedBy(Vector4 vector) { return dividedBy(vector.x(), vector.y(), vector.z()); }
@@ -23,6 +37,7 @@ public abstract class Vector4
     public final Vector plus     (double n) { return plus     (n, n, n); }
     public final Vector minus    (double n) { return minus    (n, n, n); }
 
+    /** @return the product of this vector and the given vector. */
     public final Vector times    (double x, double y) { return times    (x, y, 1); }
     public final Vector dividedBy(double x, double y) { return dividedBy(x, y, 1); }
     public final Vector plus     (double x, double y) { return plus     (x, y, 0); }
