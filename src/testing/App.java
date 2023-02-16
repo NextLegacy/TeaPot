@@ -75,7 +75,7 @@ public class App
                 
                 //ImageAlgorithms3D.renderTestMeshWithTestImage(image());
 
-                image().drawImage(result, position.int_x(), position.int_y());
+                image().drawImage(result, (int) position.x(), (int) position.y());
                 image().drawImage(logo, 0, 0);
 
                 //Error when n is smaller than -250
