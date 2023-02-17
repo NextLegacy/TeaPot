@@ -1,5 +1,13 @@
 package engine.utils.color;
 
+/**
+ * This class is used to easily build {@link ANSICode} instances. <p>
+ * 
+ * Create an instance of this class by calling {@link ANSICode#build()} and then use the methods to set the properties of the code.
+ * When you are done, call {@link #done()} to get the {@link ANSICode} instance. <p>
+ * 
+ * @author NextLegacy
+ */
 public final class ANSICodeBuilder
 {
     private boolean bold, italic, underline, strike;
