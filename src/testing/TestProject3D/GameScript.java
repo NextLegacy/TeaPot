@@ -3,8 +3,6 @@ package testing.TestProject3D;
 import engine.Script;
 import engine.math.Transform;
 
-import static engine.utils.MathUtils.*;
-
 public class GameScript extends Script
 {
     GameScene scene;
