@@ -1,5 +1,12 @@
 package engine.utils.color;
 
+/**
+ * This class stores a colored string and its plain version. <p>
+ * Used by {@link ColoredStringBuilder}. <p>
+ * 
+ * 
+ * @author NextLegacy
+ */
 public final class ColoredString
 {
     public final String plain;
