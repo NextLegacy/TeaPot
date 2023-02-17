@@ -1,5 +1,14 @@
 package engine.utils.color;
 
+/**
+ * This class is used to easily create ANSI codes. <p>
+ * The ANSI codes are immutable. <p>
+ * They can be used to color text in the console. <p>
+ * 
+ * You can either use the constructor or the {@link ANSICodeBuilder} to create an ANSI code. <p>
+ * 
+ * @author NextLegacy
+ */
 public final class ANSICode 
 {
     static int FOREGROUND = 38;
