@@ -2,9 +2,25 @@ package engine.utils.color;
 
 import engine.utils.MathUtils;
 
+/**
+ * Static utility methods for working with colors in the ARGB format.
+ * 
+ * @author NextLegacy
+ */
 public final class Color 
 {
+    private Color() {}  
+
     //https://learnopengl.com/Advanced-OpenGL/Blending
+    /**
+     * This method blends two argb colors using a linear interpolation algorithm. <p>
+     * If the foreground color is fully opaque, it will be returned. <p>
+     * 
+     * @param argbB The background color.
+     * @param argbF The foreground color.
+     * 
+     * @return the resulting argb color value after blending the two colors.
+     */
     public static int mix(int argbB, int argbF)
     {
         if (argbF >>> 24 == 0xff) return argbF;
@@ -16,13 +32,6 @@ public final class Color
                (int) (((argbF >>> 16) & 0xFF) * t + ((argbB >>> 16) & 0xFF) * t_) << 16 |
                (int) (((argbF >>>  8) & 0xFF) * t + ((argbB >>>  8) & 0xFF) * t_) <<  8 |
                (int) (((argbF       ) & 0xFF) * t + ((argbB       ) & 0xFF) * t_)       ;
-
-        //int a = (int) (((argbF >>> 24)       ) * t + ((argbB >>> 24)       ) * t_);
-        //int r = (int) (((argbF >>> 16) & 0xFF) * t + ((argbB >>> 16) & 0xFF) * t_);
-        //int g = (int) (((argbF >>>  8) & 0xFF) * t + ((argbB >>>  8) & 0xFF) * t_);
-        //int b = (int) (((argbF       ) & 0xFF) * t + ((argbB       ) & 0xFF) * t_);
-        //
-        //return (a << 24) | (r << 16) | (g << 8) | (b);
     }
 
     public static int lerp(int[] argbs, double t)
