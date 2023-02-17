@@ -86,7 +86,7 @@ public final class ColoredStringBuilder
     public ColoredStringBuilder appendPlain(String string)
     {
         plainString += string;
-        coloredString += "\033[0m" + string;
+        coloredString += ANSICode.RESET + string;
         anythingChanged = true;
         
         return this;
@@ -118,5 +118,5 @@ public final class ColoredStringBuilder
         return this;
     }
 
-    public ColoredString coloredString() { return new ColoredString(plainString, coloredString + "\033[0m"); }
+    public ColoredString coloredString() { return new ColoredString(plainString, coloredString + ANSICode.RESET); }
 }
