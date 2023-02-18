@@ -1,5 +1,13 @@
 package engine.window.Input;
 
+/**
+ * This class represents a mouse wheel. <p>
+ * 
+ * It extends {@link Button} and has theirfor all the functionality of a button. <p>
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public class Wheel extends Button
 {
     double mouseWheelBefore;
