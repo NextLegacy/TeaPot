@@ -15,6 +15,25 @@ import engine.utils.Screen;
 import engine.graphics.DrawableImage;
 import engine.window.Input.Input;
 
+/**
+ * This class is used to create a window. <p>
+ * 
+ * It wraps a {@link Frame} and recreates it when needed. <p>
+ * 
+ * It has a {@link Input} object that is used to get input from the user. <p>
+ * 
+ * It can easily be asoociated with a {@link Screen} object. <p>
+ * 
+ * It has multiple {@link WindowLayer} objects that can be used to draw on. <p>
+ * 
+ * It has a proper rendering system that can be used to draw on the screen. <p>
+ * 
+ * You have to implement the {@link #renderImage(WindowLayer)} which will be called
+ * for every {@link WindowLayer} objects.
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public abstract class Window
 {
     private Frame frame;
