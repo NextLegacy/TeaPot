@@ -5,6 +5,14 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 
+/**
+ * This class represents the keyboard. <p>
+ * 
+ * It contains a {@link HashMap} of all keys on the keyboard. <p>
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public final class Keyboard
 {
     private final HashMap<Integer, Key> KEY_MAP;
