@@ -4,6 +4,14 @@ import engine.math.FinalVector;
 import engine.math.Vector;
 import engine.math.Vector4;
 
+/**
+ * This class represents the mouse. <p>
+ * 
+ * It has all the functionality of a mouse. <p>
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public final class Mouse
 {
     FinalVector POSITION_BEFORE;
