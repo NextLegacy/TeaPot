@@ -12,6 +12,12 @@ import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowStateListener;
 
+/**
+ * This class is used to create a class that implements all needed methods from java.awt.event.*Listener. <p>
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public abstract class InputAdapter implements 
     KeyListener, MouseListener, MouseWheelListener, MouseMotionListener, WindowListener, WindowFocusListener, WindowStateListener
 {
