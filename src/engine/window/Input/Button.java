@@ -2,6 +2,12 @@ package engine.window.Input;
 
 import engine.utils.time.Time;
 
+/**
+ * A general button class with all the functionality of a button. <p>
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public class Button
 {
     static final Button NULL_BUTTON = new Button();
@@ -44,9 +50,9 @@ public class Button
         clicked = true;
     }
 
-    public boolean isDown     () { return isDown;                                              }
-    public boolean isUp       () { return !isDown();                                           }
-    public boolean isClicked  () { return clicked;                                             }
-    public double  downTime   () { return isDown ? Time.nanos() - timeOnStart : 0;             }
-    public double  timeOnStart() { return timeOnStart;                                         }
+    public boolean isDown     () { return isDown;                                 }
+    public boolean isUp       () { return !isDown();                              }
+    public boolean isClicked  () { return clicked;                                }
+    public double  downTime   () { return isDown ? Time.nanos() - timeOnStart : 0;}
+    public double  timeOnStart() { return timeOnStart;                            }
 }
