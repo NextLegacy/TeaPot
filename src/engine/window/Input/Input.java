@@ -10,6 +10,30 @@ import java.awt.event.WindowEvent;
 import engine.math.FinalVector;
 import engine.utils.MathUtils;
 
+/**
+ * This class is used to get input on the window. <p>
+ * 
+ * To get inputs from a certain Window, you must bind the window using {@link #bindToFrame(Window)}. <p>
+ * 
+ * After that you can get the input using the following methods: <p>
+ * 
+ * <ul>
+ * <li> {@link #key(int)} - gets a key from the keyboard. </li>
+ * <li> {@link #mouse()} - gets the mouse. </li>
+ * <li> {@link #left()} - gets the left mouse button. </li>
+ * <li> {@link #right()} - gets the right mouse button. </li>
+ * <li> {@link #wheel()} - gets the mouse wheel. </li>
+ * </ul>
+ * 
+ * You can also get the window state using {@link #windowState()}. <p>
+ * 
+ * You can also get if the window is active or focused using {@link #isActive()} and {@link #isFocused()}. <p>
+ * 
+ * You should call {@link #update()} every frame to update the input properly. <p>
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public class Input
 {
     private final Keyboard KEYBOARD;
