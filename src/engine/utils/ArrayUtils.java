@@ -4,7 +4,20 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import engine.utils.ArrayUtils.ArrayFunctions.*;
+import engine.utils.random.Random;
 
+/** 
+ * This class provides utility methods for arrays. <p>
+ * It is not possible to instantiate this class. <p>
+ * 
+ * It has overall the same methods as {@link java.util.Arrays}, but with some differences. <p>
+ * 
+ * The methods of this class are designed for best performance and type safety.
+ * Because of the way how java handles generics, objects and primitives, most of the methods of this class are duplicated for each type. <p>
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public final class ArrayUtils
 {
     private ArrayUtils() { }
@@ -169,6 +182,133 @@ public final class ArrayUtils
     public static     long   [] removeIndecies(final long   [] array, final int... indecies) { return (long   []) removeIndecies(array, array.length, new long   [array.length - indecies.length] , indecies); }
     public static     float  [] removeIndecies(final float  [] array, final int... indecies) { return (float  []) removeIndecies(array, array.length, new float  [array.length - indecies.length] , indecies); }
     public static     double [] removeIndecies(final double [] array, final int... indecies) { return (double []) removeIndecies(array, array.length, new double [array.length - indecies.length] , indecies); }
+
+    public static <T> void shuffle(final T[] array, final Random random)
+    {
+        //fisherman yates shuffle
+        for (int i = array.length - 1; i > 0; i--)
+        {
+            final int index = random.randomInt(i + 1);
+
+            final T a = array[index];
+            array[index] = array[i];
+            array[i] = a;
+        }
+    }
+    
+    public static void shuffle(final boolean[] array, final Random random)
+    {
+        //fisherman yates shuffle
+        for (int i = array.length - 1; i > 0; i--)
+        {
+            final int index = random.randomInt(i + 1);
+
+            final boolean a = array[index];
+            array[index] = array[i];
+            array[i] = a;
+        }
+    }
+
+    public static void shuffle(final byte[] array, final Random random)
+    {
+        //fisherman yates shuffle
+        for (int i = array.length - 1; i > 0; i--)
+        {
+            final int index = random.randomInt(i + 1);
+
+            final byte a = array[index];
+            array[index] = array[i];
+            array[i] = a;
+        }
+    }
+
+    public static void shuffle(final char[] array, final Random random)
+    {
+        //fisherman yates shuffle
+        for (int i = array.length - 1; i > 0; i--)
+        {
+            final int index = random.randomInt(i + 1);
+
+            final char a = array[index];
+            array[index] = array[i];
+            array[i] = a;
+        }
+    }
+
+    public static void shuffle(final short[] array, final Random random)
+    {
+        //fisherman yates shuffle
+        for (int i = array.length - 1; i > 0; i--)
+        {
+            final int index = random.randomInt(i + 1);
+
+            final short a = array[index];
+            array[index] = array[i];
+            array[i] = a;
+        }
+    }
+
+    public static void shuffle(final int[] array, final Random random)
+    {
+        //fisherman yates shuffle
+        for (int i = array.length - 1; i > 0; i--)
+        {
+            final int index = random.randomInt(i + 1);
+
+            final int a = array[index];
+            array[index] = array[i];
+            array[i] = a;
+        }
+    }
+
+    public static void shuffle(final long[] array, final Random random)
+    {
+        //fisherman yates shuffle
+        for (int i = array.length - 1; i > 0; i--)
+        {
+            final int index = random.randomInt(i + 1);
+
+            final long a = array[index];
+            array[index] = array[i];
+            array[i] = a;
+        }
+    }
+
+    public static void shuffle(final float[] array, final Random random)
+    {
+        //fisherman yates shuffle
+        for (int i = array.length - 1; i > 0; i--)
+        {
+            final int index = random.randomInt(i + 1);
+
+            final float a = array[index];
+            array[index] = array[i];
+            array[i] = a;
+        }
+    }
+
+    public static void shuffle(final double[] array, final Random random)
+    {
+        //fisherman yates shuffle
+        for (int i = array.length - 1; i > 0; i--)
+        {
+            final int index = random.randomInt(i + 1);
+
+            final double a = array[index];
+            array[index] = array[i];
+            array[i] = a;
+        }
+    }
+
+    public static <T> void shuffle(final T      [] array) { shuffle(array, Random.RANDOM); }
+    public static     void shuffle(final boolean[] array) { shuffle(array, Random.RANDOM); }
+    public static     void shuffle(final byte   [] array) { shuffle(array, Random.RANDOM); }
+    public static     void shuffle(final char   [] array) { shuffle(array, Random.RANDOM); }
+    public static     void shuffle(final short  [] array) { shuffle(array, Random.RANDOM); }
+    public static     void shuffle(final int    [] array) { shuffle(array, Random.RANDOM); }
+    public static     void shuffle(final long   [] array) { shuffle(array, Random.RANDOM); }
+    public static     void shuffle(final float  [] array) { shuffle(array, Random.RANDOM); }
+    public static     void shuffle(final double [] array) { shuffle(array, Random.RANDOM); }
 
     @SafeVarargs
     public static <T> T[] combine(final T[]... arrays)
