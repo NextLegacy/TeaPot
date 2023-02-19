@@ -2,6 +2,13 @@ package engine.utils.time;
 
 import engine.utils.Lambda.Action0;
 
+/**
+ * This class provides utility methods for time. <p>
+ * It is not possible to instantiate this class. <p>
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public final class Time 
 {
     private Time() { }
