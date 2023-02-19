@@ -2,7 +2,13 @@ package engine.math;
 
 import static engine.utils.MathUtils.*;
 
-//Immutable Quaternion Class
+/** 
+ * This class represents a quaternion. <p>
+ * This class is immutable. <p>
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public class Quaternion
 {    
     public static final Quaternion IDENTITY = Quaternion.FromEuler(FinalVector.zero);
