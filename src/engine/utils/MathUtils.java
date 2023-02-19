@@ -4,6 +4,15 @@ import engine.math.FinalVector;
 import engine.math.Vector;
 import engine.math.Vector4;
 
+/**
+ * A class that contains useful math functions. <p>
+ * It is not instantiable. <p>
+ * 
+ * It is recomanded to statically import this class. <p>
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public final class MathUtils
 {
     private MathUtils() { }
