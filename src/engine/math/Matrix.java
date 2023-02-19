@@ -4,6 +4,22 @@ import static engine.utils.MathUtils.*;
 
 import java.util.Locale;
 
+/**
+ * This class represents a 4x4 matrix. <p>
+ * 
+ * You can use various methods and fields in this class to easily create a matrix. <p>
+ * 
+ * The matrix is stored in a 1D array of 16 doubles. <p>
+ * 
+ * The matrix is stored in column-major order. <p>
+ * 
+ * This class is immutable. <p>
+ * 
+ * You can use the {@link #toString()} method to get a string representation of the matrix. <p>
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public final class Matrix
 {
     private static final int    NUMBER_STRING_DECIMALS      = 5;
@@ -70,13 +86,6 @@ public final class Matrix
             m[ 8] * _m[0] + m[ 9] * _m[4] + m[10] * _m[8] + m[11] * _m[12]  ,  m[ 8] * _m[1] + m[ 9] * _m[5] + m[10] * _m[9] + m[11] * _m[13]  ,  m[ 8] * _m[2] + m[ 9] * _m[6] + m[10] * _m[10] + m[11] * _m[14]  ,  m[ 8] * _m[3] + m[ 9] * _m[7] + m[10] * _m[11] + m[11] * _m[15],  
             m[12] * _m[0] + m[13] * _m[4] + m[14] * _m[8] + m[15] * _m[12]  ,  m[12] * _m[1] + m[13] * _m[5] + m[14] * _m[9] + m[15] * _m[13]  ,  m[12] * _m[2] + m[13] * _m[6] + m[14] * _m[10] + m[15] * _m[14]  ,  m[12] * _m[3] + m[13] * _m[7] + m[14] * _m[11] + m[15] * _m[15]
         );
-
-        // return new Matrix(new double[] {
-        //     m[0 * 4] * matrix.m[0] + m[0 * 4 + 1] * matrix.m[4] + m[0 * 4 + 2] * matrix.m[8] + m[0 * 4 + 3] * matrix.m[12]  ,  m[0 * 4] * matrix.m[1] + m[0 * 4 + 1] * matrix.m[4 + 1] + m[0 * 4 + 2] * matrix.m[8 + 1] + m[0 * 4 + 3] * matrix.m[12 + 1]  ,  m[0 * 4] * matrix.m[2] + m[0 * 4 + 1] * matrix.m[4 + 2] + m[0 * 4 + 2] * matrix.m[8 + 2] + m[0 * 4 + 3] * matrix.m[12 + 2]  ,  m[0 * 4] * matrix.m[3] + m[0 * 4 + 1] * matrix.m[4 + 3] + m[0 * 4 + 2] * matrix.m[8 + 3] + m[0 * 4 + 3] * matrix.m[12 + 3],  
-        //     m[1 * 4] * matrix.m[0] + m[1 * 4 + 1] * matrix.m[4] + m[1 * 4 + 2] * matrix.m[8] + m[1 * 4 + 3] * matrix.m[12]  ,  m[1 * 4] * matrix.m[1] + m[1 * 4 + 1] * matrix.m[4 + 1] + m[1 * 4 + 2] * matrix.m[8 + 1] + m[1 * 4 + 3] * matrix.m[12 + 1]  ,  m[1 * 4] * matrix.m[2] + m[1 * 4 + 1] * matrix.m[4 + 2] + m[1 * 4 + 2] * matrix.m[8 + 2] + m[1 * 4 + 3] * matrix.m[12 + 2]  ,  m[1 * 4] * matrix.m[3] + m[1 * 4 + 1] * matrix.m[4 + 3] + m[1 * 4 + 2] * matrix.m[8 + 3] + m[1 * 4 + 3] * matrix.m[12 + 3],  
-        //     m[2 * 4] * matrix.m[0] + m[2 * 4 + 1] * matrix.m[4] + m[2 * 4 + 2] * matrix.m[8] + m[2 * 4 + 3] * matrix.m[12]  ,  m[2 * 4] * matrix.m[1] + m[2 * 4 + 1] * matrix.m[4 + 1] + m[2 * 4 + 2] * matrix.m[8 + 1] + m[2 * 4 + 3] * matrix.m[12 + 1]  ,  m[2 * 4] * matrix.m[2] + m[2 * 4 + 1] * matrix.m[4 + 2] + m[2 * 4 + 2] * matrix.m[8 + 2] + m[2 * 4 + 3] * matrix.m[12 + 2]  ,  m[2 * 4] * matrix.m[3] + m[2 * 4 + 1] * matrix.m[4 + 3] + m[2 * 4 + 2] * matrix.m[8 + 3] + m[2 * 4 + 3] * matrix.m[12 + 3],  
-        //     m[3 * 4] * matrix.m[0] + m[3 * 4 + 1] * matrix.m[4] + m[3 * 4 + 2] * matrix.m[8] + m[3 * 4 + 3] * matrix.m[12]  ,  m[3 * 4] * matrix.m[1] + m[3 * 4 + 1] * matrix.m[4 + 1] + m[3 * 4 + 2] * matrix.m[8 + 1] + m[3 * 4 + 3] * matrix.m[12 + 1]  ,  m[3 * 4] * matrix.m[2] + m[3 * 4 + 1] * matrix.m[4 + 2] + m[3 * 4 + 2] * matrix.m[8 + 2] + m[3 * 4 + 3] * matrix.m[12 + 2]  ,  m[3 * 4] * matrix.m[3] + m[3 * 4 + 1] * matrix.m[4 + 3] + m[3 * 4 + 2] * matrix.m[8 + 3] + m[3 * 4 + 3] * matrix.m[12 + 3]
-        // });
     }
 
     public Vector times(Vector4 vector)
