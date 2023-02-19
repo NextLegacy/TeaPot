@@ -12,6 +12,13 @@ import engine.utils.time.Time;
  */
 public final class Random
 {
+    public final static Random RANDOM;
+
+    static
+    {
+        RANDOM = new Random();
+    }
+
     public final State state;
 
     public Random() { this(Time.nanos()); }
