@@ -13,6 +13,12 @@ public final class ThreedUtils
 {
     private ThreedUtils() { }
 
+    /**
+     * Creates a mesh from an obj file
+     * 
+     * @param file The file to load
+     * @return The mesh
+     */
     public static Mesh MeshFromObjFile(String file)
     {
         String[] lines = FileUtils.getLines(file);
