@@ -33,8 +33,6 @@ public class DrawLineTest
         //});
 
         //a *= Time.NANOS_TO_SECONDS;
-//
-        //System.out.println(a);
 
         main(args);
 
@@ -48,7 +46,6 @@ public class DrawLineTest
         for (int i = 0; i < tests; i++)
         {
             result += Time.measureTime(action);
-            //System.out.println("Test " + i + " completed.");
         }
 
         result /= tests;

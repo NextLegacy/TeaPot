@@ -129,8 +129,6 @@ public final class Matrix
     public static Matrix MakeProjection(double fovDeg, double aspectRatio, double near, double far)
     {
         double fovRad = 1 / Math.tan(fovDeg * 0.5 * RADIANT);
-        
-        //System.out.println("fovRad: " + fovRad + " - " + aspectRatio);
 
         return new Matrix(
             aspectRatio * fovRad , 0      , 0                            , 0 ,
@@ -238,8 +236,6 @@ public final class Matrix
         for (int i = 0; i < Matrix.ARRAY_LENGTH; i++)
         {
             boolean negative = m[i] < -EPSILON;
-
-            //System.out.println(negative + "  -  " + m[i]);
 
             //Set value to Number in Intervale [0 | Matrix.NUMBER_STRING_MAX_VALUE]
             String value = String.format(Locale.ROOT, "%." + Matrix.NUMBER_STRING_DECIMALS + "f",

@@ -97,9 +97,6 @@ public class GraphicsUtils
 
         result[index] = pixels;
 
-        //System.out.println(pixels + " - " + (result.length));
-        //System.out.println(Arrays.toString(result));
-
         return result;
     }
 }

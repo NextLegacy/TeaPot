@@ -80,8 +80,6 @@ final class ImageAlgorithms3D
     static void triangle(final DrawableImage image, 
         final Triangle triangle, final Image texture)
     {
-        //System.out.println(triangle);
-
         triangleUnchecked(image, triangle.sortedForY(), texture);
     }
 
