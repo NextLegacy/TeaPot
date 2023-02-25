@@ -1,5 +1,20 @@
 package engine.utils.time;
 
+/**
+ * This class is used to create a game loop.
+ * 
+ * Provides various usefull methods:
+ * 
+ * <ul>
+ * <li>{@link #start()} - gets called when the game loop starts</li>
+ * <li>{@link #update(double)} - gets called every tick</li>
+ * <li>{@link #render(double)} - gets called every frame</li>
+ * <li>{@link #end()} - gets called when the game loop ends</li> 
+ * </ul>
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public abstract class GameLoop implements Runnable
 {
     private Thread thread;
