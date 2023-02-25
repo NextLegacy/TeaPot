@@ -12,6 +12,14 @@ import engine.graphics.Image;
 import engine.math.FinalVector;
 import engine.math.Vector4;
 
+/**
+ * This class provides various methods for working with images
+ * 
+ * TODO: refactor this class
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public final class ImageUtils 
 {
     private ImageUtils() { }
