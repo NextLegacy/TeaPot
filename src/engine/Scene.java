@@ -34,20 +34,17 @@ public abstract class Scene implements IDestroyable
 
         updateGameObjects();
 
-        end();
-
         for (int i = 0; i < currentGameObjects.length; i++)
-            currentGameObjects[i].setScene(null);
+            currentGameObjects[i].destroy();
 
-        if (engine.sceneToLoad() == null)
-            engine.setActiveScene(null);
-
-        isDestroyed = true;
+        isDestroyed        = true;
 
         engine             = null;
 
         gameObjectsInScene = null;
         currentGameObjects = null;
+
+        end();
     }
 
     public final Engine  engine       () { return engine                                        ; }
