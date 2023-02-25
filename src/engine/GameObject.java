@@ -129,33 +129,38 @@ public final class GameObject implements IActivatable, IDestroyable
     public void destroy()
     {
         if (isDestroyed) return;
-        
+
+        // first, deactivate the object
         deactivate();
 
+        // then, destroy all scripts and children
+        for (Script script : scripts)
+            script.destroy();
+
+        for (GameObject children : children)
+            children.destroy();
+
+        // then, remove the object from the scene
         if (scene != null) 
         {
             scene.removeGameObject(this);
             
-            for (GameObject children : children)
-                children.setParent(null);
+            scene = null;
         }
 
+        // then, remove the object from the parent
         setParent(null);
         
-        onDestroy();
-
-        for (Script script : scripts)
-            removeScript(script);
-        
-        for (GameObject children : children)
-            children.setParent(null);
-
+        // then, mark the object as destroyed
         isDestroyed = true;
 
+        // finally, remove all references
         scripts  = null;
         children = null;
         parent   = null;
 
+        // at this point, the object is fully destroyed. Call the onDestroy method to allow the object to do last cleanup
+        onDestroy();
     }
     
     void update() 
@@ -163,12 +168,19 @@ public final class GameObject implements IActivatable, IDestroyable
         for (Script script : currentScripts)
             script.tryStartOnce();
 
-        for (Script script : currentScripts) if (script.isActive()) script.update();
+        for (Script script : currentScripts) 
+            if (script.isActive()) 
+                script.update();
 
         updateScripts();
     }
 
-    void render       () { for (Script script : currentScripts) if (script.isActive()) script.render(); }
+    void render       ()
+    { 
+        for (Script script : currentScripts) 
+            if (script.isActive())
+                script.render(); 
+    }
 
     void onActivate   () { updateScripts(); for (Script script : currentScripts) script.onGameObjectActivate  (); }
     void onDeactivate () { updateScripts(); for (Script script : currentScripts) script.onGameObjectDeactivate(); }
