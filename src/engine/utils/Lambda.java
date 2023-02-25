@@ -3,6 +3,12 @@ package engine.utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * A bunch of useful methods that can be used as lambda expressions.
+ *
+ * @author NextLegacy
+ * @version 1.0
+ */
 public final class Lambda 
 {
     private Lambda() { }
