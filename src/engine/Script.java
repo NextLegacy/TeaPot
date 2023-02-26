@@ -74,10 +74,10 @@ public abstract class Script implements IActivatable, IDestroyable
     {
         if (isDestroyed) return;
 
+        deactivate();
+
         if (gameObject != null)
             gameObject.removeScript(this);
-
-        deactivate();
 
         isDestroyed = true;
         gameObject  = null;
