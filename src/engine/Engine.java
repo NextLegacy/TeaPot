@@ -4,6 +4,7 @@ import engine.math.FinalVector;
 import engine.math.Vector4;
 import engine.utils.Screen;
 import engine.utils.activatable.IActivatable;
+import engine.utils.destroyable.ObjectIsDestroyedException;
 import engine.utils.time.GameLoop;
 import engine.window.Window;
 import engine.window.WindowLayer;
@@ -43,7 +44,14 @@ public final class Engine implements IActivatable
         currentImage = null;
     }
 
-    public void setActiveScene(Scene scene) { sceneToLoad = scene; }
+    public void setActiveScene(Scene scene) 
+    { 
+        if (scene == null) scene = Scene.emptyScene();
+
+        ObjectIsDestroyedException.throwIfIsDestroyed(scene);
+
+        sceneToLoad = scene; 
+    }
 
     @SuppressWarnings("unchecked") public <T extends Scene> T activeScene() { return (T) activeScene; }
     @SuppressWarnings("unchecked") public <T extends Scene> T sceneToLoad() { return (T) sceneToLoad; }
