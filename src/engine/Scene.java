@@ -1,12 +1,15 @@
 package engine;
 
 import engine.utils.ArrayUtils;
+import engine.utils.activatable.IActivatable;
+import engine.utils.activatable.ObjectIsNotActiveException;
 import engine.utils.destroyable.IDestroyable;
+import engine.utils.destroyable.ObjectIsDestroyedException;
 import engine.window.Window;
 
 import static engine.utils.ArrayUtils.*;
 
-public abstract class Scene implements IDestroyable
+public abstract class Scene implements IActivatable, IDestroyable
 {
     private Engine engine;
     
@@ -47,13 +50,14 @@ public abstract class Scene implements IDestroyable
         end();
     }
 
-    public final Engine  engine       () { return engine                                        ; }
-    public final Window  window       () { return engine.window()                               ; }
+    public final Engine  engine       () { throwIfIsUnvalid(this); return engine           ; }
+    public final Window  window       () { throwIfIsUnvalid(this); return engine.window()  ; }
     public final boolean isActiveScene() { return engine != null && this == engine.activeScene(); }
+    public final boolean isValidScene () { return isActiveScene() && !isDestroyed()             ; }
 
     public final void addGameObject(GameObject gameObject)
     {
-        throwIfIsNotActiveScene();
+        throwIfIsUnvalid(this);
 
         if (contains(gameObjectsInScene, gameObject))
             return;
@@ -65,7 +69,7 @@ public abstract class Scene implements IDestroyable
     
     public final void removeGameObject(GameObject gameObject)
     {
-        throwIfIsNotActiveScene();
+        throwIfIsUnvalid(this);
 
         if (!contains(gameObjectsInScene, gameObject))
             return;
@@ -77,17 +81,30 @@ public abstract class Scene implements IDestroyable
 
     public final GameObject[] gameObjects()
     {
+        throwIfIsUnvalid(this);
+
         return ArrayUtils.clone(gameObjectsInScene);
     }
 
     public final GameObject getGameObject(String name)
     {
+        throwIfIsUnvalid(this);
+
         for (GameObject gameObject : gameObjectsInScene)
             if (gameObject.name() == name)
                 return gameObject;
             
         return null;
     }
+
+    @Override
+    public void setActive(boolean state) 
+    {
+        throw new UnsupportedOperationException("This method is not supported for Scene class. Scenes can only be activated or deactivated by Engine class.");
+    }
+
+    @Override
+    public boolean isActive() { return isActiveScene(); }
 
     protected void init() { }
     protected void end () { } //destroy equivalend
@@ -119,17 +136,14 @@ public abstract class Scene implements IDestroyable
         currentGameObjects = ArrayUtils.clone(gameObjectsInScene);
     }
 
-    private void throwIfIsNotActiveScene() 
+    public static final Scene emptyScene()
     {
-        if (!isActiveScene())
-            throw new SceneIsNotActiveException(this);
+        return new Scene() { };
     }
 
-    private static final class SceneIsNotActiveException extends RuntimeException
+    private static final void throwIfIsUnvalid(Scene scene)
     {
-        public SceneIsNotActiveException(Scene scene)
-        {
-            super("Can not perform Action, " + scene + " is not the active Scene!");
-        }
+        ObjectIsDestroyedException.throwIfIsDestroyed(scene);
+        ObjectIsNotActiveException.throwIfIsNotActive(scene);
     }
 }
