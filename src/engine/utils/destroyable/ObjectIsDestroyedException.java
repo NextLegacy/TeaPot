@@ -20,7 +20,7 @@ public final class ObjectIsDestroyedException extends RuntimeException
      */
     public static <T extends IDestroyable> void throwIfIsDestroyed(T destroyable)
     {
-        if (destroyable.isDestroyed())
+        if (destroyable == null || destroyable.isDestroyed())
             throw new ObjectIsDestroyedException(destroyable);
     }
 }
