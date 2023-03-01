@@ -7,9 +7,13 @@ import engine.utils.destroyable.ObjectIsDestroyedException;
 
 import static engine.utils.ArrayUtils.*;
 
+import engine.math.Transform;
+
 public final class GameObject implements IActivatable, IDestroyable
 {
     private String name;
+
+    public Transform transform;
 
     private boolean isActive   ;
     private boolean isDestroyed;
@@ -49,6 +53,7 @@ public final class GameObject implements IActivatable, IDestroyable
     @Override
     public boolean      isDestroyed() { return isDestroyed                 ; }
     public String       name       () { return name                      ; }
+    public Transform    transform  () { return transform                 ; }
     public GameObject   parent     () { return parent                    ; }
     public GameObject[] children   () { return ArrayUtils.clone(children); }
     public Script    [] scripts    () { return ArrayUtils.clone(scripts ); }
