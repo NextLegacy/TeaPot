@@ -1,5 +1,6 @@
 package engine;
 
+import engine.math.Transform;
 import engine.utils.activatable.IActivatable;
 import engine.utils.destroyable.IDestroyable;
 import engine.window.Window;
@@ -29,7 +30,12 @@ public abstract class Script implements IActivatable, IDestroyable
     //does get used in GameObject
     /*package_private*/ void setGameObject(GameObject gameObject) { this.gameObject = gameObject; }
     
-    protected final GameObject  gameObject() { return gameObject         ; }
+    protected final GameObject  gameObject() { return gameObject          ; }
+    protected final Transform   transform () { return gameObject.transform; }
+
+    protected final Transform   setTransform(Transform transform) { return gameObject.transform = transform; }
+
+    protected final GameObject  parent    () { return gameObject.parent   (); }
 
     protected final Engine      engine    () { return gameObject.engine(); }
     protected final Window      window    () { return engine().window  (); }
