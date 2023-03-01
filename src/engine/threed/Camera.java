@@ -6,6 +6,16 @@ import engine.math.Quaternion;
 import engine.math.Vector;
 import engine.math.Vector4;
 
+/**
+ * This class represents a camera in 3D space.
+ * It contains a position, rotation, field of view, aspect ratio, near and far plane.
+ * It also contains a view matrix and a projection matrix.
+ * 
+ * It can be used in {@link engine.graphics.DrawableImage#mesh(Camera, Mesh, Matrix, engine.graphics.Image)} 
+ * to draw a {@link Mesh} on a {@link engine.graphics.DrawableImage}.
+ * 
+ * @author NextLegacy
+ */
 public class Camera 
 {
     public Vector4 position;
