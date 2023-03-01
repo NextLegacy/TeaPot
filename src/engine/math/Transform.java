@@ -32,8 +32,8 @@ public final class Transform
         final boolean changed = positionChanged || rotationChanged || scaleChanged;
 
         if (positionChanged) { lastPosition = position; translationMatrix = Matrix.MakeTranslation(position); } 
-        if (rotationChanged) { lastRotation = rotation; rotationMatrix = Matrix.MakeRotation(rotation); }
-        if (scaleChanged   ) { lastScale    = scale   ; scaleMatrix = Matrix.MakeScale(scale); }
+        if (rotationChanged) { lastRotation = rotation; rotationMatrix    = Matrix.MakeRotation   (rotation); }
+        if (scaleChanged   ) { lastScale    = scale   ; scaleMatrix       = Matrix.MakeScale      (scale   ); }
 
         if (changed) transformationMatrix = Matrix.MakeTransformation(translationMatrix, rotationMatrix, scaleMatrix);
 
