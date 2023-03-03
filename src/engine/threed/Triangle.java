@@ -4,7 +4,6 @@ import engine.math.Matrix;
 
 public final class Triangle
 {
-    //triangle vertecies
     public final Vertex a;
     public final Vertex b;
     public final Vertex c;
