@@ -27,8 +27,7 @@ public abstract class Script implements IActivatable, IDestroyable
 
     public Script() { }
 
-    //does get used in GameObject
-    /*package_private*/ void setGameObject(GameObject gameObject) { this.gameObject = gameObject; }
+    void setGameObject(GameObject gameObject) { this.gameObject = gameObject; }
     
     protected final GameObject  gameObject() { return gameObject          ; }
     protected final Transform   transform () { return gameObject.transform; }
