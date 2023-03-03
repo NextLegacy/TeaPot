@@ -37,8 +37,7 @@ public final class GameObject implements IActivatable, IDestroyable
         currentScripts = new Script    [0];
     }
 
-    //does get used in Scene
-    /*package_private*/ void setScene(Scene newScene) 
+    void setScene(Scene newScene) 
     { 
         if (scene == newScene) return;
 
@@ -180,7 +179,7 @@ public final class GameObject implements IActivatable, IDestroyable
         updateScripts();
     }
 
-    void render       ()
+    void render()
     { 
         for (Script script : currentScripts) 
             if (script.isActive())
