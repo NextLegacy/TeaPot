@@ -13,6 +13,8 @@ public final class Lambda
 {
     private Lambda() { }
 
+    public static final void NOOP() { }
+
     public static final <T> T self(T self) { return self; }
     public static final <T> boolean isNotNull(T item) { return item != null; }
     public static final <T> boolean isNull   (T item) { return item == null; }
