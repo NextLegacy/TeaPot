@@ -5,9 +5,9 @@ import engine.math.Vector;
 import engine.math.Vector4;
 import engine.utils.MathUtils;
 
-final class ImageAlgorithms 
+final class ImageAlgorithms2D 
 {
-    private ImageAlgorithms() { }
+    private ImageAlgorithms2D() { }
 
     static void line(final DrawableImage image,
         final int x0, final int y0, final int x1, final int y1, final double z, final int color)
@@ -64,8 +64,8 @@ final class ImageAlgorithms
         Vector p2 = new Vector(v).times(-size1).add(a);
         Vector p3 = new Vector(v).times(-size1).add(b);
 
-        ImageAlgorithms.triangle(image, p0, p1, p2, color);
-        ImageAlgorithms.triangle(image, p1, p2, p3, color); 
+        ImageAlgorithms2D.triangle(image, p0, p1, p2, color);
+        ImageAlgorithms2D.triangle(image, p1, p2, p3, color); 
     }
 
     static void triangleUnchecked(final DrawableImage image, 
