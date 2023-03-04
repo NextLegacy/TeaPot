@@ -10,6 +10,14 @@ import java.awt.Window;
 import engine.math.FinalVector;
 import engine.utils.Lambda.Action0;
 
+/**
+ * This class represents a screen.
+ * It contains information about the screen like the size and the GraphicsDevice.
+ * It also contains methods for setting a window to fullscreen.
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public final class Screen 
 {
     private static final GraphicsEnvironment GRAPHICS_ENVIRONMENT;
