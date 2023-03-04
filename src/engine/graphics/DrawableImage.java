@@ -65,12 +65,12 @@ public class DrawableImage extends Image
 
     public void drawLine(int x1, int y1, int x2, int y2, double z, int color) 
     { 
-        ImageAlgorithms.line(this, x1, y1, x2, y2, z, color); 
+        ImageAlgorithms2D.line(this, x1, y1, x2, y2, z, color); 
     }
 
     public void drawLine(int x1, int y1, int x2, int y2, double z, int color, int size) 
     { 
-        ImageAlgorithms.line(this, x1, y1, x2, y2, z, color, size); 
+        ImageAlgorithms2D.line(this, x1, y1, x2, y2, z, color, size); 
     }
 
     public void drawLine(Vector4 p1, Vector4 p2, double z, int color) 
@@ -85,17 +85,17 @@ public class DrawableImage extends Image
 
     public void fillTriangle(Vector4 a, Vector4 b, Vector4 c, int color) 
     { 
-        ImageAlgorithms.triangle(this, a, b, c, color); 
+        ImageAlgorithms2D.triangle(this, a, b, c, color); 
     }
 
     public void drawRect(int x0, int y0, int x1, int y1, double z, int color) 
     { 
-        ImageAlgorithms.drawRect(this, x0, y0, x1, y1, z, color); 
+        ImageAlgorithms2D.drawRect(this, x0, y0, x1, y1, z, color); 
     }
 
     public void drawRect(int x0, int y0, int x1, int y1, double z, int color, int size) 
     { 
-        ImageAlgorithms.drawRect(this, x0, y0, x1, y1, z, color, size); 
+        ImageAlgorithms2D.drawRect(this, x0, y0, x1, y1, z, color, size); 
     }
 
     public void drawRect(Vector4 p0, Vector4 p1, double z, int color) 
@@ -110,7 +110,7 @@ public class DrawableImage extends Image
 
     public void fillRect(int x0, int y0, int x1, int y1, double z, int color) 
     { 
-        ImageAlgorithms.fillRect(this, x0, y0, x1, y1, z, color); 
+        ImageAlgorithms2D.fillRect(this, x0, y0, x1, y1, z, color); 
     }
 
     public void fillRect(Vector4 p0, Vector4 p1, double z, int color) 
@@ -120,12 +120,12 @@ public class DrawableImage extends Image
 
     public void drawImage(Image image, int x, int y) 
     { 
-        ImageAlgorithms.drawImage(this, image, x, y); 
+        ImageAlgorithms2D.drawImage(this, image, x, y); 
     }
 
     public void drawImage(Image image) 
     { 
-        ImageAlgorithms.drawImage(this, image, 0, 0); 
+        ImageAlgorithms2D.drawImage(this, image, 0, 0); 
     }
 
     //
