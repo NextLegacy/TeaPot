@@ -9,6 +9,13 @@ import engine.threed.Mesh;
 import engine.threed.Triangle;
 import engine.threed.Vertex;
 
+/**
+ * A collection of utilities for 3D objects
+ * Is not meant to be instantiated
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public final class ThreedUtils 
 {
     private ThreedUtils() { }
@@ -21,6 +28,8 @@ public final class ThreedUtils
      */
     public static Mesh MeshFromObjFile(String file)
     {
+        // TODO: optimize this (use simple arrays) also get rid of the switch statement
+
         String[] lines = FileUtils.getLines(file);
 
         ArrayList<Triangle> polygons = new ArrayList<>();
