@@ -4,6 +4,12 @@ import engine.math.FinalVector;
 import engine.math.Matrix;
 import engine.math.Vector4;
 
+/**
+ * A vertex is a point in 3D space, with a texture and a normal.
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public final class Vertex extends FinalVector
 {
     public final FinalVector texture; //vertex texture
