@@ -31,9 +31,6 @@ public final class LoggerInformation
                 messageANSICode = labels[i].messageColorCode;
         }
 
-        //if (information.length() > 0)
-        //    information = information.substring(0, information.length() - join.length());
-
         return new LoggedString
         (
             level,
