@@ -1,11 +1,14 @@
 package engine;
 
 import engine.utils.ArrayUtils;
+import engine.utils.Lambda.Func1;
 import engine.utils.activatable.IActivatable;
 import engine.utils.activatable.ObjectIsNotActiveException;
 import engine.utils.destroyable.IDestroyable;
 import engine.utils.destroyable.ObjectIsDestroyedException;
 import engine.window.Window;
+
+import engine.utils.ArrayUtils.ArrayFunctions.*;
 
 import static engine.utils.ArrayUtils.*;
 
@@ -95,6 +98,13 @@ public abstract class Scene implements IActivatable, IDestroyable
                 return gameObject;
             
         return null;
+    }
+
+    public final GameObject[] getGameObjects(GenericFilter<GameObject> filter)
+    {
+        throwIfIsUnvalid(this);
+
+        return ArrayUtils.filter(gameObjectsInScene, filter);
     }
 
     @Override
