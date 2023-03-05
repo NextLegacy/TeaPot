@@ -2,6 +2,12 @@ package engine.threed;
 
 import engine.math.Matrix;
 
+/**
+ * A triangle is a collection of three vertices.
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public final class Triangle
 {
     public final Vertex a;
