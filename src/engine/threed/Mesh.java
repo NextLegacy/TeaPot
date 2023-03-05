@@ -1,5 +1,11 @@
 package engine.threed;
 
+/**
+ * A mesh is a collection of triangles.
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public final class Mesh 
 {
     public final Triangle[] triangles;
