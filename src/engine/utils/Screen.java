@@ -81,29 +81,13 @@ public final class Screen
 
     public static Screen get(final String id)
     {
-        for (int i = 0; i < SCREENS.length; i++)
-        {
-            if (SCREENS[i].GRAPHICS_DEVICE.getIDstring() == id)
-            {
-                return SCREENS[i];
-            }
-        }
-        
-        return null;
+        return ArrayUtils.filter(SCREENS, (screen) -> screen.GRAPHICS_DEVICE.getIDstring().equals(id))[0];
     }
 
     public static Screen get(Component component)
     {
-        component.getGraphicsConfiguration().getDevice();
+        GraphicsDevice device = component.getGraphicsConfiguration().getDevice();
 
-        for (int i = 0; i < SCREENS.length; i++)
-        {
-            if (SCREENS[i].GRAPHICS_DEVICE == component.getGraphicsConfiguration().getDevice())
-            {
-                return SCREENS[i];
-            }
-        }
-
-        return null;
+        return ArrayUtils.filter(SCREENS, (screen) -> screen.GRAPHICS_DEVICE.equals(device))[0];
     }
 }
