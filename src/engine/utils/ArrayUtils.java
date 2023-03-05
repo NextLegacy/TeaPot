@@ -1,4 +1,4 @@
-package engine.utils;
+package engine.utils; //FIXME: The type java.lang.NegativeArraySizeException cannot be resolved. It is indirectly referenced from required type java.lang.reflect.ArrayJava(16777563)
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -1020,6 +1020,7 @@ public final class ArrayUtils
         return toString(innerPart, array.length);
     }
 
+    // FIXME: The method newInstance(Class<?>, int) from the type Array refers to the missing type NegativeArraySizeExceptionJava(67108984)
     @SuppressWarnings("unchecked") public static <T> T[] newInstance(final Class<T> type, final int length) { return (T[]) Array.newInstance(type, length); }
 
     @SuppressWarnings("unchecked") public static <T> Class<T> componentTypeOf(final T[] array) { return (Class<T>) array.getClass().getComponentType(); }
@@ -1964,7 +1965,7 @@ public final class ArrayUtils
         return result;
     }
 
-    public final class ArrayFunctions
+    public static final class ArrayFunctions
     {
         private ArrayFunctions() { }
 
