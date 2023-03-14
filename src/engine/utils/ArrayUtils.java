@@ -1,4 +1,6 @@
-package engine.utils; //FIXME: The type java.lang.NegativeArraySizeException cannot be resolved. It is indirectly referenced from required type java.lang.reflect.ArrayJava(16777563)
+package engine.utils; 
+//FIXME: The type java.lang.NegativeArraySizeException cannot be resolved. It is indirectly referenced from required type java.lang.reflect.ArrayJava(16777563)
+//seems like the error is gone,  weird
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -877,6 +879,51 @@ public final class ArrayUtils
         final Object[] source = { value };
 
         untypedCopy(source, 0, array, index, 1);
+    }
+
+    public static <T> void forEach(final T[] array, GenericAction<T> action)
+    {
+        for (int i = 0; i < array.length; i++) action.run(array[i]);
+    }
+
+    public static void forEach(final boolean[] array, BooleanAction action)
+    {
+        for (int i = 0; i < array.length; i++) action.run(array[i]);
+    }
+
+    public static void forEach(final byte[] array, ByteAction action)
+    {
+        for (int i = 0; i < array.length; i++) action.run(array[i]);
+    }
+
+    public static void forEach(final char[] array, CharAction action)
+    {
+        for (int i = 0; i < array.length; i++) action.run(array[i]);
+    }
+
+    public static void forEach(final short[] array, ShortAction action)
+    {
+        for (int i = 0; i < array.length; i++) action.run(array[i]);
+    }
+
+    public static void forEach(final int[] array, IntAction action)
+    {
+        for (int i = 0; i < array.length; i++) action.run(array[i]);
+    }
+
+    public static void forEach(final long[] array, LongAction action)
+    {
+        for (int i = 0; i < array.length; i++) action.run(array[i]);
+    }
+
+    public static void forEach(final float[] array, FloatAction action)
+    {
+        for (int i = 0; i < array.length; i++) action.run(array[i]);
+    }
+
+    public static void forEach(final double[] array, DoubleAction action)
+    {
+        for (int i = 0; i < array.length; i++) action.run(array[i]);
     }
 
     public static <T> String toString(final T      [] array) { return toString(array, array.length); }
@@ -2071,5 +2118,15 @@ public final class ArrayUtils
         @FunctionalInterface public static interface DoubleToLongMapper    { long    map(double value); }
         @FunctionalInterface public static interface DoubleToFloatMapper   { float   map(double value); }
         @FunctionalInterface public static interface DoubleToDoubleMapper  { double  map(double value); }
+        
+        @FunctionalInterface public static interface GenericAction<T> { void run(T       value); }
+        @FunctionalInterface public static interface BooleanAction    { void run(boolean value); }
+        @FunctionalInterface public static interface ByteAction       { void run(byte    value); }
+        @FunctionalInterface public static interface CharAction       { void run(char    value); }
+        @FunctionalInterface public static interface ShortAction      { void run(short   value); }
+        @FunctionalInterface public static interface IntAction        { void run(int     value); }
+        @FunctionalInterface public static interface LongAction       { void run(long    value); }
+        @FunctionalInterface public static interface FloatAction      { void run(float   value); }
+        @FunctionalInterface public static interface DoubleAction     { void run(double  value); }
     }
 }
