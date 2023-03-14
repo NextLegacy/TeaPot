@@ -38,12 +38,12 @@ public class Input
 {
     private final Keyboard KEYBOARD;
     
-    private final Mouse MOUSE;
-    private final Wheel WHEEL;
+    private final Mouse    MOUSE  ;
+    private final Wheel    WHEEL  ;
     private final Button[] BUTTONS;
     
     private boolean isWindowFocused;
-    private boolean isWindowActive;
+    private boolean isWindowActive ;
 
     private int windowState;
 
@@ -55,8 +55,8 @@ public class Input
 
         KEYBOARD = new Keyboard();
 
-        MOUSE = new Mouse();
-        WHEEL = new Wheel();
+        MOUSE   = new Mouse();
+        WHEEL   = new Wheel();
         BUTTONS = new Button[] { new Button(), WHEEL, new Button() };
 
         isWindowFocused = false;
