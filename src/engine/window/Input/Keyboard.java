@@ -43,7 +43,9 @@ public final class Keyboard
     
         for (Field field : fields) 
         {
-            if (Modifier.isPrivate(field.getModifiers()) || !Modifier.isStatic(field.getModifiers())) 
+            int modifiers = field.getModifiers();
+
+            if (Modifier.isPrivate(modifiers) || !Modifier.isStatic(modifiers)) 
                 continue;
 
             try
