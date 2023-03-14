@@ -53,6 +53,8 @@ public abstract class Window
     private FinalVector position;
     private FinalVector size;
 
+    private FinalVector windowSize;
+
     private boolean isInFullScreenMode;
 
     public Window(Screen screen, Vector4 size, String... layers)
@@ -68,8 +70,13 @@ public abstract class Window
 
     private final void initializeFrame()
     {
+        destroyFrame();
+
         frame = new Frame(screen.GRAPHICS_CONFIGURATION);
-        input = new Input().bindToFrame(frame);
+        
+        if (input == null) input = new Input();
+
+        input.bindToFrame(frame);
 
         frame.setUndecorated(true);
 
@@ -85,6 +92,14 @@ public abstract class Window
         setPositionToCenter();
 
         if (isInFullScreenMode) setFullScreen(true);
+    }
+
+    private final void destroyFrame()
+    {
+        if (frame == null) return;
+
+        frame.dispose();
+        frame = null;
     }
 
     private final void initializeBuffers()
@@ -105,16 +120,14 @@ public abstract class Window
 
     public final void setFullScreen(boolean fullScreen)
     {
-        //if (isInFullScreenMode == fullScreen) return; 
-
-        final Vector4 oldSize = size;
-
-        if   (fullScreen) screen.setFullScreen(frame, () -> { isInFullScreenMode = false; setSize(oldSize); });
+        if   (fullScreen) screen.setFullScreen(frame, () -> { isInFullScreenMode = false; updateFrameSize(); });
         else              screen.setFullScreen(null , null);
 
         isInFullScreenMode = fullScreen;
         
-        setSize(screen.SCREEN_SIZE);
+        size = windowSize;
+
+        updateFrameSize();
     }
 
     public final void setScreen(final Screen screen)
@@ -122,15 +135,19 @@ public abstract class Window
         if (screen == null) throw new NullPointerException("Screen is null!");
         
         this.screen = screen;
+
         initializeFrame();
     }
 
     public final void setSize(Vector4 size)
     {
-        if (isInFullScreenMode) size = screen.SCREEN_SIZE;
+        windowSize = size.toFinalVector();
 
-        this.size = size.toFinalVector();
+        updateFrameSize();
+    }
 
+    private final void updateFrameSize()
+    {
         if (frame != null) setFrameSize();
         
         initializeBuffers();
