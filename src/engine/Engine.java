@@ -39,7 +39,7 @@ public final class Engine implements IActivatable
     public Engine(Screen screen, Vector4 size, int tps, int fps, String... layers)
     {
         window   = new GameWindow(screen, size, layers);
-        gameLoop = new EngineGameLoop(this, tps, fps);
+        gameLoop = new EngineGameLoop(tps, fps);
 
         activeScene = sceneToLoad = null;
 
@@ -157,9 +157,14 @@ public final class Engine implements IActivatable
      */
     private final class EngineGameLoop extends GameLoop
     {
-        final Engine engine;
+        private final Engine engine;
 
-        public EngineGameLoop(Engine engine, int TPS, int FPS) { super(TPS, FPS); this.engine = engine; }
+        public EngineGameLoop(int TPS, int FPS) 
+        {
+            super(TPS, FPS); 
+
+            engine = Engine.this;
+        }
 
         private void tryLoadScene()
         {
@@ -191,6 +196,8 @@ public final class Engine implements IActivatable
         @Override
         public void end() 
         {
+            // TODO: Engine ends out of nowhere
+            
             if (activeScene != null) activeScene.destroy();
             if (sceneToLoad != null) sceneToLoad.destroy();
 
