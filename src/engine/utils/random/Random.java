@@ -21,8 +21,8 @@ public final class Random
 
     public final State state;
 
-    public Random() { this(Time.nanos()); }
-    public Random(final long seed) { this.state = new xoshiro256ss(seed); }
+    public Random(                 ) { this(Time.nanos()); }
+    public Random(final long  seed ) { state = new xoshiro256ss(seed); }
     public Random(final State state) { this.state = state; }
 
     /**
@@ -122,7 +122,7 @@ public final class Random
      */
     public static abstract class State
     {
-        final long[] state;
+        protected final long[] state;
 
         protected State(final long seed)
         {
