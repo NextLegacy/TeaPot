@@ -40,7 +40,7 @@ public final class Screen
     }
 
     public final GraphicsDevice GRAPHICS_DEVICE;
-    public final GraphicsConfiguration GRAPHICS_CONFIGURATION; //their are multiple GraphicsConfigurations per GraphicsDevice, but this should be fine (I hope so atleast)
+    public final GraphicsConfiguration GRAPHICS_CONFIGURATION; //there are multiple GraphicsConfigurations per GraphicsDevice, but this should be fine (I hope so atleast)
     public final FinalVector SCREEN_SIZE;
 
     private Screen(GraphicsDevice graphicsDevice)
