@@ -1,7 +1,6 @@
 package engine;
 
 import engine.utils.ArrayUtils;
-import engine.utils.Lambda.Func1;
 import engine.utils.activatable.IActivatable;
 import engine.utils.activatable.ObjectIsNotActiveException;
 import engine.utils.destroyable.IDestroyable;
@@ -24,34 +23,11 @@ public abstract class Scene implements IActivatable, IDestroyable
     public Scene()
     {
         engine             = null             ;
-
         gameObjectsInScene = new GameObject[0];
         currentGameObjects = new GameObject[0];
     }
 
     void setEngine(Engine engine) { this.engine = engine; }
-
-    public final boolean isDestroyed() { return isDestroyed; }
-
-    @Override
-    public final void destroy()
-    {
-        if (isDestroyed) return; 
-
-        updateGameObjects();
-
-        for (int i = 0; i < currentGameObjects.length; i++)
-            currentGameObjects[i].destroy();
-
-        isDestroyed        = true;
-
-        engine             = null;
-
-        gameObjectsInScene = null;
-        currentGameObjects = null;
-
-        end();
-    }
 
     public final Engine  engine       () { throwIfIsUnvalid(this); return engine           ; }
     public final Window  window       () { throwIfIsUnvalid(this); return engine.window()  ; }
@@ -117,7 +93,7 @@ public abstract class Scene implements IActivatable, IDestroyable
     public boolean isActive() { return isActiveScene(); }
 
     protected void init() { }
-    protected void end () { } //destroy equivalend
+    protected void end () { } //destroy equivalent
     
     void update() 
     { 
@@ -144,6 +120,28 @@ public abstract class Scene implements IActivatable, IDestroyable
     void updateGameObjects()
     {
         currentGameObjects = ArrayUtils.clone(gameObjectsInScene);
+    }
+
+    public final boolean isDestroyed() { return isDestroyed; }
+
+    @Override
+    public final void destroy()
+    {
+        if (isDestroyed) return; 
+
+        updateGameObjects();
+
+        for (int i = 0; i < currentGameObjects.length; i++)
+            currentGameObjects[i].destroy();
+
+        isDestroyed        = true;
+
+        engine             = null;
+
+        gameObjectsInScene = null;
+        currentGameObjects = null;
+
+        end();
     }
 
     public static final Scene emptyScene()
