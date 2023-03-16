@@ -25,7 +25,7 @@ public abstract class Script implements IActivatable, IDestroyable
    
     private boolean startedOnce;
 
-    public Script() { }
+    public Script() { activate(); }
 
     void setGameObject(GameObject gameObject) { this.gameObject = gameObject; }
     
