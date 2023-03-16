@@ -195,6 +195,7 @@ public abstract class GameLoop implements Runnable
             }
         }
 
+        // TODO: seems like the game loop is stopping when it actully should not
         end();
 
         isThreadRunning  = false;
