@@ -191,7 +191,7 @@ public final class GameObject implements IActivatable, IDestroyable
     void onDestroy    () { updateScripts(); for (Script script : currentScripts) script.onDestroy             (); }
     void onSceneChange() { updateScripts(); for (Script script : currentScripts) script.onSceneChange         (); }
 
-    void updateScripts() { currentScripts = ArrayUtils.clone(scripts); }
+    void updateScripts() { currentScripts = scripts; }
 
     @Override
     public void setActive(boolean state) 
