@@ -25,6 +25,8 @@ public final class Screen
 
     public static final Screen[] SCREENS;
 
+    public static final Screen DEFAULT_SCREEN;
+
     static 
     {
         GRAPHICS_ENVIRONMENT = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -37,6 +39,10 @@ public final class Screen
         {
             SCREENS[i] = new Screen(GRAPHICS_DEVICES[i]);
         }
+
+        if (SCREENS.length == 0) throw new RuntimeException("No screens found");
+
+        DEFAULT_SCREEN = SCREENS[0];
     }
 
     public final GraphicsDevice GRAPHICS_DEVICE;
