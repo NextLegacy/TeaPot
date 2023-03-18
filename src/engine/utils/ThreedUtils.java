@@ -9,6 +9,8 @@ import engine.threed.Mesh;
 import engine.threed.Triangle;
 import engine.threed.Vertex;
 
+import static engine.utils.ArrayUtils.*;
+
 /**
  * A collection of utilities for 3D objects
  * Is not meant to be instantiated
@@ -28,51 +30,56 @@ public final class ThreedUtils
      */
     public static Mesh MeshFromObjFile(String file)
     {
-        // TODO: optimize this (use simple arrays) also get rid of the switch statement
-
         String[] lines = FileUtils.getLines(file);
 
-        ArrayList<Triangle> polygons = new ArrayList<>();
+        Triangle[] polygons = new Triangle[0];
 
-        ArrayList<Vector4> vertices = new ArrayList<>();
-        ArrayList<Vector4> textures  = new ArrayList<>();
-        ArrayList<Vector4> normals   = new ArrayList<>();
+        Vector4[] vertices = new Vector4[0];
+        Vector4[] textures = new Vector4[0];
+        Vector4[] normals  = new Vector4[0];
 
         for (int i = 0; i < lines.length; i++)
         {
             String line = lines[i];
             String lineArgs = line.substring(2).trim();
-            String type = line.substring(0, 2);
+            char[] type = line.substring(0, 2).toCharArray();
 
             String[] args = lineArgs.split(" ");
 
-            switch(type)
+            if (type[0] == 'v')
+                pushVertexData
+                (
+                    type[1] == ' ' ? vertices : 
+                    type[1] == 't' ? textures : 
+                    type[1] == 'n' ? normals  : null, 
+                    args
+                );
+
+            if (type[0] == 't')
             {
-                case "v ": vertices.add(fvec(toDouble(args[0]), toDouble(args[1]), toDouble(args[2] ))); break;
-                case "vt": textures .add(fvec(toDouble(args[0]), toDouble(args[1]), 1                )); break;
-                case "vn": normals  .add(fvec(toDouble(args[0]), toDouble(args[1]), toDouble(args[2]))); break;
+                Vertex[] polygonVertices = new Vertex[3];
 
-                case "f ":
-                    Vertex[] polygonVertices = new Vertex[3];
+                for (int j = 0; j < 3; j++)
+                {
+                    String[] faceArgs = args[j].split("/");
+                    int[] indices = { toInt(faceArgs[0]), toInt(faceArgs[1]), toInt(faceArgs[2]) };
 
-                    for (int j = 0; j < 3; j++)
-                    {
-                        String[] faceArgs = args[j].split("/");
-                        int[] indices = { toInt(faceArgs[0]), toInt(faceArgs[1]), toInt(faceArgs[2]) };
+                    polygonVertices[j] = new Vertex(
+                        vertices [indices[0]-1], 
+                        textures [indices[1]-1],
+                        normals  [indices[2]-1] 
+                    );
+                }
 
-                        polygonVertices[j] = new Vertex(
-                            vertices.get(indices[0]-1), 
-                            textures .get(indices[1]-1),
-                            normals  .get(indices[2]-1) 
-                        );
-                    }
-
-                    polygons.add(new Triangle(polygonVertices[0], polygonVertices[1], polygonVertices[2]));
-
-                    break;
+                polygons = push(polygons, new Triangle(polygonVertices[0], polygonVertices[1], polygonVertices[2]));
             }
         }
 
-        return new Mesh(polygons.toArray(Triangle[]::new));
+        return new Mesh(polygons);
+    }
+
+    private static Vector4[] pushVertexData(final Vector4[] array, final String[] args)
+    {
+        return push(array, fvec(toDouble(args[0]), toDouble(args[1]), toDouble(args[2])));
     }
 }
