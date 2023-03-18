@@ -10,7 +10,6 @@ public final class ObjectIsDestroyedException extends RuntimeException
         super("Can not perform Action, " + destroyable + " is destroyed!");
     }
 
-
     /**
      * This method throws an {@link ObjectIsDestroyedException} if the object is destroyed. <p>
      * This method can be used to validate if an object is destroyed. <p>
