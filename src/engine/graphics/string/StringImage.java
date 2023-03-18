@@ -32,6 +32,12 @@ import engine.utils.ImageUtils;
  *       This would also be beneficial for a UI system.
  */
 
+ /**
+  * A multi line string image that can be rendered to the screen.
+  * 
+  * @author NextLegacy
+  * @version 1.0
+  */
 public class StringImage extends Image 
 {
     public StringImage(String string, Font font)
