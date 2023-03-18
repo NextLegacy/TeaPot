@@ -13,8 +13,18 @@ package engine.utils.destroyable;
  */
 public interface IDestroyable 
 {
+    /**
+     * Destroys the object.
+     */
     void destroy();
 
+    /**
+     * Checks if the object is destroyed.
+     */
     boolean isDestroyed();
+
+    /**
+     * Checks if the object is not destroyed.
+     */
     default boolean isNotDestroyed() { return !isDestroyed(); }
 }
