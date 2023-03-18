@@ -11,6 +11,12 @@ import engine.math.Vector;
 
 import static engine.utils.MathUtils.*;
 
+/**
+ * A simple string image that can be rendered to the screen.
+ * 
+ * @author NextLegacy
+ * @version 1.0
+ */
 public class SimpleStringImage extends Image 
 {
     private String string;
