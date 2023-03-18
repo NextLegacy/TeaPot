@@ -28,9 +28,7 @@ public final class ImageUtils
 
     static 
     {
-        gfx_config = GraphicsEnvironment
-            .getLocalGraphicsEnvironment().getDefaultScreenDevice()
-            .getDefaultConfiguration();
+        gfx_config = Screen.DEFAULT_SCREEN.GRAPHICS_CONFIGURATION;
     }
 
     public static int[] getBufferedImageDataArray(final BufferedImage bufferedImage)
