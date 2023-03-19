@@ -2,8 +2,6 @@ package engine.utils;
 
 import static engine.utils.MathUtils.*;
 
-import java.util.ArrayList;
-
 import engine.math.Vector4;
 import engine.threed.Mesh;
 import engine.threed.Triangle;
