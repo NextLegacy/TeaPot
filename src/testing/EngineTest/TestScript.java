@@ -19,12 +19,9 @@ public class TestScript extends Script
     @Override
     protected void render() 
     {
-        image().fillColor(0xffab2341); // FIXME: This is not working, why?!
-        image().fillColor(0xffab2341);
-
-        image().drawLine(vec(0, 0), vec(100, 100), 1, 0xff00ffff); // but this does...
-
-        //System.out.println("TestScript.render()");
+        image().fillColor(0xffab2341); // pretty nice color, keep in mind.
+        
+        image().drawLine(vec(0, 0), vec(100, 100), 1, 0xff00ffff);
     }
 
     protected void end() 
