@@ -47,7 +47,7 @@ public class DrawableImage extends Image
     {
         if (!isPixelValid(index)) return; 
 
-        final boolean nearer = z < zBuffer[index]; 
+        final boolean nearer = z <= zBuffer[index]; 
 
         if (!nearer && colorBuffer[index] >> 24 == 0xff) return;
 
