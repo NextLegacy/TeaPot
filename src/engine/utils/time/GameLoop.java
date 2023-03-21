@@ -139,11 +139,11 @@ public abstract class GameLoop implements Runnable
             elapsedTimeInSeconds = elapsedTime * Time.NANOS_TO_SECONDS;
 
             last = now;
-
-            time += elapsedTime;
-
+            
             deltaT += elapsedTime / TICK_INTERVAL;
             deltaF += elapsedTime / FRAME_INTERVAL;
+
+            time += elapsedTime;
 
             while (
                     deltaT >= 1 && // update while respecting intended tps
@@ -167,7 +167,7 @@ public abstract class GameLoop implements Runnable
             if (!isActive())
                 break;
 
-            if (deltaF >= 1)
+            if (deltaF >= 1 && ticks >= 1)
             {
                 final long beforeRender = Time.nanos();
 
@@ -195,7 +195,6 @@ public abstract class GameLoop implements Runnable
             }
         }
 
-        // TODO: seems like the game loop is stopping when it actully should not
         end();
 
         isThreadRunning  = false;
