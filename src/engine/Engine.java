@@ -149,9 +149,8 @@ public final class Engine implements IActivatable
      * mainLoop: while active
      *     If there is a scene to load, destroy old scene if there is one and load the new scene
      *     Start
-     *     Update
-     *     Render
-     * mainLoop: end because Engine Deactivate 
+     *     Update and Render alternately
+     * mainLoop: end because of Engine deactivation
      *     ↓
      * Close Window
      */
@@ -196,8 +195,6 @@ public final class Engine implements IActivatable
         @Override
         public void end() 
         {
-            // TODO: Engine ends out of nowhere
-            
             if (activeScene != null) activeScene.destroy();
             if (sceneToLoad != null) sceneToLoad.destroy();
 
@@ -229,7 +226,7 @@ public final class Engine implements IActivatable
         @Override
         public boolean isActive() 
         {
-            return input().isActive() && engine.isActive();  
+            return engine.isActive() && input().isActive(); 
         }
     }
 }
