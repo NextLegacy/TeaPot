@@ -12,6 +12,7 @@ import engine.math.FinalVector;
 import engine.math.Vector4;
 import engine.utils.ImageUtils;
 import engine.utils.Screen;
+import engine.utils.time.Time;
 import engine.graphics.DrawableImage;
 import engine.window.Input.Input;
 
@@ -179,6 +180,7 @@ public abstract class Window
         return setPosition(screen.SCREEN_SIZE.dividedBy(2).minus(size.dividedBy(2)));
     }
     
+    public final Frame frame                 () { return frame         ; } // TODO: Remove this method later
     public final FinalVector   size          () { return size          ; }
     public final FinalVector   position      () { return position      ; }
     public final int           width         () { return (int) size.x(); }
@@ -207,14 +209,35 @@ public abstract class Window
         return null;
     }
 
+    private static final long MINIMUM_TIME_TO_LOAD = 10_000_000_000L;
+
     public final void start()
     {
         if (frame != null)
-            return;
+            return; 
 
         initializeFrame();
 
-        frame.setVisible(true);    
+        frame.setVisible(true);
+
+        ensureFrameIsLoadedAfterCreating();
+    }
+
+    /**
+     * Ensures that the frame is loaded after creating it.
+     * Is used in start() methods and ensures the frame is loaded and active after function call.
+     * 
+     * @throws RuntimeException if the frame is not loaded after a certain time.
+     */
+    private final void ensureFrameIsLoadedAfterCreating()
+    {
+        final long start = Time.nanos();
+
+        while (!input.isActive())
+        {
+            if (Time.nanos() - start > MINIMUM_TIME_TO_LOAD)
+                throw new RuntimeException("Frame exceeded minimum time to load (" + MINIMUM_TIME_TO_LOAD + " ns)!"); // TODO: Create a custom exception
+        }
     }
 
     public final void forceStart()
@@ -267,7 +290,7 @@ public abstract class Window
 
     public final void renderWindowBufferOntoFrame()
     {
-        if (frame == null) return;
+        if (frame == null || !input.isFocused()) return;
 
         if (strategy == null)
         {        
