@@ -97,6 +97,8 @@ public abstract class Scene implements IActivatable, IDestroyable
     
     void update() 
     { 
+        // FIXME: update() gets called before init() 
+        
         for (GameObject gameObject : currentGameObjects)
             if (gameObject.isActive())
                 gameObject.update();
