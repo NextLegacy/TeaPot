@@ -113,6 +113,13 @@ public final class Random
         return new String(chars);
     }
 
+    /**
+     * @return a random color
+     */
+    public final int color()
+    {
+        return randomInt(0xffffff);
+    }
 
     /**
      * A stateful random number generator.
