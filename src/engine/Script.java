@@ -11,6 +11,8 @@ import engine.window.Input.Key;
 import engine.window.Input.Mouse;
 import engine.window.Input.Wheel;
 
+
+// FIXME: update() and render() are gettings called before start() in scripts
 /**
  * A script that can be attached to a GameObject.
  * 
