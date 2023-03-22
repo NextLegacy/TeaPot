@@ -36,6 +36,7 @@ public final class Engine implements IActivatable
 
     private WindowLayer currentImage; //Variable that is only defined when Script.render is executed
 
+    // FIXME: actual tps and fps vary a lot from the given values
     public Engine(Screen screen, Vector4 size, int tps, int fps, String... layers)
     {
         window   = new GameWindow(screen, size, layers);
