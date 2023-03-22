@@ -119,6 +119,7 @@ public abstract class Window
 
     public final Window setTitle(String newTitle) { frame.setTitle(newTitle); return this; }
 
+    // TODO: this seems wrongs, why set size to windowSize and updateFrameSize()?
     public final void setFullScreen(boolean fullScreen)
     {
         if   (fullScreen) screen.setFullScreen(frame, () -> { isInFullScreenMode = false; updateFrameSize(); });
