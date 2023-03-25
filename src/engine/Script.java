@@ -1,6 +1,7 @@
 package engine;
 
 import engine.math.Transform;
+import engine.utils.ArrayUtils;
 import engine.utils.activatable.IActivatable;
 import engine.utils.destroyable.IDestroyable;
 import engine.window.Window;
@@ -55,27 +56,19 @@ public abstract class Script implements IActivatable, IDestroyable
     protected final double frameDeltaTime() { return engine().deltaTime(); }
     protected final double tickDeltaTime () { return engine().deltaTime(); }
 
+    final void tryStartOnce() { if (startedOnce || isNotActive()) return; startedOnce = true; start(); }
+
     protected void start () { }
     protected void update() { }
     protected void render() { }
 
-    protected void onActivate  () { }
+    protected void onActivate() { }
     protected void onDeactivate() { }
-
     protected void onGameObjectActivate  () { }
     protected void onGameObjectDeactivate() { }
     protected void onGameObjectDestroy   () { }
     protected void onDestroy    () { }
     protected void onSceneChange() { }
-
-    final void tryStartOnce()
-    {
-        if (startedOnce) return;
-        if (!isActive()) return;
-
-        start();
-        startedOnce = true;
-    }
 
     public final void destroy()
     {
