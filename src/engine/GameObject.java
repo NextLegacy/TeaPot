@@ -21,8 +21,10 @@ public final class GameObject implements IActivatable, IDestroyable
     private GameObject   parent  ;
     private GameObject[] children;
 
-    private Script[] scripts       ;
-    private Script[] currentScripts;
+    Script[] scriptsToStart; // Scripts that will be started in the next update
+
+    private Script[] scripts       ; // All scripts that are attached to this GameObject
+    private Script[] currentScripts; // All scripts that are attached in the current update
 
     private Scene scene;
     
@@ -35,6 +37,9 @@ public final class GameObject implements IActivatable, IDestroyable
         children       = new GameObject[0];
         scripts        = new Script    [0];
         currentScripts = new Script    [0];
+        scriptsToStart = new Script    [0];
+
+        activate();
     }
 
     void setScene(Scene newScene) 
@@ -116,6 +121,8 @@ public final class GameObject implements IActivatable, IDestroyable
         script.setGameObject(this);
 
         scripts = push(scripts, script);
+
+        if (script.isActive()) scriptsToStart = push(scriptsToStart, script);
     }
 
     public void removeScript(Script script)
@@ -158,29 +165,33 @@ public final class GameObject implements IActivatable, IDestroyable
         // then, mark the object as destroyed
         isDestroyed = true;
 
+        // at this point, the object is nearly fully destroyed. Call the onDestroy method to allow the objects scripts to do some final things
+        onDestroy();
+
         // finally, remove all references
         scripts  = null;
         children = null;
         parent   = null;
-
-        // at this point, the object is fully destroyed. Call the onDestroy method to allow the object to do last cleanup
-        onDestroy();
     }
-    
+
     void update() 
     {
-        for (Script script : currentScripts)
+        updateScripts();
+
+        for (Script script : scriptsToStart)
             script.tryStartOnce();
+
+        scriptsToStart = new Script[0];
 
         for (Script script : currentScripts) 
             if (script.isActive()) 
                 script.update();
-
-        updateScripts();
     }
 
     void render()
     { 
+        updateScripts();
+
         for (Script script : currentScripts) 
             if (script.isActive())
                 script.render(); 
