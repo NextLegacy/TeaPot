@@ -20,8 +20,6 @@ public class EngineTest extends Scene
         addGameObject(gameObject);
     
         gameObject.addScript(script);
-
-        gameObject.activate();
     }
 
     protected void end() 
@@ -31,7 +29,7 @@ public class EngineTest extends Scene
 
     public static void main(String[] args) 
     {
-        Engine engine = new Engine(Screen.get(0), vec(1080, 720), 4, 60, "main");
+        Engine engine = new Engine(Screen.get(0), vec(1080, 720), 1, 18000, "main");
 
         engine.setActiveScene(new EngineTest());
 
