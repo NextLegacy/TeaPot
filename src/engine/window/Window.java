@@ -79,7 +79,7 @@ public abstract class Window
 
         input.bindToFrame(frame);
 
-        frame.setUndecorated(true);
+        //frame.setUndecorated(true);
 
         frame.setResizable(false);
         
@@ -186,7 +186,7 @@ public abstract class Window
     public final FinalVector   position      () { return position      ; }
     public final int           width         () { return (int) size.x(); }
     public final int           height        () { return (int) size.y(); }
-    public final int           verticalBorder() { return frame.getInsets().top + frame.getInsets().bottom; }
+    public final int           verticalBorder() { return frame.getInsets().top; }
     public final Input         input         () { return input   ; }
     public final String        title         () { return frame.getTitle(); }
     
