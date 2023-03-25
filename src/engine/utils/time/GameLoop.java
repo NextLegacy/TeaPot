@@ -44,6 +44,7 @@ public abstract class GameLoop implements Runnable
     private double tickDeltaTime;
     private double tickDeltaTimeInSeconds;
 
+    // FIXME: actual tps and fps vary from the given tps and fps, investigate on this
     public GameLoop(int TPS, int FPS) { setTPS(TPS); setFPS(FPS); }
 
     public void setTPS(int TPS)
@@ -167,7 +168,7 @@ public abstract class GameLoop implements Runnable
             if (!isActive())
                 break;
 
-            if (deltaF >= 1 && ticks >= 1)
+            if (deltaF >= 1)
             {
                 final long beforeRender = Time.nanos();
 
