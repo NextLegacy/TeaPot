@@ -97,17 +97,17 @@ public abstract class Scene implements IActivatable, IDestroyable
     
     void update() 
     { 
-        // FIXME: update() gets called before init() 
-        
+        updateGameObjects();
+
         for (GameObject gameObject : currentGameObjects)
             if (gameObject.isActive())
                 gameObject.update();
-
-        updateGameObjects();
     }
     
     void render() 
     {
+        updateGameObjects();
+        
         for (GameObject gameObject : currentGameObjects)
             if (gameObject.isActive())
                 gameObject.render();
@@ -121,7 +121,7 @@ public abstract class Scene implements IActivatable, IDestroyable
 
     void updateGameObjects()
     {
-        currentGameObjects = ArrayUtils.clone(gameObjectsInScene);
+        currentGameObjects = gameObjectsInScene;
     }
 
     public final boolean isDestroyed() { return isDestroyed; }
