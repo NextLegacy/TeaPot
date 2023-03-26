@@ -1,12 +1,17 @@
 package engine.window;
 
+import java.awt.AWTException;
+import java.awt.BufferCapabilities;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.awt.image.VolatileImage;
 
 import engine.math.FinalVector;
 import engine.math.Vector4;
@@ -15,7 +20,6 @@ import engine.utils.Screen;
 import engine.utils.time.Time;
 import engine.graphics.DrawableImage;
 import engine.window.Input.Input;
-
 /**
  * This class is used to create a window. <p>
  * 
@@ -47,7 +51,10 @@ public abstract class Window
 
     private String[] layers;
     
-    private BufferedImage windowBufferedImage;
+    private volatile VolatileImage frameBuffer;
+
+    private BufferedImage preRenderBuffer;
+
     private DrawableImage windowBuffer;
     private WindowLayer[] windowLayers;
 
@@ -91,8 +98,22 @@ public abstract class Window
 
         setFrameSize();
         setPositionToCenter();
-
+        
         if (isInFullScreenMode) setFullScreen(true);
+
+        initializeBufferStrategy();
+    }
+
+    private final void initializeBufferStrategy()
+    {
+        try 
+        {
+            frame.createBufferStrategy(2, screen.GRAPHICS_CONFIGURATION.getBufferCapabilities());
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+        
+        strategy = frame.getBufferStrategy();
     }
 
     private final void destroyFrame()
@@ -105,9 +126,10 @@ public abstract class Window
 
     private final void initializeBuffers()
     {
-        windowBufferedImage = ImageUtils.createCompatibleBufferedImage(size);
+        preRenderBuffer = ImageUtils.createCompatibleBufferedImage(size);
+        frameBuffer = ImageUtils.createCompatibleVolatileImage(size);
         
-        windowBuffer = new DrawableImage(windowBufferedImage);
+        windowBuffer = new DrawableImage(preRenderBuffer);
 
         WindowLayer[] _windowLayers = new WindowLayer[layers.length];
 
@@ -181,7 +203,6 @@ public abstract class Window
         return setPosition(screen.SCREEN_SIZE.dividedBy(2).minus(size.dividedBy(2)));
     }
     
-    public final Frame frame                 () { return frame         ; } // TODO: Remove this method later
     public final FinalVector   size          () { return size          ; }
     public final FinalVector   position      () { return position      ; }
     public final int           width         () { return (int) size.x(); }
@@ -270,7 +291,8 @@ public abstract class Window
     {
         renderImages();
         renderImagesOntoWindowBuffer();
-        renderWindowBufferOntoFrame();
+        renderWindowBufferOntoFrameBuffer();
+        renderFrameBufferOntoFrame();
     }
 
     public abstract void renderImage(WindowLayer image);
@@ -289,16 +311,21 @@ public abstract class Window
             windowBuffer.drawImage(windowLayers[i]);
     }
 
-    public final void renderWindowBufferOntoFrame()
+    Graphics graphics;
+
+    public final void renderWindowBufferOntoFrameBuffer()
+    {
+        if (graphics == null)
+            graphics = frameBuffer.getGraphics();
+
+        graphics.drawImage(preRenderBuffer, 0, 0, null);
+
+        //graphics.dispose();
+    }
+
+    public final void renderFrameBufferOntoFrame()
     {
         if (frame == null || !input.isFocused()) return;
-
-        if (strategy == null)
-        {        
-            frame.createBufferStrategy(2);
-            
-            strategy = frame.getBufferStrategy();
-        }
 
         do 
         {
@@ -308,15 +335,15 @@ public abstract class Window
 
                 //RENDER START
 
-                    graphics.setColor(Color.BLACK);
-                    graphics.fillRect(0, 0, width(), height()); 
+                    //graphics.setColor(Color.BLACK);
+                    //graphics.fillRect(0, 0, width(), height()); 
 
-                    graphics.drawImage(windowBufferedImage, 0, verticalBorder(), null);
+                    graphics.drawImage(frameBuffer, 0, verticalBorder(), null);
                 
                 //RENDER END
 
                 graphics.dispose();
-    
+
             } while (strategy.contentsRestored());
     
             strategy.show();
