@@ -7,8 +7,8 @@ package engine.utils.time;
  * 
  * <ul>
  * <li>{@link #start()} - gets called when the game loop starts</li>
- * <li>{@link #update(double)} - gets called every tick</li>
- * <li>{@link #render(double)} - gets called every frame</li>
+ * <li>{@link #update(float)} - gets called every tick</li>
+ * <li>{@link #render(float)} - gets called every frame</li>
  * <li>{@link #end()} - gets called when the game loop ends</li> 
  * </ul>
  * 
@@ -20,29 +20,29 @@ public abstract class GameLoop implements Runnable
     private Thread thread;
     
     private boolean isThreadRunning;
-    private boolean shouldStopThread;
+    private volatile boolean shouldStopThread;
 
     private int FPS;
     private int TPS;
 
-    private double TICK_INTERVAL;
-    private double FRAME_INTERVAL;
+    private float TICK_INTERVAL;
+    private float FRAME_INTERVAL;
 
-    private double TICK_INTERVAL_IN_SECONDS;
-    private double FRAME_INTERVAL_IN_SECONDS;
+    private float TICK_INTERVAL_IN_SECONDS;
+    private float FRAME_INTERVAL_IN_SECONDS;
 
     private long   elapsedTime;
-    private double elapsedTimeInSeconds;
+    private float elapsedTimeInSeconds;
 
-    private double currentFPS;
-    private double currentTPS;
+    private float currentFPS;
+    private float currentTPS;
 
-    private double frameSkips;
+    private float frameSkips;
 
-    private double frameDeltaTime;
-    private double frameDeltaTimeInSeconds;
-    private double tickDeltaTime;
-    private double tickDeltaTimeInSeconds;
+    private float frameDeltaTime;
+    private float frameDeltaTimeInSeconds;
+    private float tickDeltaTime;
+    private float tickDeltaTimeInSeconds;
 
     // FIXME: actual tps and fps vary from the given tps and fps, investigate on this
     public GameLoop(int TPS, int FPS) { setTPS(TPS); setFPS(FPS); }
@@ -51,16 +51,16 @@ public abstract class GameLoop implements Runnable
     {
         this.TPS = TPS;
 
-        TICK_INTERVAL            = 1_000_000_000.0d / TPS;
-        TICK_INTERVAL_IN_SECONDS =             1.0d / TPS;
+        TICK_INTERVAL            = 1_000_000_000.0f / TPS;
+        TICK_INTERVAL_IN_SECONDS =             1.0f / TPS;
     }
 
     public void setFPS(int FPS)
     {
         this.FPS = FPS;
 
-        FRAME_INTERVAL            = 1_000_000_000.0d / FPS;
-        FRAME_INTERVAL_IN_SECONDS =             1.0d / FPS;
+        FRAME_INTERVAL            = 1_000_000_000.0f / FPS;
+        FRAME_INTERVAL_IN_SECONDS =             1.0f / FPS;
     }
 
     public void startThread()
@@ -86,18 +86,18 @@ public abstract class GameLoop implements Runnable
 
     public boolean isThreadRunning        () { return isThreadRunning        ; }
 
-    public double  currentFPS             () { return currentFPS             ; }
-    public double  currentTPS             () { return currentTPS             ; }
+    public float  currentFPS             () { return currentFPS             ; }
+    public float  currentTPS             () { return currentTPS             ; }
 
-    public double  frameSkips             () { return frameSkips             ; }
+    public float  frameSkips             () { return frameSkips             ; }
 
-    public double  frameDeltaTime         () { return frameDeltaTime         ; }
-    public double  frameDeltaTimeInSeconds() { return frameDeltaTimeInSeconds; }
-    public double  tickDeltaTime          () { return tickDeltaTime          ; }
-    public double  tickDeltaTimeInSeconds () { return tickDeltaTimeInSeconds ; }
+    public float  frameDeltaTime         () { return frameDeltaTime         ; }
+    public float  frameDeltaTimeInSeconds() { return frameDeltaTimeInSeconds; }
+    public float  tickDeltaTime          () { return tickDeltaTime          ; }
+    public float  tickDeltaTimeInSeconds () { return tickDeltaTimeInSeconds ; }
 
-    public double  elapsedTime            () { return elapsedTime            ; }
-    public double  elapsedTimeInSeconds   () { return elapsedTimeInSeconds   ; }
+    public float  elapsedTime            () { return elapsedTime            ; }
+    public float  elapsedTimeInSeconds   () { return elapsedTimeInSeconds   ; }
 
     public abstract boolean isActive();
 
@@ -112,10 +112,10 @@ public abstract class GameLoop implements Runnable
         isThreadRunning = true;
 
         elapsedTime          = 0l  ;
-        elapsedTimeInSeconds = 0.0d;
+        elapsedTimeInSeconds = 0.0f;
 
-        double deltaT = 0.0d;
-        double deltaF = 0.0d;
+        float deltaT = 0.0f;
+        float deltaF = 0.0f;
         long   time   = 0l  ;
 
         long now  = Time.nanos(); 
@@ -137,7 +137,7 @@ public abstract class GameLoop implements Runnable
             now = Time.nanos();
 
             elapsedTime = now - last;
-            elapsedTimeInSeconds = elapsedTime * Time.NANOS_TO_SECONDS;
+            elapsedTimeInSeconds = elapsedTime * 1.0E-9f;
 
             last = now;
             
@@ -158,7 +158,7 @@ public abstract class GameLoop implements Runnable
                 final long afterUpdate = Time.nanos();
 
                 tickDeltaTime = (afterUpdate - beforeUpdate);
-                tickDeltaTimeInSeconds = tickDeltaTime * Time.NANOS_TO_SECONDS;
+                tickDeltaTimeInSeconds = tickDeltaTime * 1.0E-9f;
 
                 ticks++;
                 deltaT--;
@@ -177,7 +177,7 @@ public abstract class GameLoop implements Runnable
                 final long afterRender = Time.nanos();
 
                 frameDeltaTime = (afterRender - beforeRender);
-                frameDeltaTimeInSeconds = frameDeltaTime * Time.NANOS_TO_SECONDS;
+                frameDeltaTimeInSeconds = frameDeltaTime * 1.0E-9f;
 
                 frames++;
                 deltaF--;
