@@ -6,6 +6,7 @@ import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.awt.image.VolatileImage;
 
 import engine.graphics.Image;
 import engine.math.FinalVector;
@@ -70,6 +71,16 @@ public final class ImageUtils
     public static BufferedImage createCompatibleBufferedImage(Vector4 size)
     {
         return createCompatibleBufferedImage((int) size.x(), (int) size.y());
+    }
+
+    public static VolatileImage createCompatibleVolatileImage(int width, int height)
+    {
+        return gfx_config.createCompatibleVolatileImage(width, height, Transparency.TRANSLUCENT);
+    }
+
+    public static VolatileImage createCompatibleVolatileImage(Vector4 size)
+    {
+        return createCompatibleVolatileImage((int) size.x(), (int) size.y());
     }
 
     public static BufferedImage toCompatibleBufferedImage(BufferedImage image) 
