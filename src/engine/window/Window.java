@@ -51,7 +51,7 @@ public abstract class Window
 
     private String[] layers;
     
-    private volatile VolatileImage frameBuffer;
+    private volatile VolatileImage frameBuffer; // todo: remove use of volatile image, impacts performance negatively
 
     private BufferedImage preRenderBuffer;
 
