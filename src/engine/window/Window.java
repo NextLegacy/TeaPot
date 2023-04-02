@@ -7,7 +7,6 @@ import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.awt.image.VolatileImage;
 
 import engine.math.FinalVector;
 import engine.math.Vector4;
@@ -48,9 +47,7 @@ public abstract class Window
 
     private String[] layers;
     
-    private volatile VolatileImage frameBuffer; // todo: remove use of volatile image, impacts performance negatively
-
-    private BufferedImage preRenderBuffer;
+    private BufferedImage frameBuffer;
 
     private DrawableImage windowBuffer;
     private WindowLayer[] windowLayers;
@@ -123,10 +120,9 @@ public abstract class Window
 
     private final void initializeBuffers()
     {
-        preRenderBuffer = ImageUtils.createCompatibleBufferedImage(size);
-        frameBuffer = ImageUtils.createCompatibleVolatileImage(size);
+        frameBuffer = ImageUtils.createCompatibleBufferedImage(size);
         
-        windowBuffer = new DrawableImage(preRenderBuffer);
+        windowBuffer = new DrawableImage(frameBuffer);
 
         WindowLayer[] _windowLayers = new WindowLayer[layers.length];
 
@@ -288,7 +284,6 @@ public abstract class Window
     {
         renderImages();
         renderImagesOntoWindowBuffer();
-        renderWindowBufferOntoFrameBuffer();
         renderFrameBufferOntoFrame();
     }
 
@@ -306,18 +301,6 @@ public abstract class Window
 
         for (int i = 0; i < windowLayers.length; i++)
             windowBuffer.drawImage(windowLayers[i]);
-    }
-
-    Graphics graphics;
-
-    public final void renderWindowBufferOntoFrameBuffer()
-    {
-        if (graphics == null)
-            graphics = frameBuffer.getGraphics();
-
-        graphics.drawImage(preRenderBuffer, 0, 0, null);
-
-        //graphics.dispose();
     }
 
     public final void renderFrameBufferOntoFrame()
