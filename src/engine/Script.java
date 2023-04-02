@@ -1,7 +1,6 @@
 package engine;
 
 import engine.math.Transform;
-import engine.utils.ArrayUtils;
 import engine.utils.activatable.IActivatable;
 import engine.utils.destroyable.IDestroyable;
 import engine.window.Window;
