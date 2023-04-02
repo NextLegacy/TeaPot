@@ -9,6 +9,15 @@ import static engine.utils.ArrayUtils.*;
 
 import engine.math.Transform;
 
+/**
+ * A GameObject is a object that can be added to a {@link Scene}.
+ * A GameObject can have a {@link Transform} and can have multiple {@link Script}s attached to it.
+ * The GameObject can also have children, which are also GameObjects.
+ * GameObjects can be activated and destroyed.
+ * 
+ * @author NextLegacy
+ * @version 1.0.0
+ */
 public final class GameObject implements IActivatable, IDestroyable
 {
     private String name;
