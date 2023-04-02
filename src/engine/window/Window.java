@@ -1,14 +1,10 @@
 package engine.window;
 
 import java.awt.AWTException;
-import java.awt.BufferCapabilities;
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
@@ -20,6 +16,7 @@ import engine.utils.Screen;
 import engine.utils.time.Time;
 import engine.graphics.DrawableImage;
 import engine.window.Input.Input;
+
 /**
  * This class is used to create a window. <p>
  * 
