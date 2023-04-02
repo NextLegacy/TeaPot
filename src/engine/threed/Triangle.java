@@ -16,11 +16,6 @@ public final class Triangle
 
     public Triangle(final Vertex a, final Vertex b, final Vertex c) { this.a = a; this.b = b; this.c = c; }
 
-    public String toString()
-    {
-        return "Triangle(" + a + " \n        " + b + " \n        " + c + ")";
-    }
-
     public Triangle transformed(final Matrix matrix)
     {
         return new Triangle
@@ -56,5 +51,10 @@ public final class Triangle
             b.clone(),
             c.clone()    
         );
+    }
+
+    public String toString()
+    {
+        return "Triangle(" + a + " \n        " + b + " \n        " + c + ")";
     }
 }
