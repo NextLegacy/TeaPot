@@ -11,6 +11,13 @@ import engine.utils.ArrayUtils.ArrayFunctions.*;
 
 import static engine.utils.ArrayUtils.*;
 
+/**
+ * A scene is a collection of GameObjects that get updated and rendered by the engine.
+ * To load a scene, use the {@link Engine#loadScene(Scene)} method.
+ * 
+ * @author NextLegacy
+ * @version 1.0.0
+ */
 public abstract class Scene implements IActivatable, IDestroyable
 {
     private Engine engine;
