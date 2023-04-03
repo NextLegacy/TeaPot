@@ -3,6 +3,12 @@ package engine.utils.logger;
 import engine.utils.Lambda.Func1;
 import engine.utils.color.ANSICode;
 
+/**
+ * The LoggerLabel class represents a label.
+ * A LoggerLabel is a part of a LoggerInformation.
+ * 
+ * @author NextLegacy
+ */
 public class LoggerLabel 
 {
     final Func1<Boolean, String> condition;
