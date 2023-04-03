@@ -7,6 +7,11 @@ import java.util.Date;
 import engine.utils.Lambda.Action1;
 import engine.utils.color.ANSICode;
 
+/**
+ * A logger class that can be used to log messages to output streams.
+ * 
+ * @author NextLegacy
+ */
 public final class Logger
 {
     private LoggerInformation information;
