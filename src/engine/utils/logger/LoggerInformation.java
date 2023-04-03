@@ -2,6 +2,13 @@ package engine.utils.logger;
 
 import engine.utils.color.ANSICode;
 
+/**
+ * This class represents a logger information.
+ * A logger information is a collection of labels.
+ * Depending on the level, the labels will be used.
+ * 
+ * @author NextLegacy
+ */
 public final class LoggerInformation 
 {
     private String level;
