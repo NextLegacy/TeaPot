@@ -1,5 +1,11 @@
 package engine.utils.logger;
 
+/**
+ * This class represents a logged string.
+ * A logged string consists of a level, a message and a plain message.
+ * 
+ * @author NextLegacy
+ */
 public final class LoggedString 
 {
     final String level;
