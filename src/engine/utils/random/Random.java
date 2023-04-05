@@ -1,5 +1,6 @@
 package engine.utils.random;
 
+import engine.math.Vector;
 import engine.utils.time.Time;
 
 /**
@@ -119,6 +120,17 @@ public final class Random
     public final int color()
     {
         return randomInt(0xffffff);
+    }
+
+    /**
+     * @return a random point inside a unit circle
+     */
+    public Vector pointInsideUnitCircle()
+    {
+        double theta = 2 * Math.PI * randomDouble();
+        double r = Math.sqrt(randomDouble());
+
+        return new Vector(Math.cos(theta), Math.sin(theta)).times(r);
     }
 
     /**
