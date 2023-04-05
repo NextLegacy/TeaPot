@@ -57,8 +57,13 @@ public abstract class Script implements IActivatable, IDestroyable
 
     final void tryStartOnce() { if (startedOnce || isNotActive()) return; startedOnce = true; start(); }
 
+    /** Called once in the beginning of the game or when the script is attached to a GameObject. */
     protected void start () { }
+    
+    /** the update method is called every tick. */
     protected void update() { }
+
+    /** the render method is called every frame. */
     protected void render() { }
 
     protected void onActivate() { }
