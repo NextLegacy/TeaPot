@@ -35,6 +35,9 @@ public final class ANSICodeBuilder
     public ANSICodeBuilder foreground(int rgb) { fR = (rgb & 0xff0000) >> 16; fG = (rgb & 0x00ff00) >> 8; fB = (rgb & 0x0000ff); return this; }
     public ANSICodeBuilder background(int rgb) { bR = (rgb & 0xff0000) >> 16; bG = (rgb & 0x00ff00) >> 8; bB = (rgb & 0x0000ff); return this; }
 
+    /**
+     * This method returns the {@link ANSICode} instance. <p>
+     */
     public ANSICode done()
     {
         return bR == -1 && fR == -1 ? new ANSICode(bold, italic, underline, strike                                 ) :
