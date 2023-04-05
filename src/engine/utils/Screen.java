@@ -62,6 +62,12 @@ public final class Screen
 
     private Action0 onFullScreenEnd;
 
+    /**
+     * This method sets the fullscreen window to the given window. <p>
+     * 
+     * @param window the window to set to fullscreen
+     * @param onFullScreenEnd the action to run when fullscreen ends
+     */
     public void setFullScreen(Window window, Action0 onFullScreenEnd)
     {
         GRAPHICS_DEVICE.setFullScreenWindow(null);
