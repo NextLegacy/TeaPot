@@ -48,6 +48,10 @@ public final class Engine implements IActivatable
         currentImage = null;
     }
 
+    /**
+     * Sets the active scene to the given scene. <p>
+     * @param scene the scene to set as active scene
+     */
     public void setActiveScene(Scene scene) 
     { 
         if (scene == null) scene = Scene.emptyScene();
@@ -101,6 +105,11 @@ public final class Engine implements IActivatable
         }
     }
 
+    /**
+     * Creates a new Engine object with a single layer, a single game object and a single script attached to it. <p>
+     * @param script the script to attach to the game object
+     * @return the new Engine object
+     */
     public static final Engine fastSetup(Script script)
     {
         Engine engine = new Engine(Screen.get(0), new FinalVector(1080, 720), 60, 60, "main");
