@@ -34,6 +34,13 @@ public final class Color
                (int) (((argbF       ) & 0xFF) * t + ((argbB       ) & 0xFF) * t_)       ;
     }
 
+    /**
+     * This method blends two argb colors using a linear interpolation algorithm. <p>
+     * @param argbB The background color.
+     * @param argbF The foreground color.
+     * @param t The interpolation factor.
+     * @return the resulting argb color value after blending the two colors.
+     */
     public static int lerp(int[] argbs, double t)
     {
         //if (t == 0) return argbs[0];
@@ -49,6 +56,14 @@ public final class Color
         return Color.lerp(newColor, oldColor, newT);
     }
 
+    /**
+     * This method blends two argb colors using a linear interpolation algorithm. <p>
+     * 
+     * @param argbA The first color.
+     * @param argbB The second color.
+     * @param t The interpolation factor.
+     * @return the resulting argb color value after blending the two colors.
+     */
     public static int lerp(int argbA, int argbB, double t)
     {
         final int aA = (argbA >>> 24) & 0xff;
