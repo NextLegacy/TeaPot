@@ -34,6 +34,14 @@ public final class Time
         return nanos() - before;
     }
 
+    /**
+     * This method benchmarks the given actions. <p>
+     * 
+     * @param actions the actions to benchmark
+     * @param iterations the number of iterations to run
+     * 
+     * @return the average time taken to run each action
+     */
     public static double[] benchmark(ActionList<Action0> actions, int iterations)
     {
         double[] results = new double[actions.size()];
