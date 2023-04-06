@@ -11,6 +11,10 @@ import engine.utils.ArrayUtils;
 
 import static engine.utils.MathUtils.*;
 
+/**
+ * A collection of algorithms for 3D graphics.
+ * @author NextLegacy
+ */
 final class ImageAlgorithms3D 
 {
     ImageAlgorithms3D() { }
