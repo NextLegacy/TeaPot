@@ -25,6 +25,13 @@ public final class Time
     public static double millis () { return nanos() * NANOS_TO_MILLIS ; }
     public static double seconds() { return nanos() * NANOS_TO_SECONDS; }
     
+    /**
+     * This method measures the time taken to run the given action. <p>
+     *  
+     * @param action the action to run
+     * 
+     * @return the time taken to run the action
+     */
     public static double measureTime(Action0 action)
     {
         long before = nanos();
