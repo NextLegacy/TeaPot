@@ -151,6 +151,11 @@ public class Image
 
     @Override public String toString() { return getClass().getSimpleName() + "(size: " + pixels + ")"; }
 
+    /**
+     * Creates an image from the given file.
+     * @param path The path to the image file.
+     * @return The image.
+     */
     public static Image fromFile(String path)
     {
         File file = new File(path);
