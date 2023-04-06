@@ -84,7 +84,7 @@ public abstract class GameLoop implements Runnable
         thread = null;
     }
 
-    public boolean isThreadRunning        () { return isThreadRunning        ; }
+    public boolean isThreadRunning        () { return isThreadRunning       ; }
 
     public float  currentFPS             () { return currentFPS             ; }
     public float  currentTPS             () { return currentTPS             ; }
@@ -116,7 +116,7 @@ public abstract class GameLoop implements Runnable
 
         float deltaT = 0.0f;
         float deltaF = 0.0f;
-        long   time   = 0l  ;
+        long  time   = 0l  ;
 
         long now  = Time.nanos(); 
         long last = now         ;
