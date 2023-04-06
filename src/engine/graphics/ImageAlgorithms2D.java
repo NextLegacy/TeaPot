@@ -5,6 +5,10 @@ import engine.math.Vector;
 import engine.math.Vector4;
 import engine.utils.MathUtils;
 
+/**
+ * A collection of algorithms for 2D graphics. <p>
+ * @author NextLegacy
+ */
 final class ImageAlgorithms2D 
 {
     private ImageAlgorithms2D() { }
