@@ -15,7 +15,7 @@ import engine.utils.MathUtils;
  */
 public final class Vector extends Vector4
 {
-    public double x; //TODO: use everywhere the fields instead of the getters and setter
+    public double x;
     public double y;
     public double z;
     public double w;
