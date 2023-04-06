@@ -1,5 +1,8 @@
 package engine.math;
 
+/**
+ * A class that represents a transformation of a Object in 3D space. <p>
+ */
 public final class Transform
 {
     private Matrix transformationMatrix;
@@ -23,6 +26,10 @@ public final class Transform
         scale    = Vector.zero();
     }
 
+    /**
+     * this method is used to create, get and cache the transformation matrix of the transform.
+     * @return the transformation matrix
+     */
     public final Matrix transformationMatrix()
     {
         final boolean positionChanged = position != lastPosition;
