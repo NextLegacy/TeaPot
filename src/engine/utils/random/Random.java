@@ -161,7 +161,11 @@ public final class Random
         protected abstract long next();
     }
 
-    //https://www.wikiwand.com/en/Xorshift#Initialization
+    /**
+     * https://www.wikiwand.com/en/Xorshift#Initialization
+     * This the the splitmix64 implementation.
+     * This state gets used to initialize the state of the xoshiro256ss stateful random number generator.
+     */
     public static class splitmix64 extends State
     {
         public splitmix64(final long seed) 
@@ -180,7 +184,10 @@ public final class Random
         }
     }
 
-    //https://www.wikiwand.com/en/Xorshift#xoshiro256**
+    /**
+     * https://www.wikiwand.com/en/Xorshift#xoshiro256**
+     * This is the xoshiro256** stateful random number generator state.
+     */
     public static class xoshiro256ss extends State
     {
         public xoshiro256ss(final long seed) 
