@@ -1,5 +1,7 @@
 package engine.threed;
 
+import engine.utils.ThreedUtils;
+
 /**
  * A mesh is a collection of triangles.
  * 
@@ -24,5 +26,10 @@ public final class Mesh
             result += triangle + "\n";
 
         return result;
+    }
+
+    public static Mesh FromObjFile(String path)
+    {
+        return ThreedUtils.MeshFromObjFile(path);
     }
 }
