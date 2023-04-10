@@ -1,5 +1,7 @@
 package engine.window.Input;
 
+import java.awt.event.KeyEvent;
+
 /**
  * This class represents a key on the keyboard. <p>
  * 
@@ -21,4 +23,5 @@ public class Key extends Button
     }
 
     public int keyEvent() { return keyEvent; }
+    public String name () { return KeyEvent.getKeyText(keyEvent); }
 }
