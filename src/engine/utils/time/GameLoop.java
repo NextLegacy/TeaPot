@@ -44,7 +44,6 @@ public abstract class GameLoop implements Runnable
     private float tickDeltaTime;
     private float tickDeltaTimeInSeconds;
 
-    // FIXME: actual tps and fps vary from the given tps and fps, investigate on this
     public GameLoop(int TPS, int FPS) { setTPS(TPS); setFPS(FPS); }
 
     public void setTPS(int TPS)
