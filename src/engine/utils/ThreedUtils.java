@@ -20,6 +20,7 @@ public final class ThreedUtils
 {
     private ThreedUtils() { }
 
+    // TODO: optimize this
     /**
      * Creates a mesh from an obj file
      * 
