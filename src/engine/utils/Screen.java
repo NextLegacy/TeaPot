@@ -40,7 +40,7 @@ public final class Screen
             SCREENS[i] = new Screen(GRAPHICS_DEVICES[i]);
         }
 
-        if (SCREENS.length == 0) throw new RuntimeException("No screens found");
+        if (SCREENS.length == 0) throw new RuntimeException("No screens found"); // hmm, who will ever be able to read this error?
 
         DEFAULT_SCREEN = SCREENS[0];
     }
