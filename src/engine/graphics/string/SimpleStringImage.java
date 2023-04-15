@@ -69,7 +69,7 @@ public class SimpleStringImage extends Image
 
     public void render()
     {
-        
+        // TODO: extract code from StringImage into here
     }
 
     private static FinalVector calculateSize(String string, Font font)
