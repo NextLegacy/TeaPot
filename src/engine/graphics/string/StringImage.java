@@ -70,7 +70,7 @@ public class StringImage extends Image
         return fvec(totalSize);
     } 
 
-    private static void renderString(Image image, String[] lines, Font font)
+    static void renderString(Image image, String[] lines, Font font)
     {
         BufferedImage bufferedImage = ImageUtils.createCompatibleBufferedImage(image.size());
 
