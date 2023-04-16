@@ -21,7 +21,7 @@ public final class Logger
 
     private boolean newLine;
 
-    public Logger() { this((message) -> {}); }
+    public Logger() { this((message) -> { }); }
 
     @SafeVarargs
     public Logger(Action1<LoggedString>... outputStreams)
@@ -118,9 +118,9 @@ public final class Logger
         ANSICode cyan   = ANSICode.build().foreground(0x30E3DF).done();
         ANSICode yellow = ANSICode.build().foreground(0xFCE22A).done();
         
-        LoggerLabel timeLabel = new LoggerLabel((str) -> true, (str) -> "[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "]", null, null);
-        LoggerLabel infoLabel = new LoggerLabel("info"::equals, (str) -> "[INFO]", cyan, cyan);
-        LoggerLabel warnLabel = new LoggerLabel("warn"::equals, (str) -> "[WARN]", yellow, yellow);
+        LoggerLabel timeLabel  = new LoggerLabel((str) -> true, (str) -> "[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "]", null, null);
+        LoggerLabel infoLabel  = new LoggerLabel("info"::equals, (str) -> "[INFO]", cyan, cyan);
+        LoggerLabel warnLabel  = new LoggerLabel("warn"::equals, (str) -> "[WARN]", yellow, yellow);
         LoggerLabel errorLabel = new LoggerLabel("error"::equals, (str) -> "[ERROR]", red, red);
         LoggerLabel debugLabel = new LoggerLabel("debug"::equals, (str) -> "[DEBUG]", green, green);
 
