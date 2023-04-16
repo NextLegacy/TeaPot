@@ -50,16 +50,16 @@ public abstract class GameLoop implements Runnable
     {
         this.TPS = TPS;
 
-        TICK_INTERVAL            = 1_000_000_000.0f / TPS;
-        TICK_INTERVAL_IN_SECONDS =             1.0f / TPS;
+        TICK_INTERVAL            = 1e9f / TPS;
+        TICK_INTERVAL_IN_SECONDS = 1.0f / TPS;
     }
 
     public void setFPS(int FPS)
     {
         this.FPS = FPS;
 
-        FRAME_INTERVAL            = 1_000_000_000.0f / FPS;
-        FRAME_INTERVAL_IN_SECONDS =             1.0f / FPS;
+        FRAME_INTERVAL            = 1e9f / FPS;
+        FRAME_INTERVAL_IN_SECONDS = 1.0f / FPS;
     }
 
     public void startThread()
@@ -83,7 +83,7 @@ public abstract class GameLoop implements Runnable
         thread = null;
     }
 
-    public boolean isThreadRunning        () { return isThreadRunning       ; }
+    public boolean isThreadRunning       () { return isThreadRunning       ; }
 
     public float  currentFPS             () { return currentFPS             ; }
     public float  currentTPS             () { return currentTPS             ; }
