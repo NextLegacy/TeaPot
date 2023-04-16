@@ -18,8 +18,7 @@ import java.awt.event.WindowStateListener;
  * @author NextLegacy
  * @version 1.0
  */
-public abstract class InputAdapter implements 
-    KeyListener, MouseListener, MouseWheelListener, MouseMotionListener, WindowListener, WindowFocusListener, WindowStateListener
+public abstract class InputAdapter implements KeyListener, MouseListener, MouseWheelListener, MouseMotionListener, WindowListener, WindowFocusListener, WindowStateListener
 {
     // KeyListener
     @Override public void keyPressed (KeyEvent e) { }
