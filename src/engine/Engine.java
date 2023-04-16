@@ -10,10 +10,6 @@ import engine.window.Window;
 import engine.window.WindowLayer;
 import engine.window.Input.Input;
 
-//TODO: create a extra Branch or similar thing just for Documentation
-//So its easier to work on the Engine, but still have a complete documentation somewhere else
-//Or just document entire Engine Code..., would theoretically be possible, but a lot of unnecessary boilerplate stuff that makes the overall extendibility of the Engine worse
-
 /**
  * The Engine class is the main class of the engine. It is responsible for the window, the active scene and the game loop. <p>
  * 
