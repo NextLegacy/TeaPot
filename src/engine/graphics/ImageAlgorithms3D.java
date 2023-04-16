@@ -12,6 +12,10 @@ import engine.utils.ArrayUtils;
 import static engine.utils.MathUtils.*;
 
 /**
+ * TODO: Refactor this, this is kind of unreadable
+ * 
+ * Maybe all of this is pretty much redudant when updating to opengl...
+ * 
  * A collection of algorithms for 3D graphics.
  * @author NextLegacy
  */
