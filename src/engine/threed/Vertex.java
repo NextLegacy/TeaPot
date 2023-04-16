@@ -46,9 +46,9 @@ public final class Vertex extends FinalVector
     {
         return new Vertex
         (
-            clone(),
-            texture.clone(),
-            normal .clone()
+            this,
+            texture,
+            normal 
         );
     }
 }
