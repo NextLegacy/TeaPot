@@ -4,6 +4,8 @@ import static engine.utils.MathUtils.*;
 
 import java.util.Locale;
 
+//TODO: make a more generalized Matrix class and let it handle NxN matrices.
+
 /**
  * This class represents a 4x4 matrix. <p>
  * 
