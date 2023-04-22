@@ -16,6 +16,8 @@ import engine.utils.time.Time;
 import engine.graphics.DrawableImage;
 import engine.window.Input.Input;
 
+// TODO: implement openGL rendering system and just easily refactor the whole engine...
+
 /**
  * This class is used to create a window. <p>
  * 
