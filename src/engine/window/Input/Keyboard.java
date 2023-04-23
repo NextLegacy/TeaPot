@@ -5,6 +5,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 
+import engine.utils.ArrayUtils;
+
 /**
  * This class represents the keyboard. <p>
  * 
@@ -15,6 +17,40 @@ import java.util.HashMap;
  */
 public final class Keyboard
 {
+    private static final int[] keyEvents;
+
+    static 
+    {
+        Field[] fields = KeyEvent.class.getDeclaredFields();
+    
+        int[] result = new int[fields.length];
+
+        int length = 0;
+
+        for (Field field : fields) 
+        {
+            int modifiers = field.getModifiers();
+
+            if (Modifier.isPrivate(modifiers) || !Modifier.isStatic(modifiers)) 
+                continue;
+
+            try
+            {
+                if (field.get(null) instanceof Integer event) // TODO: investigate why Integer and not int?
+                {
+                    result[length] = (Integer) field.get(null);
+                    length++;
+                }
+            } 
+            catch (IllegalArgumentException | IllegalAccessException e) 
+            {
+                e.printStackTrace();
+            }
+        }
+
+        keyEvents = ArrayUtils.resize(result, length);
+    }
+
     private final HashMap<Integer, Key> KEY_MAP;
 
     Keyboard()
@@ -35,30 +71,9 @@ public final class Keyboard
         return !KEY_MAP.containsKey(keyEvent) ? Key.NULL_KEY : KEY_MAP.get(keyEvent);
     }
 
-    //Super Lazy but easy initializing 
-    //TODO: Make a initializing Method that does not use reflection
     private void initializeKeyMap()
     {
-        Field[] fields = KeyEvent.class.getDeclaredFields();
-    
-        for (Field field : fields) 
-        {
-            int modifiers = field.getModifiers();
-
-            if (Modifier.isPrivate(modifiers) || !Modifier.isStatic(modifiers)) 
-                continue;
-
-            try
-            {
-                if (field.get(null) instanceof Integer event)
-                { 
-                    KEY_MAP.put(event, new Key(event));
-                }
-            } 
-            catch (IllegalArgumentException | IllegalAccessException e) 
-            {
-                e.printStackTrace();
-            }
-        }   
+        for (int keyEvent : keyEvents)
+            KEY_MAP.put(keyEvent, new Key(keyEvent));
     }
 }
