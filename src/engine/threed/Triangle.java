@@ -55,6 +55,6 @@ public final class Triangle
 
     public String toString()
     {
-        return "Triangle(" + a + " \n        " + b + " \n        " + c + ")";
+        return getClass().getSimpleName() + "(" + a + " \n        " + b + " \n        " + c + ")";
     }
 }
