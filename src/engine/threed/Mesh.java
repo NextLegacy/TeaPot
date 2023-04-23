@@ -24,7 +24,7 @@ public final class Mesh
 
     public String toString()
     {
-        String result = "";
+        String result = getClass().getSimpleName() + ":\n";
 
         for (Triangle triangle : triangles)
             result += triangle + "\n";
