@@ -39,7 +39,7 @@ public final class Vertex extends FinalVector
 
     public String toString()
     {
-        return "Vertex(v: " + toCompactString() + " | t: " + texture.toCompactString() + " | n: " + normal.toCompactString() + ")";
+        return getClass().getSimpleName() + "(v: " + toCompactString() + " | t: " + texture.toCompactString() + " | n: " + normal.toCompactString() + ")";
     }
 
     public Vertex clone()
