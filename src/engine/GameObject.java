@@ -97,7 +97,7 @@ public final class GameObject implements IActivatable, IDestroyable
             newParent.scene().addGameObject(newParent);
     }
     
-    public void addChildren(GameObject child)
+    public void addChildren(GameObject child) // maybe generalize tree structure?
     {
         ObjectIsDestroyedException.throwIfIsDestroyed(this);
 
