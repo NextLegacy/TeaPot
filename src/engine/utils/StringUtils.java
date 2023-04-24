@@ -1,5 +1,11 @@
 package engine.utils;
 
+/**
+ * This class is not meant to be instantiated.
+ * It contains static methods for string operations.
+ * 
+ * @author NextLegacy
+ */
 public final class StringUtils 
 {
     private StringUtils() { }
