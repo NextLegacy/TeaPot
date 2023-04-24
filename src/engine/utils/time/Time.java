@@ -2,7 +2,6 @@ package engine.utils.time;
 
 import engine.utils.ArrayUtils;
 import engine.utils.Lambda.Action0;
-import engine.utils.Lambda.ActionList;
 
 /**
  * This class provides utility methods for time. <p>
@@ -49,15 +48,15 @@ public final class Time
      * 
      * @return the average time taken to run each action
      */
-    public static double[] benchmark(ActionList<Action0> actions, int iterations)
+    public static double[] benchmark(Action0[] actions, int iterations)
     {
-        double[] results = new double[actions.size()];
+        double[] results = new double[actions.length];
 
         for (int i = 0; i < iterations; i++)
         {
-            for (int j = 0; j < actions.size(); j++)
+            for (int j = 0; j < actions.length; j++)
             {
-                results[j] += measureTime(actions.get(j));
+                results[j] += measureTime(actions[j]);
             }
         }
 
