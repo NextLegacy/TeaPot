@@ -17,6 +17,7 @@ import engine.graphics.DrawableImage;
 import engine.window.Input.Input;
 
 // TODO: implement openGL rendering system and just easily refactor the whole engine...
+// TODO: use GLWindow
 
 /**
  * This class is used to create a window. <p>
