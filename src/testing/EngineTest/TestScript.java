@@ -8,9 +8,9 @@ public class TestScript extends Script
     Random random;
     protected void start() 
     {
-        random = new Random();
+        random = new Random(); 
     }
-
+    
     protected void update() 
     {
         window().setTitle(engine().toString());
