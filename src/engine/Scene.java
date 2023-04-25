@@ -93,7 +93,7 @@ public abstract class Scene implements IActivatable, IDestroyable
     @Override
     public void setActive(boolean state) 
     {
-        throw new UnsupportedOperationException("This method is not supported for Scene class. Scenes can only be activated or deactivated by Engine class.");
+        throw new UnsupportedOperationException("This method is not supported for the Scene class. Scenes can only be activated or deactivated by Engine class.");
     }
 
     @Override
