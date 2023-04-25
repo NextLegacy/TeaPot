@@ -9,23 +9,29 @@ Currently, rendering is done by setting individual pixels one by one. On a large
 ## Example
 
 ```java
-// get the primary screen
-Screen screen = Screen.get(0);
+class App
+{
+    public static void main(String[] args)
+    {
+        // get the primary screen
+        Screen screen = Screen.get(0);
 
-// define a vector for the size of the window
-Vector size = new Vector(1080, 720);
+        // define a vector for the size of the window
+        Vector size = new Vector(1080, 720);
 
-// create an instance of the engine
-Engine engine = new Engine(screen, size, 60, 60, "game", "ui");
+        // create an instance of the engine
+        Engine engine = new Engine(screen, size, 60, 60, "game", "ui");
 
-// craete an instance of a class that extends Scene
-MyScene scene = new MyScene();
+        // craete an instance of a class that extends Scene
+        MyScene scene = new MyScene();
 
-// set the active scene to the scene created above
-engine.setActiveScene(scene);
+        // set the active scene to the scene created above
+        engine.setActiveScene(scene);
 
-// start the engine
-engine.activate();
+        // start the engine
+        engine.activate();
+    }
+}
 ```
 
 ```java	
