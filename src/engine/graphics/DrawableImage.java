@@ -15,11 +15,6 @@ import engine.utils.color.Color;
 
 public class DrawableImage extends Image
 {
-    static 
-    {
-        System.setProperty("sun.java2d.opengl", "true");
-    }
-
     public static final int    ERROR_COLOR = 0xffff00ff;
     public static final int    CLEAR_COLOR = 0xff000000;
     public static final double CLEAR_Z     = Double.MAX_VALUE;
