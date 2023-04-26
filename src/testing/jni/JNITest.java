@@ -4,14 +4,13 @@ public class JNITest
 {
     static 
     {
-        // TODO: craete library and set correct path
-        System.loadLibrary("engine.dll");
+        System.load("ABSOLUTE_PATH_TO_ENGINE_DLL");
     }
 
     public static void main(String[] args) 
     {
-        helloWorld();
+        new JNITest().helloWorld();
     }
     
-    public static native void helloWorld();
+    private native void helloWorld();
 }
