@@ -90,4 +90,3 @@ class MyScript extends Script
 
 ## Requirements
 - [Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) or higher
-- [Jogl v2.4.0](https://github.com/sgothel/jogl) (is already included in the JAR file, but not in the source code)
