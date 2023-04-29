@@ -1,0 +1,4 @@
+namespace App
+{
+    void Run();
+}
