@@ -11,22 +11,27 @@ set(DEPENDENCIES_DIR ${PROJECT_DIR}/dependencies)
 
 # project files
 
-set(FILES_WITH_UNCOMPLETE_PATH
-    testing/app
-    java/JNITest
+file(GLOB_RECURSE FILES
+    ${SOURCE_DIR}/*.cpp
+    ${SOURCE_DIR}/*.h
 )
 
-set(FILES "")
-
-foreach(File ${FILES_WITH_UNCOMPLETE_PATH})
-    list(APPEND FILES ${SOURCE_DIR}/${File}.cpp)
-    list(APPEND FILES ${SOURCE_DIR}/${File}.h)
-endforeach()
+#set(FILES_WITH_UNCOMPLETE_PATH
+#    testing/app
+#    java/JNITest
+#)
+#
+#set(FILES "")
+#
+#foreach(File ${FILES_WITH_UNCOMPLETE_PATH})
+#    list(APPEND FILES ${SOURCE_DIR}/${File}.cpp)
+#    list(APPEND FILES ${SOURCE_DIR}/${File}.h)
+#endforeach()
 
 # dependencies
 
 set(GLFW_DIR ${DEPENDENCIES_DIR}/glfw-3.3.8)
-set(IMGUI_DIR ${DEPENDENCIES_DIR}/imgui-1.89.5)
+set(IMGUI_DIR ${DEPENDENCIES_DIR}/imgui-docking)
 set(GLEW_DIR ${DEPENDENCIES_DIR}/glew-2.1.0)
 
 set(DEPENDENCIES
