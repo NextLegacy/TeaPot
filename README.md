@@ -1,10 +1,17 @@
-# Java 3D Engine
+# 3D Engine
 
-## Description
+A simple 3D engine currently written in pure Java.
 
-A simple 3D engine written in plain Java for learning purposes. 
+This project is mainly for educational purposes. 
+It is not intended to be used in production and anything is subject to change.
+But if you want to use it, feel free to do so.
 
-Currently, rendering is done by setting individual pixels one by one. On a large scale, this can be very slow. Therefore an OpenGL renderer is currently being implemented with Jogl. 
+Fundamentally, rendering is done by setting individual pixels one by one, which are then drawn into a java.awt.Frame.
+
+Because this is not ideal when it comes to performance, the core rendering part of the engine will be rewritten in C++ in the future. This core will then be used, using the Java Native Interface (JNI).
+
+Through this eninge-core it will be possible to use OpenGL and ImGui in java.
+And because ImGui is used, it will be possible to create a UI for the engine itself.
 
 ## Example
 
