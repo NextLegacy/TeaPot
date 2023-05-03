@@ -29,7 +29,7 @@ public class EngineTest extends Scene
 
     public static void main(String[] args) 
     {
-        Engine engine = new Engine(Screen.get(0), vec(1080, 720), 120, 120, "main");
+        Engine engine = new Engine(Screen.get(0), vec(1080, 720), 1, 1200000, "main");
 
         engine.setActiveScene(new EngineTest());
 
