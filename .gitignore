@@ -2,5 +2,6 @@
 bin/
 lib/
 cpp/build/
+
 imgui.ini
-cpp/depenencies/
+cpp/dependencies/
