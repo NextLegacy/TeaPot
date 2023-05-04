@@ -30,9 +30,9 @@ file(GLOB_RECURSE FILES
 
 # dependencies
 
-set(GLFW_DIR ${DEPENDENCIES_DIR}/glfw-3.3.8)
-set(IMGUI_DIR ${DEPENDENCIES_DIR}/imgui-docking)
-set(GLEW_DIR ${DEPENDENCIES_DIR}/glew-2.1.0)
+set(GLFW_DIR ${DEPENDENCIES_DIR}/glfw)
+set(IMGUI_DIR ${DEPENDENCIES_DIR}/imgui)
+set(GLEW_DIR ${DEPENDENCIES_DIR}/glew)
 
 set(DEPENDENCIES
     ${GLFW_DIR}
