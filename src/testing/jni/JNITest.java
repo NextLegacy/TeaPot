@@ -6,7 +6,7 @@ public class JNITest
     {
         System.load(System.getProperty("user.dir") + "/bin/Release/Engine.dll");
     }
-
+    
     public static void main(String[] args) 
     {
         new JNITest().helloWorld();
