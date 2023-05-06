@@ -9,6 +9,8 @@ public final class SharedLibraryLoader
         load("bin/Release/Engine.dll");
     }
 
+    public static void init() { }
+
     public static void load(String relativePath)
     {
         try
