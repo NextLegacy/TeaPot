@@ -1,10 +1,12 @@
 package testing.jni;
 
+import engine.api.SharedLibraryLoader;
+
 public class JNITest 
 {
     static 
     {
-        System.load(System.getProperty("user.dir") + "/bin/Release/Engine.dll");
+        SharedLibraryLoader.init();
     }
     
     public static void main(String[] args) 
