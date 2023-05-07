@@ -6,6 +6,8 @@ import java.util.Arrays;
 import engine.utils.ArrayUtils.ArrayFunctions.*;
 import engine.utils.random.Random;
 
+// TODO: maybe most of this could be optimized with cpp
+
 /** 
  * This class provides utility methods for arrays. <p>
  * It is not possible to instantiate this class. <p>
