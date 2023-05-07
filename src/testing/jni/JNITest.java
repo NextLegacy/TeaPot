@@ -6,7 +6,7 @@ public class JNITest
 {
     static 
     {
-        SharedLibraryLoader.init();
+        SharedLibraryLoader.initLibrarys();
     }
     
     public static void main(String[] args) 
