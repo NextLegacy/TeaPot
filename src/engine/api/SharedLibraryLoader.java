@@ -4,22 +4,22 @@ public final class SharedLibraryLoader
 {
     private SharedLibraryLoader() { }
 
-    static
-    {
-        load("bin/Release/Engine.dll");
+    public static void initLibrarys() 
+    { 
+        load("Engine.dll");
     }
-
-    public static void init() { }
 
     public static void load(String relativePath)
     {
+        String path = getPath(relativePath);
+
         try
         {
-            System.load(getPath(relativePath));
+            System.load(path);
         }
         catch (UnsatisfiedLinkError e)
         {
-            System.err.println("Failed to load native library: " + e.getMessage());
+            System.err.println("Failed to load native library: " + path);
             System.exit(1);
         }
     }
