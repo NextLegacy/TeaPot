@@ -4,8 +4,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import engine.utils.FileUtils;
 import engine.utils.Lambda.Action1;
 import engine.utils.color.ANSICode;
+
+/*
+ * TODO: I still don't like how the logger works. Rework it. 
+ */
 
 /**
  * A logger class that can be used to log messages to output streams.
@@ -97,10 +102,15 @@ public final class Logger
         return this;
     }
 
+    public Logger writeIntoFile(String path)
+    {
+        return outputLog((message) -> 
+            FileUtils.write(path, message.plainMessage)
+        );
+    }
+
     public Logger outputLog(Action1<LoggedString> outputStream) 
     {
-        this.outputStream = outputStream;
-
         for (int i = 0; i < log.size(); i++)
             outputStream.run(log.get(i));
 
