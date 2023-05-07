@@ -1,11 +1,10 @@
-add_library(EngineLibrary ${FILES})
+add_library(Engine SHARED ${FILES})
 
-target_include_directories(EngineLibrary PUBLIC ${INCLUDE_DIRS})
-target_compile_definitions(EngineLibrary PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(Engine PUBLIC ${INCLUDE_DIRS})
 
-target_link_libraries(EngineLibrary PUBLIC ${LIBRARIES})
+target_link_libraries(Engine PUBLIC ${LIBRARIES})
 
-set_target_properties(EngineLibrary PROPERTIES 
+set_target_properties(Engine PROPERTIES 
     SUFFIX ".dll"
     #ARCHIVE_OUTPUT_DIRECTORY "../../lib"
     #LIBRARY_OUTPUT_DIRECTORY "../../lib"
