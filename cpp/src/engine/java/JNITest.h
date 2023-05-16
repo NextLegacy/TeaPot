@@ -2,11 +2,8 @@
 #include <jni.h>
 /* Header for class JNITest */
 
-#ifndef _Included_testing_jni_JNITest
-#define _Included_testing_jni_JNITest
-#ifdef __cplusplus
-extern "C" {
-#endif
+extern "C" 
+{
 /*
  * Class:     JNITest
  * Method:    helloWorld
@@ -14,8 +11,4 @@ extern "C" {
  */
 JNIEXPORT void JNICALL Java_testing_jni_JNITest_helloWorld
   (JNIEnv *, jobject);
-
-#ifdef __cplusplus
 }
-#endif
-#endif
