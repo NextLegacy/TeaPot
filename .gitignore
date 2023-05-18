@@ -1,6 +1,6 @@
 .vscode/
 bin/
 lib/
-cpp/build/
+build/
 
 imgui.ini
