@@ -1,5 +1,7 @@
 # 3D Engine
 
+## (NOTE: the content of this readme is slightly outdated)
+
 A simple 3D engine currently written in pure Java.
 
 This project is mainly for educational purposes. 
