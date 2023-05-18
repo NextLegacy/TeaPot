@@ -1,0 +1,24 @@
+project(EngineCore)
+
+add_library(engine_core #SHARED
+    ${CORE_FILES}
+)
+
+target_include_directories(engine_core PUBLIC 
+    ${INCLUDE_DIRS}
+    ${CORE_DIR}
+)
+
+target_link_libraries(engine_core PUBLIC ${LIBRARIES})
+
+set_target_properties(engine_core PROPERTIES 
+    #SUFFIX ".dll"
+    ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR}
+    LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR}
+    RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR}
+    ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${OUTPUT_DIR}
+    LIBRARY_OUTPUT_DIRECTORY_DEBUG ${OUTPUT_DIR}
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG ${OUTPUT_DIR}
+)
+
+set(TEST engine_core_test PARENT_SCOPE)
