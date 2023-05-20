@@ -1,20 +1,64 @@
 set(PROJECT_NAME ENGINE_CORE)
+set(PROJECT_VERSION 1.0.0)
 
 # project directories
 
 set(PROJECT_DIR ${CMAKE_SOURCE_DIR})
 
-set(SOURCE_DIR       ${PROJECT_DIR}/src         )          
-set(RESOURCE_DIR     ${PROJECT_DIR}/resources   )
+set(CORE_DIR     ${PROJECT_DIR}/core)
+set(EDITOR_DIR   ${PROJECT_DIR}/editor)
+set(DEMO_DIR     ${PROJECT_DIR}/demo)
+set(WRAPPER_DIR  ${PROJECT_DIR}/wrapper)
+set(JAVA_API_DIR ${PROJECT_DIR}/scripting/java/api)
+set(JAVA_CORE_DIR ${PROJECT_DIR}/scripting/java/core)
+
+#set(SOURCE_DIR       ${PROJECT_DIR}/src         )          
+#set(RESOURCE_DIR     ${PROJECT_DIR}/resources   )
 set(OUTPUT_DIR       ${PROJECT_DIR}/bin         )
 set(DEPENDENCIES_DIR ${PROJECT_DIR}/dependencies)
 
 # project files
 
-file(GLOB_RECURSE FILES
-    ${SOURCE_DIR}/*.cpp
-    ${SOURCE_DIR}/*.h
+file(GLOB_RECURSE CORE_FILES
+    ${CORE_DIR}/*.cpp
+    ${CORE_DIR}/*.h
 )
+
+file(GLOB_RECURSE EDITOR_FILES
+    ${EDITOR_DIR}/*.cpp
+    ${EDITOR_DIR}/*.h
+)
+
+file(GLOB_RECURSE DEMO_FILES
+    ${DEMO_DIR}/*.java
+)
+
+file(GLOB_RECURSE WRAPPER_FILES
+    ${WRAPPER_DIR}/*.cpp
+    ${WRAPPER_DIR}/*.h
+)
+
+file(GLOB_RECURSE JAVA_API_FILES
+    ${JAVA_API_DIR}/*.cpp
+    ${JAVA_API_DIR}/*.h
+)
+
+file(GLOB_RECURSE JAVA_CORE_FILES
+    ${JAVA_CORE_DIR}/*.java
+)
+
+set(FILES
+    ${CORE_FILES}
+    ${EDITOR_FILES}
+    ${DEMO_FILES}
+    ${WRAPPER_FILES}
+    ${JAVA_API_FILES}
+)
+
+#file(GLOB_RECURSE FILES
+#    ${SOURCE_DIR}/*.cpp
+#    ${SOURCE_DIR}/*.h
+#)
 
 #set(FILES_WITH_UNCOMPLETE_PATH
 #    testing/app
@@ -67,7 +111,13 @@ set(INCLUDE_DIRS
     ${IMGUI_INCLUDE_DIRS}
     ${JAVA_INCLUDE_DIRS}
 
-    ${SOURCE_DIR}
+    #${CORE_DIR}
+    #${EDITOR_DIR}
+    #${DEMO_DIR}
+    #${WRAPPER_DIR}
+    #${JAVA_API_DIR}
+    
+    #${SOURCE_DIR}
 )
 
 set(LIBRARIES
