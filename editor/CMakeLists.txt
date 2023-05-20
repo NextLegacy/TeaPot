@@ -1,0 +1,23 @@
+project(EngineEditor)
+
+add_executable(engine_editor WIN32
+    #${CORE_FILES}
+    ${EDITOR_FILES}
+)
+
+target_include_directories(engine_editor PUBLIC 
+    ${INCLUDE_DIRS}
+    #${CORE_DIR}
+    ${EDITOR_DIR}
+)
+
+target_link_libraries(engine_editor PUBLIC ${LIBRARIES} engine_core)
+
+set_target_properties(engine_editor PROPERTIES 
+    #ARCHIVE_OUTPUT_DIRECTORY "./lib"
+    #LIBRARY_OUTPUT_DIRECTORY "./lib"
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG ${OUTPUT_DIR}
+    RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR}
+)
+
+install(TARGETS engine_editor RUNTIME DESTINATION bin)
