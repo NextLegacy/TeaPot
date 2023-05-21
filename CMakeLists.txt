@@ -1,14 +1,19 @@
 cmake_minimum_required(VERSION 3.26.3)
 set(CMAKE_CXX_STANDARD 20)
 
+# TODO: find a nice name for the Engine
+
 project(Engine)
 
-include(cmake/project.cmake)
+include(cmake/project.cmake)     # set up project variables
 
-#include(cmake/library.cmake)
-#include(cmake/executable.cmake)
+add_subdirectory(core)           # Core library      -> engine_core.lib
 
-add_subdirectory(core)
-add_subdirectory(editor)
-add_subdirectory(wrapper)
-add_subdirectory(scripting/java)
+add_subdirectory(editor)        # Editor library    -> engine_editor.exe
+
+add_subdirectory(wrapper)       # Wrapper library   -> engine_wrapper.exe
+
+add_subdirectory(scripting/java) # Java api          -> engine_java_api.dll 
+                                 # Java core         -> engine_java_core.jar 
+
+add_subdirectory(demo)           # Java Demo Project -> engine_demo.jar

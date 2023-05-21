@@ -9,8 +9,9 @@ set(CORE_DIR     ${PROJECT_DIR}/core)
 set(EDITOR_DIR   ${PROJECT_DIR}/editor)
 set(DEMO_DIR     ${PROJECT_DIR}/demo)
 set(WRAPPER_DIR  ${PROJECT_DIR}/wrapper)
-set(JAVA_API_DIR ${PROJECT_DIR}/scripting/java/api)
-set(JAVA_CORE_DIR ${PROJECT_DIR}/scripting/java/core)
+set(JAVA_API_DIR ${PROJECT_DIR}/scripting/java/api/)
+set(JAVA_CORE_DIR ${PROJECT_DIR}/scripting/java/core/src/main/java/)
+set(DEMO_JAVA_DIR ${PROJECT_DIR}/demo/java/src/main/java)
 
 #set(SOURCE_DIR       ${PROJECT_DIR}/src         )          
 #set(RESOURCE_DIR     ${PROJECT_DIR}/resources   )
@@ -45,6 +46,10 @@ file(GLOB_RECURSE JAVA_API_FILES
 
 file(GLOB_RECURSE JAVA_CORE_FILES
     ${JAVA_CORE_DIR}/*.java
+)
+
+file(GLOB_RECURSE DEMO_JAVA_FILES
+    ${DEMO_JAVA_DIR}/*.java
 )
 
 set(FILES
