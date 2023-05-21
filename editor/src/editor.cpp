@@ -2,9 +2,7 @@
 
 #include "core.h"
 
-int APIENTRY WinMain(HINSTANCE hInstance,
-    HINSTANCE hPrevInstance,
-    LPSTR lpCmdLine, int nCmdShow)
+int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
     AllocConsole();
     freopen("conin$","r",stdin);
