@@ -6,6 +6,6 @@ namespace engine
 {
     namespace process
     {
-        void runJar(std::string file);
+        void runJar(std::string file, std::string className);
     }
 }

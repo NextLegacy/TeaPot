@@ -2,6 +2,7 @@
 
 // Standard library
 #include <iostream>
+#include <string>
 
 #include <Windows.h>
 
