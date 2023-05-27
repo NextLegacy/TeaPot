@@ -1,33 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>EngineDemo</groupId>
-  <artifactId>EngineDemo</artifactId>
-  <version>1.0</version>
+    <groupId>EngineDemo</groupId>
+    <artifactId>EngineDemo</artifactId>
+    <version>1.0</version>
 
-  <name>EngineDemo</name>
+    <name>EngineDemo</name>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
-  </properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>EngineCore</groupId>
-      <artifactId>EngineCore</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/../../bin/engine_java_core.jar</systemPath>
-    </dependency>
-  </dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>EngineCore</groupId>
+            <artifactId>EngineCore</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../../bin/engine_java_core.jar</systemPath>
+        </dependency>
+    </dependencies>
 
-  <build>
-    <pluginManagement>
-    </pluginManagement>
-  </build>
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+        <testSourceDirectory>src/test</testSourceDirectory>
+
+        <resources>
+            <resource>
+                <directory>{project.basedir}/rsc</directory>
+            </resource>
+        </resources>
+
+        <testResources>
+            <testResource>
+                <directory>${project.basedir}/rsc/test/</directory>
+            </testResource>
+        </testResources>
+
+        <pluginManagement>
+        </pluginManagement>
+    </build>
 </project>
