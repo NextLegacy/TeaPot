@@ -80,6 +80,7 @@ set(FILES
 # dependencies
 
 set(GLFW_DIR ${DEPENDENCIES_DIR}/glfw)
+set(GLM_DIR ${DEPENDENCIES_DIR}/glm)
 set(IMGUI_DIR ${DEPENDENCIES_DIR}/imgui)
 set(GLEW_DIR ${DEPENDENCIES_DIR}/glew)
 
@@ -93,6 +94,7 @@ set(DEPENDENCIES
 
 set(CMAKE_FILES
     glfw.cmake
+    glm.cmake
     #vulkan.cmake
     imgui.cmake
     java.cmake
@@ -110,6 +112,7 @@ list(APPEND FILES ${IMGUI_FILES})
 
 set(INCLUDE_DIRS
     ${GLFW_INCLUDE_DIR}
+    ${GLM_INCLUDE_DIR}
     #${VULKAN_INCLUDE_DIR}
     ${OPENGL_INCLUDE_DIRS}
     ${GLEW_INCLUDE_DIRS}
@@ -127,6 +130,7 @@ set(INCLUDE_DIRS
 
 set(LIBRARIES
     ${GLFW_LIBRARIES}
+    ${GLM_LIBRARIES}
     #Vulkan::Vulkan 
     #${VULKAN_LIBRARIES}
     ${OPENGL_LIBRARIES}
