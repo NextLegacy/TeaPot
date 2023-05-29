@@ -31,7 +31,7 @@ public abstract class GameLoop implements Runnable
     private float TICK_INTERVAL_IN_SECONDS;
     private float FRAME_INTERVAL_IN_SECONDS;
 
-    private long   elapsedTime;
+    private long  elapsedTime;
     private float elapsedTimeInSeconds;
 
     private float currentFPS;
