@@ -5,11 +5,12 @@ set(PROJECT_VERSION 1.0.0)
 
 set(PROJECT_DIR ${CMAKE_SOURCE_DIR})
 
-set(CORE_DIR     ${PROJECT_DIR}/core)
-set(EDITOR_DIR   ${PROJECT_DIR}/editor)
-set(DEMO_DIR     ${PROJECT_DIR}/demo)
-set(WRAPPER_DIR  ${PROJECT_DIR}/wrapper)
-set(JAVA_API_DIR ${PROJECT_DIR}/scripting/java/api)
+set(CORE_DIR      ${PROJECT_DIR}/core)
+set(EDITOR_DIR    ${PROJECT_DIR}/editor)
+set(DEMO_DIR      ${PROJECT_DIR}/demo)
+set(LAUNCHER_DIR  ${PROJECT_DIR}/launcher)
+set(RUNTIME_DIR   ${PROJECT_DIR}/runtime)
+set(JAVA_API_DIR  ${PROJECT_DIR}/scripting/java/api)
 set(JAVA_CORE_DIR ${PROJECT_DIR}/scripting/java/core/src)
 set(DEMO_JAVA_DIR ${PROJECT_DIR}/demo/java/src)
 
@@ -34,9 +35,14 @@ file(GLOB_RECURSE DEMO_FILES
     ${DEMO_DIR}/*.java
 )
 
-file(GLOB_RECURSE WRAPPER_FILES
-    ${WRAPPER_DIR}/*.cpp
-    ${WRAPPER_DIR}/*.h
+file(GLOB_RECURSE LAUNCHER_FILES
+    ${LAUNCHER_DIR}/*.cpp
+    ${LAUNCHER_DIR}/*.h
+)
+
+file(GLOB_RECURSE RUNTIME_FILES
+    ${RUNTIME_DIR}/*.cpp
+    ${RUNTIME_DIR}/*.h
 )
 
 file(GLOB_RECURSE JAVA_API_FILES
@@ -56,9 +62,12 @@ set(FILES
     ${CORE_FILES}
     ${EDITOR_FILES}
     ${DEMO_FILES}
-    ${WRAPPER_FILES}
+    ${LAUNCHER_FILES}
+    ${RUNTIME_FILES}
     ${JAVA_API_FILES}
 )
+
+#message(STATUS "Files: ${FILES}")
 
 #file(GLOB_RECURSE FILES
 #    ${SOURCE_DIR}/*.cpp
