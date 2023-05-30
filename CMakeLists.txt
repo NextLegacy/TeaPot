@@ -7,11 +7,12 @@ project(Engine)
 
 include(cmake/project.cmake)     # set up project variables
 
-add_subdirectory(core)           # Core library      -> engine_core.lib
+add_subdirectory(core)           # Core library        -> engine_core.lib
 
-add_subdirectory(editor)        # Editor library    -> engine_editor.exe
+add_subdirectory(editor)         # Editor Executable    -> engine_editor.exe
 
-add_subdirectory(wrapper)       # Wrapper library   -> engine_wrapper.exe
+add_subdirectory(launcher)       # Launcher Executable  -> engine_launcher.exe
+add_subdirectory(runtime)        # Runtime Executable  -> engine_wrapper.exe
 
 add_subdirectory(scripting/java) # Java api          -> engine_java_api.dll 
                                  # Java core         -> engine_java_core.jar 
