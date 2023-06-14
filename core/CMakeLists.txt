@@ -1,15 +1,33 @@
 project(EngineCore)
 
-add_library(engine_core #SHARED
+#core files
+file(GLOB_RECURSE CORE_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
+)
+
+add_library(engine_core
     ${CORE_FILES}
+    ${CMAKE_CURRENT_SOURCE_DIR}/DigitalTea
 )
 
 target_include_directories(engine_core PUBLIC 
-    ${INCLUDE_DIRS}
-    ${CORE_DIR}
+    #${GLEW_INCLUDE_DIR}
+    #${IMGUI_DIR}
+    #${IMGUI_BACKENDS_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_link_libraries(engine_core PUBLIC ${LIBRARIES})
+target_link_libraries(engine_core PUBLIC 
+    OpenGL::GL
+    glfw
+    glm::glm
+    glew
+    imgui
+    ${JNI_LIBRARIES}
+)
 
 set_target_properties(engine_core PROPERTIES 
     #SUFFIX ".dll"
