@@ -1,17 +1,24 @@
 project(EngineEditor)
 
+file(GLOB_RECURSE EDITOR_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
+)
+
 add_executable(engine_editor WIN32
     #${CORE_FILES}
     ${EDITOR_FILES}
 )
 
-target_include_directories(engine_editor PUBLIC 
-    ${INCLUDE_DIRS}
-    #${CORE_DIR}
-    ${EDITOR_DIR}
+target_include_directories(engine_editor PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_link_libraries(engine_editor PUBLIC ${LIBRARIES} engine_core)
+target_link_libraries(engine_editor PUBLIC 
+    engine_core
+)
 
 set_target_properties(engine_editor PROPERTIES 
     ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR}
@@ -25,4 +32,4 @@ set_target_properties(engine_editor PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY_RELEASE ${OUTPUT_DIR}
 )
 
-install(TARGETS engine_editor RUNTIME DESTINATION bin)
+install(TARGETS engine_editor RUNTIME DESTINATION ${OUTPUT_DIR})
