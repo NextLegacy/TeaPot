@@ -218,5 +218,5 @@ public final class Random
         {
             return (x << k) | (x >>> (64 - k));
         }
-    } 
+    }
 }
