@@ -1,17 +1,24 @@
 project(EngineLauncher)
 
-add_executable(engine_launcher WIN32 
-    #${CORE_FILES} 
+file(GLOB_RECURSE LAUNCHER_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
+)
+
+add_executable(engine_launcher WIN32
+    #${CORE_FILES}
     ${LAUNCHER_FILES}
 )
 
-target_include_directories(engine_launcher PUBLIC 
-    ${INCLUDE_DIRS}
-    #${CORE_DIR}
-    ${LAUNCHER_DIR}
+target_include_directories(engine_launcher PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_link_libraries(engine_launcher PUBLIC ${LIBRARIES} engine_core)
+target_link_libraries(engine_launcher PUBLIC 
+    engine_core
+)
 
 set_target_properties(engine_launcher PROPERTIES 
     ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR}
@@ -25,4 +32,4 @@ set_target_properties(engine_launcher PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY_RELEASE ${OUTPUT_DIR}
 )
 
-install(TARGETS engine_launcher RUNTIME DESTINATION bin)
+install(TARGETS engine_launcher RUNTIME DESTINATION ${OUTPUT_DIR})
