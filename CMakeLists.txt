@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.26.3)
 set(CMAKE_CXX_STANDARD 20)
 
-# TODO: find a nice name for the Engine
-
 project(DigitalTea)
 
 include(cmake/project.cmake)     # set up project variables
