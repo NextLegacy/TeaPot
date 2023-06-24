@@ -1,4 +1,4 @@
-#project(imgui)
+project(imgui)
 
 file(GLOB IMGUI_SOURCES ${IMGUI_DIR}/*.cpp)
 file(GLOB IMGUI_HEADERS ${IMGUI_DIR}/*.h)
