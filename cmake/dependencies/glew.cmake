@@ -1,4 +1,4 @@
-#project(glew)
+project(glew)
 
 find_package(OpenGL REQUIRED)
 
