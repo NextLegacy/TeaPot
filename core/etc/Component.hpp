@@ -1,12 +1,14 @@
 #pragma once
 
-namespace DigitalTea
+#include "Engine"
+
+namespace Engine
 {
     namespace ETC
     {
         class Component
         {
-
+            
         };
     }
 }
