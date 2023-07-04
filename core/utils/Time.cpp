@@ -1,6 +1,6 @@
 #include "time.hpp"
 
-namespace DigitalTea
+namespace Engine
 {
     namespace Time
     {
