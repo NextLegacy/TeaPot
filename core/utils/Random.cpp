@@ -1,6 +1,6 @@
 #include "random.hpp"
 
-namespace DigitalTea
+namespace Engine
 {
     Seed::Seed(uint64_t seed) : m_seed(seed)
     {
