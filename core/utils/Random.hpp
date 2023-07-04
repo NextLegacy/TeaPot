@@ -1,9 +1,8 @@
 #pragma once
 
-#include <string>
-#include "utils/Time.hpp"
+#include "Engine"
 
-namespace DigitalTea
+namespace Engine
 {
     class Seed
     {
