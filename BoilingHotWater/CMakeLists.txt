@@ -1,0 +1,42 @@
+project(BoilingHotWater)
+
+file(GLOB_RECURSE FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
+)
+
+list(APPEND FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/BoilingHotWater
+)
+
+add_library(BoilingHotWater
+    ${FILES}
+)
+
+target_include_directories(BoilingHotWater PUBLIC 
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_link_libraries(BoilingHotWater PUBLIC 
+    OpenGL::GL
+    glfw
+    glm::glm
+    glew
+    imgui
+    ${JNI_LIBRARIES}
+)
+
+set_target_properties(BoilingHotWater PROPERTIES 
+    #SUFFIX ".dll"
+    ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR}
+    LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR}
+    RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR}
+    ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${OUTPUT_DIR}
+    LIBRARY_OUTPUT_DIRECTORY_DEBUG ${OUTPUT_DIR}
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG ${OUTPUT_DIR}
+    ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${OUTPUT_DIR}
+    LIBRARY_OUTPUT_DIRECTORY_RELEASE ${OUTPUT_DIR}
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE ${OUTPUT_DIR}
+)
