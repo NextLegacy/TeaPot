@@ -10,7 +10,7 @@ file(GLOB_RECURSE CORE_FILES
 
 add_library(engine_core
     ${CORE_FILES}
-    ${CMAKE_CURRENT_SOURCE_DIR}/engine
+    ${CMAKE_CURRENT_SOURCE_DIR}/DigitalTea
 )
 
 target_include_directories(engine_core PUBLIC 
