@@ -1,14 +1,9 @@
 #pragma once
 
-#include "engine"
-
-namespace Engine
+namespace DigitalTea
 {
-    namespace ECS
+    class Entity
     {
-        class Entity
-        {
 
-        };
-    }
+    };
 }
