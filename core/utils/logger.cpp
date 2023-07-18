@@ -1,6 +1,6 @@
 #include "Logger.hpp"
 
-namespace Engine
+namespace DigitalTea
 {
     namespace Logger
     {
