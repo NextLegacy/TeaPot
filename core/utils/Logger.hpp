@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Engine"
+#include <string>
+#include <functional>
 
-namespace Engine
+namespace DigitalTea
 {
     namespace Logger
     {
