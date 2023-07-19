@@ -1,11 +1,12 @@
 #pragma once
 
-#include "engine"
+#include <string>
+#include <map>
 
 #define NAMEOF(x) #x
 #define SERIALIZE(x) { NAMEOF(x), &x }
 
-namespace Engine 
+namespace DigitalTea 
 {
     class Serializable
     {
