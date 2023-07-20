@@ -1,11 +1,14 @@
 #include "launcher.hpp"
 
-int engine_main()
+int EntryPoint()
 {
-    Engine::Window window("Test", glm::ivec2(16, 9) * 70);
+    DigitalTea::Engine* engine = new DigitalTea::Engine();
 
+    engine->Initialize();
 
-    window.Shutdown();
+    engine->Run();
+
+    engine->Terminate();
 
     return 0;
 }
