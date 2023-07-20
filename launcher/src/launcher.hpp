@@ -1,5 +1,5 @@
 #pragma once
 
-#include <Engine>
+#include <DigitalTea>
 
-#include <EntryPoint.hpp>
+#include <EntryPoint>
