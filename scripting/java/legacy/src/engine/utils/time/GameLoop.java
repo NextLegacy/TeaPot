@@ -163,7 +163,7 @@ public abstract class GameLoop implements Runnable
                 deltaT--;
             }
         
-            //After updates, gameloop or engine might be deactivated, no need to continue, therefore break from gameloop
+            //After update  s, gameloop or engine might be deactivated, no need to continue, therefore break from gameloop
             if (!isActive())
                 break;
 
