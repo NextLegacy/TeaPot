@@ -107,8 +107,6 @@ public abstract class Vector4
 
     public final boolean equals(Object object)
     {
-        if (object == null) return false;
-
         return object == null ? false :
                this == object                     || 
                (object instanceof Vector4 vector) && 
