@@ -9,6 +9,7 @@ include(cmake/project.cmake)     # set up project variables
 
 add_subdirectory(BoilingHotWater)
 add_subdirectory(TeaPot)
+#add_subdirectory(TeaMath)
 
 #add_subdirectory(core)           # Core library        -> engine_core.lib
 
