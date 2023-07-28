@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graphics/window/Window.hpp"
+#include "window/Window.hpp"
 #include "utils/Loop.hpp"
 #include "utils/Console.hpp"
 
