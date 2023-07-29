@@ -8,35 +8,6 @@ namespace BHW
 {
     class Loop
     {
-    private:
-        std::thread m_thread;
-
-        int m_ticksPerSecond;
-        int m_framesPerSecond;
-
-        float m_tickInterval;
-        float m_frameInterval;
-
-        float m_deltaTicks;
-        float m_deltaFrames;
-
-        uint64_t m_ticks;
-        uint64_t m_frames;
-
-        uint64_t m_now;
-        uint64_t m_last;
-
-        uint64_t m_elapsedTime;
-        
-        uint64_t m_time;
-
-        uint64_t m_counter;
-
-        bool m_skipFrame;
-
-        bool m_shouldStop;
-        bool m_isRunning;
-
     public:
         Loop(int ticksPerSecond, int framesPerSecond);
 
@@ -67,5 +38,34 @@ namespace BHW
         void InitializeRun();
 
         void Run();
+        
+    private:
+        std::thread m_thread;
+
+        int m_ticksPerSecond;
+        int m_framesPerSecond;
+
+        float m_tickInterval;
+        float m_frameInterval;
+
+        float m_deltaTicks;
+        float m_deltaFrames;
+
+        uint64_t m_ticks;
+        uint64_t m_frames;
+
+        uint64_t m_now;
+        uint64_t m_last;
+
+        uint64_t m_elapsedTime;
+        
+        uint64_t m_time;
+
+        uint64_t m_counter;
+
+        bool m_skipFrame;
+
+        bool m_shouldStop;
+        bool m_isRunning;    
     };
 }
