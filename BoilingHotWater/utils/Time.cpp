@@ -6,7 +6,10 @@ namespace BHW
     {
         uint64_t Now()
         {
-            return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+            return std::chrono::duration_cast<std::chrono::nanoseconds>
+            (
+                std::chrono::system_clock::now().time_since_epoch()
+            ).count();
         }
     }
 }
