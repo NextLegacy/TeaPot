@@ -7,8 +7,6 @@ namespace BHW
 {
     class Seed
     {
-    private:
-        uint64_t m_seed;
     public:
         Seed(uint64_t seed);
         Seed();
@@ -21,12 +19,13 @@ namespace BHW
 
         template <unsigned int N>
         void CreateState(uint64_t (&state)[N]) const;
+
+    private:
+        uint64_t m_seed;
     };
 
     class Prng
     {
-    protected:
-        Seed m_seed;
     public:
         Prng();
         Prng(Seed seed);
@@ -78,40 +77,42 @@ namespace BHW
         std::string String(unsigned int length, const std::string& charset);
 
         virtual uint64_t operator()() = 0;
+
+    protected:
+        Seed m_seed;
     };
 
     namespace PrngAlgorithms
     {
-        uint64_t Splitmix64(uint64_t &state);
+        uint64_t Splitmix64  (uint64_t  &state    );
         uint64_t Xoshiro256ss(uint64_t (&state)[4]);
     }
 
     class Splitmix64 : public Prng
     {
-    private:
-        uint64_t m_state;
     public:
         Splitmix64();
         Splitmix64(Seed seed);
         
         void SetSeed(Seed seed);
         uint64_t operator()() override;
+    
+    private:
+        uint64_t m_state;
     };
 
     class Xoshiro256ss : public Prng
     {
-    private:
-        uint64_t m_state[4];
     public:
         Xoshiro256ss();
         Xoshiro256ss(Seed seed);
         
         void SetSeed(Seed seed);
         uint64_t operator()() override;
+    
+    private:
+        uint64_t m_state[4];
     };
 
-    class Random : public Xoshiro256ss 
-    {
-
-    };
+    class Random : public Xoshiro256ss { };
 }
