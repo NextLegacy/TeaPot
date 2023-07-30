@@ -3,9 +3,9 @@
 namespace BHW
 {
     Thread::Thread(std::function<void()> function) 
-        : m_function(function), m_isRunning(false), m_shouldStop(false)
-    {
-    }
+        : m_function  (function), 
+          m_isRunning (false   ), 
+          m_shouldStop(false   ) { }
 
     Thread::~Thread()
     {
@@ -14,7 +14,7 @@ namespace BHW
 
     void Thread::Activate()
     {
-        if (m_isRunning)
+        if (m_isRunning && !m_shouldStop)
         {
             Deactivate();
             Join();
