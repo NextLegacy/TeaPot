@@ -9,17 +9,9 @@
 namespace BHW
 {
     class ContinuousThread : public Thread
-    {
-    private:
-        float    m_deltaTime     ;
-        uint64_t m_lastTime_ns   ;
-        uint64_t m_currentTime_ns;
-        uint64_t m_deltaTime_ns  ;
-    
+    {    
     public:
         ContinuousThread();
-
-        inline float GetDeltaTime() const { return m_deltaTime; }
 
     protected:
         virtual void Initialize();
@@ -34,5 +26,10 @@ namespace BHW
 
     private:
         void RunThread();
+    
+    private:
+        uint64_t m_lastTime_ns   ;
+        uint64_t m_currentTime_ns;
+        uint64_t m_deltaTime_ns  ;
     };
 }
