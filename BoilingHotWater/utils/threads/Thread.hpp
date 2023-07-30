@@ -8,14 +8,6 @@ namespace BHW
 {
     class Thread
     {
-    private:
-        std::thread m_thread;
-
-        bool m_shouldStop;
-        bool m_isRunning;
-
-        std::function<void()> m_function;
-
     public:
         Thread(std::function<void()> function);
 
@@ -29,5 +21,13 @@ namespace BHW
 
         inline bool IsRunning () const { return m_isRunning ; }
         inline bool ShouldStop() const { return m_shouldStop; }
+
+    private:
+        std::thread m_thread;
+
+        bool m_shouldStop;
+        bool m_isRunning;
+
+        std::function<void()> m_function;
     };
 }
