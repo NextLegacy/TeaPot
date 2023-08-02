@@ -1,0 +1,7 @@
+"C:\Program Files\JetBrains\CLion 2023.2.2\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Release "-DCMAKE_MAKE_PROGRAM=C:/Program Files/JetBrains/CLion 2023.2.2/bin/ninja/win/x64/ninja.exe" -G Ninja -S C:\Users\mertc\Documents\Engine -B C:\Users\mertc\Documents\Engine\cmake-build-release
+-- GLEW_INCLUDE_DIR: C:/Users/mertc/Documents/Engine/dependencies/glew-2.2.0/include
+-- Including Win32 support
+-- GLM: Version 0.9.9.9
+-- Configuring done (6.1s)
+-- Generating done (0.3s)
+-- Build files have been written to: C:/Users/mertc/Documents/Engine/cmake-build-release

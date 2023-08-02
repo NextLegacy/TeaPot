@@ -1,0 +1,45 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"install"
+		],
+		"files" : 
+		[
+			"TeaPot/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 38,
+				"parent" : 0
+			}
+		]
+	},
+	"installers" : 
+	[
+		{
+			"backtrace" : 1,
+			"component" : "Unspecified",
+			"destination" : "C:/Users/mertc/Documents/Engine/bin",
+			"paths" : 
+			[
+				"C:/Users/mertc/Documents/Engine/bin/TeaPot.exe"
+			],
+			"targetId" : "TeaPot::@47c175ba80bae0a50cec",
+			"targetIndex" : 1,
+			"type" : "target"
+		}
+	],
+	"paths" : 
+	{
+		"build" : "TeaPot",
+		"source" : "TeaPot"
+	}
+}
