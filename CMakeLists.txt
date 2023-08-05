@@ -1,14 +1,19 @@
 cmake_minimum_required(VERSION 3.26.3)
-set(CMAKE_CXX_STANDARD 20)
-
-# TODO: find a nice name for the Engine
 
 project(DigitalTea)
+
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS ON)
 
 include(cmake/project.cmake)     # set up project variables
 
 add_subdirectory(BoilingHotWater)
+add_subdirectory(TeaCup)
 add_subdirectory(TeaPot)
+
+#add_subdirectory(TeaBag)
+#add_subdirectory(TeaPot)
 #add_subdirectory(TeaMath)
 
 #add_subdirectory(core)           # Core library        -> engine_core.lib
