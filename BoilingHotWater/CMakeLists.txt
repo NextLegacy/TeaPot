@@ -1,18 +1,64 @@
 project(BoilingHotWater)
 
-file(GLOB_RECURSE FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
-)
-
-list(APPEND FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/BoilingHotWater
-)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_library(BoilingHotWater
-    ${FILES}
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/EntryPoint
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/ecs/ECS.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/ecs/ECS.cpp
+    
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/ecs/ECSBaseEventSystem.hpp
+    
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/Time.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/Time.cpp 
+    
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/data/Data.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/data/FixedData.hpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/Assert.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/Assert.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/threads/Thread.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/threads/Thread.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/serialization/JSON.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/serialization/JSON.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/Random.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/Random.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/PRNG.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/PRNG.cpp
+    
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/PRNGAlgorithms.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/PRNGAlgorithms.cpp
+    
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/Seed.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/Seed.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/logger/Logger.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/logger/Logger.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/logger/LoggerLevel.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/logger/LoggerLevel.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/logger/LoggedMessage.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/logger/LoggedMessage.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/event/EventSystem.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/event/DynamicEventSystem.hpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/console/Console.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/console/Console.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/console/ANSI.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/console/ANSI.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/application/Application.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/application/Application.cpp
 )
 
 target_include_directories(BoilingHotWater PUBLIC 
@@ -20,12 +66,7 @@ target_include_directories(BoilingHotWater PUBLIC
 )
 
 target_link_libraries(BoilingHotWater PUBLIC 
-    OpenGL::GL
-    glfw
-    glm::glm
-    glew
-    imgui
-    ${JNI_LIBRARIES}
+  
 )
 
 set_target_properties(BoilingHotWater PROPERTIES 
