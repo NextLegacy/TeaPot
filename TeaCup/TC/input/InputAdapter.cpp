@@ -1,0 +1,1 @@
+#include "TC/input/InputAdapter.hpp"
