@@ -1,18 +1,13 @@
 project(TeaPot)
 
-file(GLOB_RECURSE FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
-)
-
-list(APPEND FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/TeaPot
-)
-
 add_executable(TeaPot WIN32
-    ${FILES}
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/TeaPot.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/TeaPot.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/editor/Editor.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/editor/Editor.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/editor/TeaPotECS.hpp
 )
 
 target_include_directories(TeaPot PUBLIC
@@ -21,6 +16,7 @@ target_include_directories(TeaPot PUBLIC
 
 target_link_libraries(TeaPot PUBLIC 
     BoilingHotWater
+    TeaCup
 )
 
 set_target_properties(TeaPot PROPERTIES 
