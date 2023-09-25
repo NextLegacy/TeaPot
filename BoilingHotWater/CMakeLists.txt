@@ -10,7 +10,10 @@ add_library(BoilingHotWater
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/ecs/ECS.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/ecs/ECS.cpp
     
-    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/ecs/ECSBaseEventSystem.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/ecs/Component.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/ecs/ComponentBitMask.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/ecs/EventSystem.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/ecs/Entity.hpp
     
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/Time.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/Time.cpp 
@@ -53,6 +56,8 @@ add_library(BoilingHotWater
 
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/console/Console.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/console/Console.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/String.hpp
 
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/console/ANSI.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/console/ANSI.cpp
