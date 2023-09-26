@@ -2,11 +2,10 @@
 
 namespace BHW
 {
-    template <typename TData>
-    struct DataStorage
+    template <typename TData, typename ...TArgs>
+    struct DataStorage : public TData
     {
-    public:
-        TData m_data;
+        inline DataStorage(TArgs... args) : TData(args...) { }
     };
 
     template <typename ...TDataStorages>
@@ -15,7 +14,7 @@ namespace BHW
         template <typename TDataStorage>
         inline TDataStorage& Get() 
         {
-            return std::get<TDataStorage>(DataStorage::m_data);
+            return std::get<TDataStorage>(*this);
         }
     };
 }
