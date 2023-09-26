@@ -10,18 +10,24 @@
 
 namespace BHW
 {
-    template <typename TBaseEventSystem, typename ...TEventSubscribers>
+    template <typename TBaseEvent, typename ...TEventSubscribers>
     struct EventSystem
     {
-        static_assert((std::is_base_of_v<TBaseEventSystem, TEventSubscribers> && ...), "All event systems must derive from the base event system");
+        static_assert((std::is_base_of_v<TBaseEvent, TEventSubscribers> && ...), "All event systems must derive from the base event system");
 
         template <typename ...TArgs>
-        inline EventSystem(TArgs... args) : m_systems(TEventSubscribers(args...)...) { }
+        inline EventSystem(TArgs... args) : m_systems(TEventSubscribers(args...)...)
+        { 
+            
+        }
 
         template <typename ...TArgs>
-        inline void ForEachEventSystem(void (TBaseEventSystem::*function)(TArgs...), TArgs... args)
+        inline void ForEachEventSystem(void (TBaseEvent::*function)(TArgs...), TArgs... args)
         {
-            std::for_each(m_systems.begin(), m_systems.end(), [&](auto& system) { (system->function)(args...); });
+            std::for_each(m_systems.begin(), m_systems.end(), [function, args...](TBaseEvent& system)
+            { 
+                (system.*function)(args...);
+            });
         }
 
     private:
