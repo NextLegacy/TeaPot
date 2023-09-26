@@ -7,14 +7,6 @@ namespace BHW
     template <size_t TSize, typename TType>
     struct FixedDataStorage : public DataStorage<std::array<TType, TSize>> 
     {
-        inline TType& operator[](size_t index) 
-        {
-            ASSERT(index < TSize, "Index out of bounds");
-            ASSERT(index < m_index, "Index out of bounds");
-
-            return DataStorage::m_data[index];
-        }
-
         inline void Create()
         {
             ASSERT(m_index < TSize, "Index out of bounds");
@@ -27,7 +19,7 @@ namespace BHW
             ASSERT(index < TSize, "Index out of bounds");
             ASSERT(index < m_index, "Index out of bounds");
 
-            DataStorage::m_data[index] = DataStorage::m_data[--m_index];
+            (*this)[index] = (*this)[--m_index];
         }
     
     private:
@@ -39,19 +31,19 @@ namespace BHW
     { 
         inline void Create()
         {
-            (std::get<FixedDataStorage<TSize, TDataStorages>>(DataStorage::m_data).Create(), ...);
+            (std::get<FixedDataStorage<TSize, TDataStorages>>(*this).Create(), ...);
         }
 
         inline void Destroy(size_t index)
         {
-            (std::get<FixedDataStorage<TSize, TDataStorages>>(DataStorage::m_data).Destroy(index), ...);
+            (std::get<FixedDataStorage<TSize, TDataStorages>>(*this).Destroy(index), ...);
         }
 
         inline std::tuple<TDataStorages&...> Get(size_t index)
         {
             ASSERT(index < TSize, "Index out of bounds");
 
-            return std::tuple<TDataStorages&...>(std::get<FixedDataStorage<TSize, TDataStorages>>(DataStorage::m_data)[index]...);
+            return std::tuple<TDataStorages&...>(std::get<FixedDataStorage<TSize, TDataStorages>>(*this)[index]...);
         }
     };
 }
