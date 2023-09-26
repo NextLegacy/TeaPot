@@ -10,36 +10,25 @@
 
 namespace BHW
 {
-    template <typename TEvent>
-    struct DynamicBaseEvent
-    {
-        template <typename ...TArgs>
-        inline void Call(void (TEvent::*function)(TArgs...), TArgs... args)
-        {
-            (static_cast<TEvent*>(this)->*function)(args...);
-        }
-    };
-
-    template <typename TBaseEventSystem>
+    template <typename TBaseEvent>
     struct DynamicEventSystem
     {
         template <typename ...TArgs>
-        inline void ForEachEventSystem(void (TBaseEventSystem::*function)(TArgs...), TArgs... args)
+        inline void ForEachEventSystem(void (TBaseEvent::*function)(TArgs...), TArgs... args)
         {
-            
-            std::for_each(m_systems.begin(), m_systems.end(), [function, args...](TBaseEventSystem& system)
+            std::for_each(m_systems.begin(), m_systems.end(), [function, args...](TBaseEvent* system)
             { 
-                system.Call(function, args...);
+                (system->*function)(args...);
             });
         }
 
-        template <typename TBaseEventSystem, typename ...TArgs>
+        template <typename TEvent, typename ...TArgs>
         inline void SubscribeEventSystem(TArgs... args)
         {
-            m_systems.push_back(TBaseEventSystem(args...));
+            m_systems.push_back(new TEvent(args...));
         }
 
     private:
-        std::vector<TBaseEventSystem> m_systems;
+        std::vector<TBaseEvent*> m_systems;
     };
 }
