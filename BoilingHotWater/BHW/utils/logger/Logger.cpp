@@ -2,7 +2,7 @@
 
 namespace BHW
 {
-    Logger::Logger() { }
+    Logger::Logger() : DynamicEventSystem<LoggerBaseEvent>() { }
 
     void Logger::Log(std::string message, std::vector<LoggerLevel> levels)
     {
@@ -27,14 +27,14 @@ namespace BHW
     {
         m_messages.push_back(message);
         
-        ForEachEventSystem(&LoggerEventSystem::OnLog, message);
+        //ForEachEventSystem(&LoggerBaseEvent::OnLog, message);
     }
 
     void Logger::DumpAll()
     {
         for (LoggedMessage message : m_messages)
         {
-            ForEachEventSystem(&LoggerEventSystem::OnLog, message);
+            //ForEachEventSystem(&LoggerBaseEvent::OnLog, message);
         }
     }
 
