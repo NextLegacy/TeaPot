@@ -79,87 +79,68 @@ namespace TC
 
     void ApplicationRuntime::TickThread()
     {
-        // measuring ticks per second
-        uint64_t measurementStartTime = BHW::Time::NanoSeconds();
-        uint64_t measurementSamples   = 1000;
-        uint64_t measurementTicks     = 0;
-        
         // fixing tps
         uint64_t deltaTime = 0;
-        float   deltaT    = 0;
+        uint64_t deltaT    = 0;
         uint64_t last      = BHW::Time::NanoSeconds();
+
+        // measuring tick time
+        uint64_t lastTickTime = BHW::Time::NanoSeconds();
 
         while (IsRunning())
         {
-            deltaTime  = BHW::Time::NanoSeconds() - last;
-            last      += deltaTime;
-
-            if (deltaT >= 1)
+            if (deltaT >= 1e9)
             {
-                m_deltaTickTime = deltaTime;
+                m_deltaTickTime = (float) (BHW::Time::NanoSeconds() - lastTickTime) / 1.0e9f;
+                lastTickTime    = BHW::Time::NanoSeconds();
+
+                m_measuredTicksPerSecond = 1 / m_deltaTickTime;
 
                 Tick();
 
-                measurementTicks++;
-                deltaT--;
+                deltaT -= 1e9;
             }
 
-            {
-                m_fixedTicksDone = false;
-                std::unique_lock<std::mutex> lock(m_tickMutex);
-                m_tickCondition.wait(lock, [this] { return m_fixedTicksDone; });
-                m_fixedTicksDone = false;
-            }
+            //{
+            //    m_fixedTicksDone = false;
+            //    std::unique_lock<std::mutex> lock(m_tickMutex);
+            //    m_tickCondition.wait(lock, [this] { return m_fixedTicksDone; });
+            //    m_fixedTicksDone = false;
+            //}
 
-            deltaT += deltaTime / (1.0e9f / (float) m_tps);
-
-            m_measuredTicksPerSecond = ((float) measurementTicks / ((float)(BHW::Time::NanoSeconds() - measurementStartTime))) * 1e9;
-
-            if (measurementTicks >= measurementSamples)
-            {
-                measurementStartTime = BHW::Time::NanoSeconds();
-                measurementTicks     = 0;
-            }
+            deltaTime  = BHW::Time::NanoSeconds() - last;
+            last      += deltaTime;
+            deltaT    += deltaTime * m_tps;
         }
     }
 
     void ApplicationRuntime::FrameThread()
     {
-        // measuring frames per second
-        uint64_t measurementStartTime  = BHW::Time::NanoSeconds();
-        uint64_t measurementSamples    = 1000;
-        uint64_t measurementFrames     = 0;
-        uint64_t lastDeltaTime         = 0;
-
         // fixing fps
         uint64_t deltaTime = 0;
-        float    deltaF    = 0;
+        uint64_t deltaF    = 0;
         uint64_t last      = BHW::Time::NanoSeconds();
+
+        // measuring frame time
+        uint64_t lastFrameTime = BHW::Time::NanoSeconds();
 
         while (IsRunning())
         {
-            deltaTime  = BHW::Time::NanoSeconds() - last;
-            last      += deltaTime;
-
-            if (deltaF >= 1)
+            if (deltaF >= 1e9)
             {
-                m_deltaFrameTime = deltaTime;
+                m_deltaFrameTime = (float) (BHW::Time::NanoSeconds() - lastFrameTime) / 1.0e9f;
+                lastFrameTime = BHW::Time::NanoSeconds();
+
+                m_measuredFramesPerSecond = 1 / m_deltaFrameTime;
 
                 Frame(); 
-                measurementFrames++; 
-                deltaF--;
+
+                deltaF -= 1e9;
             }
 
-            deltaF += (float) deltaTime / (1.0e9f / (float) m_fps);
-
-
-            m_measuredFramesPerSecond = ((float) measurementFrames / ((float) (BHW::Time::NanoSeconds() - measurementStartTime))) * 1e9;
-
-            if (measurementFrames >= measurementSamples)
-            {
-                measurementStartTime = BHW::Time::NanoSeconds();
-                measurementFrames    = 0;
-            }
+            deltaTime = BHW::Time::NanoSeconds() - last;
+            last     += deltaTime;
+            deltaF   += deltaTime * m_fps;
         }
     }
 }
