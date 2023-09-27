@@ -14,51 +14,51 @@
 
 namespace TC
 {
-    template<typename T, typename TBaseEventSystem>
-    class TeaCup : public BHW::Application, public ApplicationRuntime, public T, public BHW::DynamicEventSystem<TBaseEventSystem>
+    template<typename TGAPI, typename TBaseEvent>
+    class TeaCup : public BHW::Application, public ApplicationRuntime, public TGAPI, public BHW::DynamicEventSystem<TBaseEvent>
     {
-    static_assert(std::is_base_of<GAPI, T>::value, "T must be a GAPI");
-    //static_assert(std::is_base_of<TeaCupBaseEvent, TBaseEventSystem>::value, "TBaseEventSystem must be a TeaCupBaseEvent");
+    static_assert(std::is_base_of<GAPI, TGAPI>::value, "T must be a GAPI");
+    //static_assert(std::is_base_of<TeaCupBaseEvent, TBaseEvent>::value, "TBaseEvent must be a TeaCupBaseEvent");
 
     public:
-        TeaCup() : BHW::Application(), ApplicationRuntime(), T(), BHW::DynamicEventSystem<TBaseEventSystem>() { }
+        TeaCup() : BHW::Application(), ApplicationRuntime(), TGAPI(), BHW::DynamicEventSystem<TBaseEvent>() { }
 
-        inline bool ApplicationRuntime::IsRunning() { return T::IsWindowOpen(); }
+        inline bool ApplicationRuntime::IsRunning() { return TGAPI::IsWindowOpen(); }
 
     private:
         inline void ApplicationEntryPoint() override
         {
-            T::InitializeWindow();
+            TGAPI::InitializeWindow();
 
             BHW::Console::WriteLine("Run!");
-            BHW::DynamicEventSystem<TBaseEventSystem>::ForEachEventSystem(&TBaseEventSystem::Start);
+            BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::Start);
 
             ApplicationRuntime::StartRuntime();
 
-            BHW::DynamicEventSystem<TBaseEventSystem>::ForEachEventSystem(&TBaseEventSystem::End);
+            BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::End);
             
-            T::TerminateWindow();
+            TGAPI::TerminateWindow();
         }
 
-        inline void ApplicationRuntime::Tick() override
+        inline void Tick() override
         {
-            BHW::DynamicEventSystem<TBaseEventSystem>::ForEachEventSystem(&TBaseEventSystem::Update);
+            BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::Update);
         }
 
-        inline void ApplicationRuntime::FixedTick() override
+        inline void FixedTick() override
         {
-            BHW::DynamicEventSystem<TBaseEventSystem>::ForEachEventSystem(&TBaseEventSystem::FixedUpdate);
+            BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::FixedUpdate);
         }
 
         inline void ApplicationRuntime::Frame() override
         {
-            T::ProcessEvents();
-            T::RenderFrame();
+            TGAPI::ProcessEvents();
+            TGAPI::RenderFrame();
         }
 
-        inline void T::Frame() override
+        inline void TGAPI::Frame() override
         {
-            BHW::DynamicEventSystem<TBaseEventSystem>::ForEachEventSystem(&TBaseEventSystem::Render);
+            BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::Render);
         }
     };
 }
