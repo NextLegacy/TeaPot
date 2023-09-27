@@ -15,12 +15,12 @@
 
 namespace BHW
 {
-    struct LoggerEventSystem : public DynamicBaseEvent<LoggerEventSystem>
+    struct LoggerBaseEvent
     {
-        virtual void OnLog(LoggedMessage message) = 0;
+        virtual void OnLog(LoggedMessage message) { }
     };
 
-    class Logger : public DynamicEventSystem<LoggerEventSystem>
+    class Logger : public DynamicEventSystem<LoggerBaseEvent>
     {
     public:
         Logger();
