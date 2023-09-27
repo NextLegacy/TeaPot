@@ -7,8 +7,7 @@
 
 namespace TC
 {
-    template <typename TBaseEventSystem>
-    struct TeaCupBaseEvent : public BHW::DynamicBaseEvent<TBaseEventSystem>
+    struct TeaCupBaseEvent
     {
         inline virtual void Start      () { }
 
