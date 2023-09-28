@@ -6,10 +6,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_library(BoilingHotWater
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/EntryPoint
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/EntryPoint.cpp
 
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/ecs/ECS.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/ecs/ECS.cpp
-    
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/ecs/Component.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/ecs/ComponentBitMask.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/ecs/EventSystem.hpp
@@ -34,7 +33,6 @@ add_library(BoilingHotWater
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/Random.cpp
 
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/PRNG.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/PRNG.cpp
     
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/PRNGAlgorithms.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/PRNGAlgorithms.cpp
@@ -58,6 +56,7 @@ add_library(BoilingHotWater
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/console/Console.cpp
 
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/String.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/String.cpp
 
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/console/ANSI.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/console/ANSI.cpp
