@@ -1,6 +1,6 @@
 #pragma once
 
-#include <BHW/ecs/ECS.hpp>
+//#include <BHW/ecs/ECS.hpp>
 
 #include <BHW/utils/event/EventSystem.hpp>
 
