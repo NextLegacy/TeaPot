@@ -12,36 +12,10 @@ namespace BHW
 
 #include <windows.h>
 
-int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
-{
-    std::vector<std::string> args;
-
-    int argc;
-    LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
-
-    for (int i = 0; i < argc; i++)
-    {
-        int size_needed = WideCharToMultiByte(CP_UTF8, 0, argv[i], wcslen(argv[i]), NULL, 0, NULL, NULL);
-        std::string arg(size_needed, 0);
-        WideCharToMultiByte(CP_UTF8, 0, argv[i], wcslen(argv[i]), &arg[0], size_needed, NULL, NULL);
-        args.push_back(arg);
-    }
-
-    return BHW::EntryPoint(args);
-}
+int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 
 #else // if not _WIN32
 
-int main(const int argc, const char** argv)
-{
-    std::vector<std::string> args;
-
-    for (int i = 0; i < argc; i++)
-    {
-        args.push_back(argv[i]);
-    }
-    
-    return BHW::EntryPoint(args);
-}
+int main(const int argc, const char** argv);
 
 #endif // _WIN32
