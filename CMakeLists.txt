@@ -12,6 +12,9 @@ add_subdirectory(BoilingHotWater)
 add_subdirectory(TeaCup)
 add_subdirectory(TeaPot)
 
+#add_subdirectory(MultiThreading_GLFW_Minimum) # TODO: remove later
+#add_subdirectory(MultiThreading_GLFW_ImGui_Minimum) # TODO: remove later
+
 #add_subdirectory(TeaBag)
 #add_subdirectory(TeaPot)
 #add_subdirectory(TeaMath)
