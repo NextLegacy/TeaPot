@@ -9,52 +9,62 @@ namespace BHW
     struct ComponentBitMask
     {
     public:
-    using bitset = std::bitset<TComponents::size>;
+    using bitset = std::bitset<sizeof...(TComponents)>;
 
     public:
-        static constexpr uint64_t s_Mask = (1 << s_Bits) - 1;
-
-        static constexpr auto Hash = []<typename ...TComponents>(const ComponentBitMask<TComponents...>& componentBitMask)
+        inline static constexpr auto Hash = []<typename ...TComponents>(const ComponentBitMask<TComponents...>& componentBitMask)
         {
             return componentBitMask.m_bitset.to_ullong();
         };
 
     public:
-        constexpr ComponentBitMask() : m_bitset(0) { }
-        constexpr ComponentBitMask(bitset bitset) : m_bitset(bitset) { }
-        constexpr ComponentBitMask(const ComponentBitMask& componentBitMask) : m_bitset(componentBitMask.m_bitset) { }
-        constexpr ComponentBitMask(ComponentBitMask&& componentBitMask) : m_bitset(componentBitMask.m_bitset) { }
+        inline constexpr ComponentBitMask() : m_bitset(0) { }
+        inline constexpr ComponentBitMask(bitset bitset) : m_bitset(bitset) { }
+        inline constexpr ComponentBitMask(const ComponentBitMask& componentBitMask) : m_bitset(componentBitMask.m_bitset) { }
+        inline constexpr ComponentBitMask(ComponentBitMask&& componentBitMask) : m_bitset(componentBitMask.m_bitset) { }
 
     public:
+        template <typename TComponent>
+        inline static constexpr ComponentTypeUUID ComponentTypeUUID()
+        {
+            return (std::is_same_v<TComponent, TComponents> + ...) - 1;
+        }
+
+        template <typename TComponent>
+        inline static constexpr ComponentUUID ComponentUUID(ComponentIndex componentIndex)
+        {
+            return (ComponentTypeUUID<TComponent>() << 32) | (componentIndex);
+        }
+
         template <typename ...TEnabledComponents>
-        static constexpr ComponentBitMask<TComponents...> BitMask()
+        inline static constexpr ComponentBitMask<TComponents...> BitMask()
         {
             return ComponentBitMask().Enable<TEnabledComponents...>();
         }
 
     public:
         template <typename ...TComponents>
-        constexpr ComponentBitMask<TComponents...>& Enable() 
+        inline constexpr ComponentBitMask<TComponents...>& Enable() 
         {
-            (m_bitset.set(TComponents::ComponentTypeUUID<TComponents>()), ...);
+            (m_bitset.set(ComponentTypeUUID<TComponents>()), ...);
             return *this;
         }
 
         template <typename ...TComponents>
-        constexpr ComponentBitMask<TComponents...>& Disable() 
+        inline constexpr ComponentBitMask<TComponents...>& Disable() 
         {
-            (m_bitset.reset(TComponents::ComponentTypeUUID<TComponents>()), ...);
+            (m_bitset.reset(ComponentTypeUUID<TComponents>()), ...);
             return *this;
         }
 
         template <typename TComponent>
-        constexpr bool IsEnabled() const
+        inline constexpr bool IsEnabled() const
         {
-            return m_bitset.test(TComponents::ComponentTypeUUID<TComponent>());
+            return m_bitset.test(ComponentTypeUUID<TComponent>());
         }
 
         template <typename TComponent>
-        constexpr ComponentIndex IndexInEnabled() const
+        inline constexpr ComponentIndex IndexInEnabled() const
         {
             return m_bitset.count() - 1 - m_bitset.flip().find_first();
         }
