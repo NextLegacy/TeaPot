@@ -9,7 +9,7 @@ namespace BHW
     template <typename TECS>
     struct Entity
     {
-        Entity(EntityUUID entityUUID, std::shared_ptr<TECS> ecs) : m_entityUUID(entityUUID), m_ecs(ecs) { }
+        inline Entity(EntityUUID entityUUID, std::shared_ptr<TECS> ecs) : m_entityUUID(entityUUID), m_ecs(ecs) { }
 
         template <typename TComponent>
         inline void AddComponent()
@@ -35,52 +35,55 @@ namespace BHW
             return m_ecs->GetComponent<TComponent>(m_entityUUID);
         }
 
-
-        EntityUUID m_entityUUID;
-        std::shared_ptr<TECS> m_ecs;
+        EntityUUID            m_entityUUID;
+        std::shared_ptr<TECS> m_ecs       ;
     };
 
-    template <typename TECS>
+    template <typename ...TComponents>
     class EntityComponents
     {
-        using TComponents = typename TECS::TComponents;
-        using TComponentBitMask = ComponentBitMask<TECS>;
+    public:
+        using TComponentBitMask = ComponentBitMask<TComponents...>;
 
-        inline EntityComponents(TComponentBitMask componentBitMask) : m_componentBitMask(componentBitMask), m_componentIndices()
-        {
-
-        }
-
+        inline EntityComponents(TComponentBitMask componentBitMask) : m_componentBitMask(componentBitMask), m_componentIndices() { }
+        inline EntityComponents() : EntityComponents(TComponentBitMask()) { }
+    
         template <typename TComponent>
         inline void AddComponent(ComponentIndex componentIndex)
         {
-            m_componentIndices[componentIndex] = TComponents::ComponentTypeUUID<TComponent>();
-            m_componentBitMask.Enable<TComponent>();
+            m_componentIndices[TComponentBitMask::template ComponentTypeUUID<TComponent>()] = componentIndex;
+
+            m_componentBitMask.template Enable<TComponent>();
         }
 
         template <typename TComponent>
         inline void RemoveComponent(ComponentIndex componentIndex)
         {
-            m_componentIndices[componentIndex] = TComponents::ComponentTypeUUID<TComponent>();
-            m_componentBitMask.Disable<TComponent>();
+            m_componentIndices[TComponentBitMask::template ComponentTypeUUID<TComponent>()] = componentIndex;
+            m_componentBitMask.template Disable<TComponent>();
         }
 
         template <typename TComponent>
         inline bool HasComponent()
         {
-            return m_componentBitMask.IsEnabled<TComponent>();
+            return m_componentBitMask.template IsEnabled<TComponent>();
+        }
+
+        template <typename ...TComponents>
+        inline bool HasComponents()
+        {
+            return m_componentBitMask.template IsEnabled<TComponents...>();
         }
 
         template <typename TComponent>
         inline ComponentIndex GetComponentIndex()
         {
-            return m_componentIndices[TComponents::ComponentTypeUUID<TComponent>()];
+            return m_componentIndices[TComponentBitMask::template ComponentTypeUUID<TComponent>()];
         }
-        
     
     private:
         TComponentBitMask m_componentBitMask;
 
-        std::vector<ComponentIndex> m_componentIndices;
+        std::array<ComponentIndex, sizeof...(TComponents)> m_componentIndices;
     };
 }
