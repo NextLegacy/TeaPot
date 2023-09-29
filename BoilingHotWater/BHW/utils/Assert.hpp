@@ -2,11 +2,11 @@
 
 #include <string>
 
-#include "BHW/utils/console/Console.hpp"
-
-#define BHW_ASSERT(condition, from, message) BHW::ASSERT(condition, "[" + from + "] " + message)
-
 namespace BHW
 {
-    void ASSERT(bool condition, std::string message = "Assertion failed");
+    template<typename... TArgs>
+    void Assert(bool condition, std::string format, TArgs... messages);
 }
+
+#define BHW_STATIC_ASSERT(condition, origin, format, ...) static_assert(condition, std::format("[STATIC ASSERT FAILED] [{}:{}] [{}]" + format, __FILE__, __LINE__, origin, __VA_ARGS__))
+#define BHW_ASSERT(condition, origin, format, ...) BHW::Assert(condition, std::string("[ASSERT FAILED] [{}:{}] [{}] ") + format, __FILE__, __LINE__, origin, __VA_ARGS__)
