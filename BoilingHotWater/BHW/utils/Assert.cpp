@@ -1,12 +1,17 @@
 #include "BHW/utils/Assert.hpp"
 
+#include "BHW/utils/console/Console.hpp"
+
 namespace BHW
 {
-    void ASSERT(bool condition, std::string message)
+    template<typename... TArgs>
+    void Assert(bool condition, std::string format, TArgs... messages)
     {
         //#ifdef DEBUG
 
         if (condition) return;
+
+        std::string message = std::format(format, messages...);
 
         Console::WriteLine(message);
 
