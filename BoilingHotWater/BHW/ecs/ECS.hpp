@@ -13,40 +13,43 @@
 #include "BHW/ecs/ComponentBitMask.hpp"
 #include "BHW/ecs/EventSystem.hpp"
 
-//#include "BHW/utils/random/Random.hpp"
-
-#include <memory>
+#include "BHW/utils/random/Random.hpp"
 
 namespace BHW
 {
-    template <typename TECSComponents, typename TECSSystems>
-    class ECS : public std::enable_shared_from_this<ECS<TECSComponents, TECSSystems>>, public TECSSystems
+    template <typename TEventSystem, typename ...TComponents>
+    class ECS : public ECSSystem<ECS<TEventSystem, TComponents...>, TEventSystem>
     {
-    using TComponents       = typename TECSComponents::TComponents;
-    using TComponentBitMask = typename TECSComponents::TComponentBitMask;
+    using TComponentBitMask = typename ComponentBitMask<TComponents...>;
 
-    using TSystems          = typename TECSSystems   ::TSystems;
-
-    using TEntity           = Entity          <TECSComponents>;
-    using TEntityComponents = EntityComponents<TECSComponents>;
+    using TEntity           = Entity          <ECS<TEventSystem, TComponents...>>;
+    using TEntityComponents = EntityComponents<TComponents...>;
 
     public:
-        inline ECS() : m_components(), m_entityComponentBitMasks(), m_entityComponents() { }
-
-        inline ECS() : TECSSystems(this->shared_from_this()), m_components(), m_entityComponentBitMasks(), m_entityComponents() 
+        inline ECS() :
+            ECSSystem<ECS<TEventSystem, TComponents...>, TEventSystem>(),
+            m_components           (),  
+            m_entityComponents     (), 
+            m_componentEntityOwners(), 
+            m_random               ()
         {
-            m_components           .reserve(1000); // too much? noooo this is fine, the more the merrier :)
-            m_entityComponents     .reserve(1000);
-            m_componentEntityOwners.reserve(1000);
+            // too much? noooo this is fine, the more the merrier :)
+            (std::get<std::vector<TComponents>>(m_components).reserve(1000), ...);
+            m_entityComponents                               .reserve(1000);
+            m_componentEntityOwners                          .reserve(1000);
         }
 
     public:
+        inline bool EntityExists(EntityUUID entityUUID)
+        {
+            return m_entityComponents.find(entityUUID) != m_entityComponents.end();
+        }
+
         inline EntityUUID CreateEntity()
         {
-            static uint64_t entityUUID = 0; // TODO: Replace with random UUID
-            EntityUUID entityUUID = entityUUID++;
+            EntityUUID entityUUID = m_random.UInt64();
 
-            m_entityComponents[entityUUID] = TEntityComponents(entityUUID, TComponentBitMask());
+            m_entityComponents.emplace(entityUUID, TEntityComponents(TComponentBitMask()));
 
             return entityUUID;
         }
@@ -54,14 +57,32 @@ namespace BHW
         template <typename TComponent>
         inline void AddComponent(EntityUUID entityUUID)
         {
-            if (!EntityExists(entityUUID)) return;
+            if (!EntityExists            (entityUUID)) return;
+            if ( HasComponent<TComponent>(entityUUID)) return;
 
-            if (HasComponent<TComponent>(entityUUID)) return;
+            std::vector<TComponent>& components = std::get<std::vector<TComponent>>(m_components);
 
-            // add to m_components
-            // enable on m_entityComponents bitmask
-            // add to m_entityComponents componentIndices
-            // add to m_componentEntityOwners
+            ComponentIndex componentIndex = components.size();
+            ComponentUUID componentUUID = TComponentBitMask::template ComponentUUID<TComponent>(componentIndex);
+
+            components.emplace_back();
+
+            m_entityComponents[entityUUID].AddComponent<TComponent>(componentIndex);
+
+            m_componentEntityOwners[componentUUID] = entityUUID;
+        }
+
+        template <typename TComponent>
+        inline TComponent& GetComponent(EntityUUID entityUUID)
+        {
+            if (!EntityExists            (entityUUID)) throw std::runtime_error("Entity does not exist");
+            if (!HasComponent<TComponent>(entityUUID)) throw std::runtime_error("Entity does not have component");
+
+            std::vector<TComponent>& components = std::get<std::vector<TComponent>>(m_components);
+
+            ComponentIndex componentIndex = m_entityComponents[entityUUID].GetComponentIndex<TComponent>();
+
+            return components[componentIndex];
         }
 
         template <typename TComponent>
@@ -69,10 +90,69 @@ namespace BHW
         {
             if (!EntityExists(entityUUID)) return false;
 
-            return m_entityComponents[entityUUID].m_componentBitMask.IsEnabled<TComponent>();
+            return m_entityComponents[entityUUID].HasComponent<TComponent>();
+        }
+
+        template <typename TComponent>
+        inline bool RemoveComponent(EntityUUID entityUUID)
+        {
+            if (!EntityExists            (entityUUID)) return false;
+            if (!HasComponent<TComponent>(entityUUID)) return false;
+
+            std::vector<TComponent>& components = std::get<std::vector<TComponent>>(m_components);
+
+            ComponentIndex componentIndex = m_entityComponents[entityUUID].GetComponentIndex<TComponent>();
+            ComponentUUID  componentUUID  = TComponentBitMask::template CreateComponentUUID<TComponent>(componentIndex);
+
+            components[componentIndex] = components.back();
+            components.emplace_back();
+
+            m_entityComponents[entityUUID].RemoveComponent<TComponent>(componentIndex);
+
+            m_componentEntityOwners.erase(componentUUID);
+
+            return true;
+        }
+
+        template <typename ...TComponents>
+        inline void ForEachEntity(std::function<void(EntityUUID, TComponents&...)> function)
+        {
+            // TODO: this could be optimized by using m_components
+            for (auto& [entityUUID, entityComponents] : m_entityComponents)
+            {
+                if (entityComponents.HasComponents<TComponents...>())
+                {
+                    function(entityUUID, GetComponent<TComponents>(entityUUID)...);
+                }
+            }
+        }
+
+        template <typename TComponent, typename ...TComponents>
+        inline void ForEachComponent(std::function<void(EntityUUID, TComponents&...)> function)
+        {
+            for (std::vector<TComponent>& components : m_components)
+            {
+                for (ComponentIndex componentIndex = 0; componentIndex < components.size(); ++componentIndex)
+                {
+                    ComponentUUID componentUUID = TComponentBitMask::template CreateComponentUUID<TComponent>(componentIndex);
+
+                    EntityUUID entityUUID = m_componentEntityOwners[componentUUID];
+
+                    if (!m_entityComponents[entityUUID].HasComponents<TComponents...>()) continue;
+                    
+                    function(entityUUID, GetComponent<TComponents>(entityUUID)...);
+                }
+            }
+        }
+
+        inline TEntity GetEntity(EntityUUID entityUUID)
+        {
+            return TEntity(entityUUID, this->shared_from_this());
         }
 
     private:
+        Random m_random;
+
         std::tuple<std::vector<TComponents>...> m_components;
 
         std::unordered_map<EntityUUID, TEntityComponents> m_entityComponents;
