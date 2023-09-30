@@ -1,11 +1,8 @@
 #pragma once
 
-#include <chrono>
+#include <cstdint>
 
 namespace BHW
 {
-    namespace Time
-    {
-        uint64_t NanoSeconds();
-    }
+    uint64_t NanoSeconds();
 }
