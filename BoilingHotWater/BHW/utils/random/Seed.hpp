@@ -15,11 +15,19 @@ namespace BHW
         Seed(uint64_t seed);
         Seed(std::string seed);
 
-        inline operator uint64_t() const { return m_seed; }
-        inline operator std::string() const { return std::to_string(m_seed); }
+        operator uint64_t   () const;
+        operator std::string() const;
 
         template <unsigned int N>
-        void CreateState(uint64_t (&state)[N]) const;
+        inline void CreateState(uint64_t (&state)[N]) const
+        {
+            uint64_t seed = m_seed;
+
+            for (unsigned int i = 1; i < N; i++)
+            {
+                state[i] = PRNGAlgorithms::Splitmix64(seed);
+            }
+        }
 
     private:
         uint64_t m_seed;
