@@ -4,8 +4,6 @@
 #include <map>
 #include <vector>
 
-#include "BHW/utils/Assert.hpp"
-
 namespace BHW
 {
     enum class JSONType
@@ -36,7 +34,7 @@ namespace BHW
         bool Is(JSONType type);
 
         template <typename T>
-        T* Get();
+        T& Get();
 
         std::string ToString();
 
@@ -61,21 +59,20 @@ namespace BHW
         template <> std::string ToString<std::map<std::string, JSONObject>>();
 
     public:
-        JSONType m_type;
-        void* m_value;
+        JSONType m_type ;
+        void*    m_value;
     };
 
-    std::string Serialize(JSONObject json);
+    std::string Serialize  (JSONObject  jsonObject);
+    JSONObject  Deserialize(std::string jsonString);
 
-    JSONObject Deserialize(std::string);
-
-    // functions that are invisble for the global scope
     namespace
     {
         bool Parse(std::string& json, JSONObject& result);
 
-        bool ParserSkip (std::string& json, uint32_t& index);
+        void ParserSkip (std::string& json, uint32_t& index);
 
+        bool ParseValue (std::string& json, uint32_t& index, JSONObject& result);
         bool ParseString(std::string& json, uint32_t& index, JSONObject& result);
         bool ParseNumber(std::string& json, uint32_t& index, JSONObject& result);
         bool ParseBool  (std::string& json, uint32_t& index, JSONObject& result);
