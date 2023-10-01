@@ -1,8 +1,10 @@
 #include "BHW/utils/threads/Thread.hpp"
 
+#include "BHW/utils/Time.hpp"
+
 namespace BHW
 {
-    Thread::Thread(std::function<void(Thread*)> function)
+    Thread::Thread(std::function<void(Thread&)> function)
         : m_function  (function), 
           m_isRunning (false   ), 
           m_shouldStop(false   ),
@@ -34,7 +36,7 @@ namespace BHW
 
         m_thread->detach();
 
-        //delete &m_thread;
+        delete &m_thread;
 
         m_shouldStop = false;
     }
@@ -65,7 +67,7 @@ namespace BHW
         m_isRunning  = true ;
         m_shouldStop = false;
 
-        m_function(this);
+        m_function(*this);
 
         m_isRunning  = false;
         m_shouldStop = false;
