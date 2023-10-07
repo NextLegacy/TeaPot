@@ -4,14 +4,12 @@
 
 #include <functional>
 
-#include "BHW/utils/Time.hpp"
-
 namespace BHW
 {
     class Thread
     {
     public:
-        Thread(std::function<void(Thread*)> function);
+        Thread(std::function<void(Thread&)> function);
         
         ~Thread();
 
@@ -33,8 +31,8 @@ namespace BHW
         std::thread* m_thread;
 
         bool m_shouldStop;
-        bool m_isRunning;
+        bool m_isRunning ;
 
-        std::function<void(Thread*)> m_function;
+        std::function<void(Thread&)> m_function;
     };
 }
