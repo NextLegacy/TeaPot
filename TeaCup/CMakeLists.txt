@@ -26,6 +26,9 @@ add_library(TeaCup
     ${CMAKE_CURRENT_SOURCE_DIR}/TC/gapi/impl/GLFW_OpenGL_DearImGui.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/TC/gapi/impl/GLFW_OpenGL_DearImGui.cpp
 
+    ${CMAKE_CURRENT_SOURCE_DIR}/TC/gapi/impl/ImGui/ImGuiWindow.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TC/gapi/impl/ImGui/ImGuiWindow.cpp
+
     ${CMAKE_CURRENT_SOURCE_DIR}/TC/input/Input.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/TC/input/Input.cpp
 
