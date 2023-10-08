@@ -14,48 +14,56 @@ namespace TC
     {
     public:
         ApplicationRuntime();
-    
+
+    public:
         void StartRuntime();
+        void EndRuntime  ();
 
-        inline uint64_t GetTPS () { return m_measuredTicksPerSecond + 0.5 ; }
-        inline uint64_t GetFTPS() { return m_measuredFixedTicksPerSecond + 0.5; }
-        inline uint64_t GetFPS () { return m_measuredFramesPerSecond + 0.5; }
+        inline uint64_t GetUPS () { return m_measuredUpdatesPerSecond      + 0.5; }
+        inline uint64_t GetFUPS() { return m_measuredFixedUpdatesPerSecond + 0.5; }
+        inline uint64_t GetFPS () { return m_measuredFramesPerSecond       + 0.5; }
+        
+        inline float GetDeltaTime     () { return m_deltaUpdateTime     ; }
+        inline float GetFixedDeltaTime() { return m_deltaFixedUpdateTime; }
+        inline float GetFrameDeltaTime() { return m_deltaFrameTime      ; }
 
-        inline float TickDeltaTime () { return m_deltaTickTime     ; }
-        inline float FixedTickDelta() { return m_deltaFixedTickTime; }
-        inline float FrameDeltaTime() { return m_deltaFrameTime    ; }
-
-        virtual bool IsRunning() = 0;
+        inline bool IsRunning() { return m_isRunning && RuntimeIsRunning(); }
 
     protected:
-        virtual void Tick     () = 0;
-        virtual void FixedTick() = 0;
-        virtual void Frame    () = 0;
+        virtual void RuntimeUpdate     () = 0;
+        virtual void RuntimeFixedUpdate() = 0;
+        virtual void RuntimeRender     () = 0;
+
+        virtual void RuntimeMainThreadStart       () = 0;
+        virtual void RuntimeFixedUpdateThreadStart() = 0;
+        virtual void RuntimeRenderThreadStart     () = 0;
+
+        virtual void RuntimeMainThreadEnd       () = 0;
+        virtual void RuntimeFixedUpdateThreadEnd() = 0;
+        virtual void RuntimeRenderThreadEnd     () = 0;
+
+        virtual bool RuntimeIsRunning() = 0;
 
     private:
-        void TickThread();
-        void FixedTickThread();
-
-        void FrameThread();
+        void MainThread       ();
+        void FixedUpdateThread();
+        void RenderThread     ();
 
     private:
-        float m_deltaTickTime;
-        float m_deltaFixedTickTime;
-        float m_deltaFrameTime;
+        float m_deltaUpdateTime     ;
+        float m_deltaFixedUpdateTime;
+        float m_deltaFrameTime      ;
 
-        uint64_t m_fps;
-        uint64_t m_ftps;
-        uint64_t m_tps;
+        uint64_t m_fps ;
+        uint64_t m_fups;
 
-        float m_measuredFramesPerSecond;
-        float m_measuredTicksPerSecond;
-        float m_measuredFixedTicksPerSecond;
+        float m_measuredFramesPerSecond      ;
+        float m_measuredUpdatesPerSecond     ;
+        float m_measuredFixedUpdatesPerSecond;
 
-        BHW::Thread m_tickThread;
-        BHW::Thread m_fixedTickThread;
+        BHW::Thread m_fixedUpdateThread;
+        BHW::Thread m_renderThread     ;
 
-        std::mutex m_tickMutex;
-        std::condition_variable m_tickCondition;
-        bool m_fixedTicksDone;
+        bool m_isRunning;
     };
 }
