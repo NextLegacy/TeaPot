@@ -23,40 +23,43 @@ namespace TC
     public:
         TeaCup() : BHW::Application(), ApplicationRuntime(), TGAPI(), BHW::DynamicEventSystem<TBaseEvent>() { }
 
-        inline bool ApplicationRuntime::IsRunning() { return TGAPI::IsWindowOpen(); }
+        inline bool RuntimeIsRunning() override { return TGAPI::IsWindowOpen(); }
 
     private:
         inline void ApplicationEntryPoint() override
         {
-            TGAPI::InitializeWindow();
-
-            BHW::Console::WriteLine("Run!");
             BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::Start);
 
             ApplicationRuntime::StartRuntime();
 
             BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::End);
-            
-            TGAPI::TerminateWindow();
         }
 
-        inline void Tick() override
+        inline void RuntimeMainThreadStart       () override { TGAPI::InitializeWindow     (); }
+        inline void RuntimeFixedUpdateThreadStart() override {                                 }
+        inline void RuntimeRenderThreadStart     () override { TGAPI::InitializeFrameThread(); }
+
+        inline void RuntimeMainThreadEnd         () override { TGAPI::TerminateWindow      (); }
+        inline void RuntimeFixedUpdateThreadEnd  () override {                                 }
+        inline void RuntimeRenderThreadEnd       () override {                                 }
+
+        inline void RuntimeUpdate() override
         {
+            TGAPI::ProcessEvents();
             BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::Update);
         }
 
-        inline void FixedTick() override
+        inline void RuntimeFixedUpdate() override
         {
             BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::FixedUpdate);
         }
 
-        inline void ApplicationRuntime::Frame() override
+        inline void RuntimeRender() override
         {
-            TGAPI::ProcessEvents();
             TGAPI::RenderFrame();
         }
 
-        inline void TGAPI::Frame() override
+        inline void Frame() override
         {
             BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::Render);
         }
