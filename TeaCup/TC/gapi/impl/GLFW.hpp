@@ -5,7 +5,7 @@
 #ifdef _WIN32
 
 #include <windows.h>
-
+    
 #endif // _WIN32
 
 //#include <GL/glew.h>
@@ -20,8 +20,8 @@ namespace TC
     class GLFW : public GAPI
     {
     public:
-        virtual int  InitializeWindow  () override;
-        virtual void InitializeInput   () override;
+        virtual int  InitializeWindow() override;
+        virtual void InitializeInput () override;
         
         virtual void ProcessEvents  () override;
         virtual void RenderFrame    () override;
@@ -35,7 +35,7 @@ namespace TC
 
         virtual void SetWindowHints() = 0;
 
-    protected:
+    public:
         GLFWwindow* m_window;
     };
 }
