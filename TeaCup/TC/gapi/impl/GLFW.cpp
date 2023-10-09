@@ -14,56 +14,62 @@ namespace TC
 
         SetWindowHints();
 
-        m_window = glfwCreateWindow(m_size.x, m_size.y, "Boiling Hot Water", nullptr, nullptr);
+        m_window = glfwCreateWindow(m_size.x, m_size.y, "TeaCup", nullptr, nullptr);
 
         if (m_window == nullptr)
             return 1;
-
-        glfwMakeContextCurrent(m_window);
-
-        InitializeInput();
-
-        glfwSwapInterval(0);
 
         return 0;
     }
 
     void GLFW::InitializeInput()
     {
-        glfwSetWindowUserPointer(m_window, GetInput());
+        glfwSetWindowUserPointer(m_window, this);
 
         glfwSetKeyCallback(m_window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
         {
-            auto& input = *static_cast<Input*>(glfwGetWindowUserPointer(window));
+            GLFW& glfw = *static_cast<GLFW*>(glfwGetWindowUserPointer(window));
+            Input& input = glfw.GetInput();
 
             input.KeyboardKeyCallback(key, scancode, action, mods);
         });
 
         glfwSetMouseButtonCallback(m_window, [](GLFWwindow* window, int button, int action, int mods)
         {
-            auto& input = *static_cast<Input*>(glfwGetWindowUserPointer(window));
+            GLFW& glfw = *static_cast<GLFW*>(glfwGetWindowUserPointer(window));
+            Input& input = glfw.GetInput();
 
             input.MouseButtonCallback(button, action, mods);
         });
 
         glfwSetCursorPosCallback(m_window, [](GLFWwindow* window, double xpos, double ypos)
         {
-            auto& input = *static_cast<Input*>(glfwGetWindowUserPointer(window));
+            GLFW& glfw = *static_cast<GLFW*>(glfwGetWindowUserPointer(window));
+            Input& input = glfw.GetInput();
 
             input.MouseMoveCallback(xpos, ypos);
         });
 
         glfwSetScrollCallback(m_window, [](GLFWwindow* window, double xoffset, double yoffset)
         {
-            auto& input = *static_cast<Input*>(glfwGetWindowUserPointer(window));
+            GLFW& glfw = *static_cast<GLFW*>(glfwGetWindowUserPointer(window));
+            Input& input = glfw.GetInput();
 
             input.MouseScrollCallback(xoffset, yoffset);
+        });
+
+        glfwSetWindowRefreshCallback(m_window, [](GLFWwindow* window)
+        {
+            GLFW& glfw = *static_cast<GLFW*>(glfwGetWindowUserPointer(window));
+
+            //glfwSwapBuffers(glfw.m_window);
+            //glfw.RenderFrame();
         });
     }
 
     void GLFW::ProcessEvents()
     {
-        glfwPollEvents();
+        glfwWaitEvents();
     }
 
     void GLFW::RenderFrame()
@@ -77,8 +83,6 @@ namespace TC
 
     void GLFW::TerminateWindow()
     {
-        glfwMakeContextCurrent(nullptr);
-
         glfwDestroyWindow(m_window);
         glfwTerminate();
     }
