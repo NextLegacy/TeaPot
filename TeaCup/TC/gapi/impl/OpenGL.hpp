@@ -7,7 +7,5 @@
 
 namespace TC
 {
-    class OpenGL
-    {
-    };
+    class OpenGL { };
 }
