@@ -1,14 +1,27 @@
 project(TeaPot)
 
 add_executable(TeaPot WIN32
-    ${CMAKE_CURRENT_SOURCE_DIR}/TP/TeaPot.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/TP/TeaPot.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/TeaPotEntryPoint.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/TeaPotEntryPoint.hpp
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/TP/editor/Editor.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/TP/editor/Editor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/TeaPot.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/TeaPot.hpp
+    
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/EventSubscriber.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/EventSubscriber.hpp
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/TP/editor/TeaPotECS.hpp
-)
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/ecs/components/DebugComponent.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/ecs/components/DebugComponent.hpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/ecs/systems/DebugSystem.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/ecs/systems/DebugSystem.hpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/windows/ConsoleWindow.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/windows/ConsoleWindow.cpp
+    
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/windows/Dockspace.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/windows/Dockspace.cpp
+    )
 
 target_include_directories(TeaPot PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
