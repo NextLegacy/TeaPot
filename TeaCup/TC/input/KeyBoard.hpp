@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-
 #include <map>
 
 #include <BHW/utils/Assert.hpp>
