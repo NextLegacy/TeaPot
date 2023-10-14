@@ -9,8 +9,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     std::vector<std::string> args;
 
     // I've did not put any thought into this.
-    // For some tests I've made, it seems to work.
-    // Should be fine for now.
+    // for some tests I've made, it seems to work.
+    // should be fine for now.
 
     // creates a std::vector<std::string> containing the command line arguments
 
@@ -25,19 +25,19 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
         args.push_back(arg);
     }
 
+    //delete argv;
+
     return BHW::EntryPoint(args);
 }
 
-#else // if not _WIN32
+#else // _WIN32
 
 int main(const int argc, const char** argv)
 {
     std::vector<std::string> args;
 
-    for (int i = 0; i < argc; i++)
-    {
+    for (int i = 0; i < argc; i++) 
         args.push_back(argv[i]);
-    }
     
     return BHW::EntryPoint(args);
 }
