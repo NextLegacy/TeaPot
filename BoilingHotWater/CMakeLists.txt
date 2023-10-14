@@ -20,15 +20,22 @@ add_library(BoilingHotWater
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/data/Data.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/data/FixedData.hpp
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/Assert.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/Assert.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/Debug.hpp
 
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/threads/Thread.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/threads/Thread.cpp
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/serialization/JSON.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/serialization/JSON.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/json/JSON.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/json/JSON.cpp
 
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/json/JSONObject.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/json/JSONObject.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/json/JSONType.hpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/json/Serializable.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/json/Serializable.cpp
+    
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/Random.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/Random.cpp
 
@@ -63,6 +70,9 @@ add_library(BoilingHotWater
 
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/application/Application.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/application/Application.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/io/FileHandler.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/io/FileHandler.cpp
 )
 
 target_include_directories(BoilingHotWater PUBLIC 
