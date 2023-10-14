@@ -2,14 +2,14 @@
 
 namespace BHW
 {
-    Application* Application::s_instance = nullptr;
+    namespace
+    {
+        Application* s_instance = nullptr;
+    }
 
     Application::Application() : m_isRunning(false)
     {
-        if (s_instance)
-        {
-            delete s_instance;
-        }
+        if (s_instance) delete s_instance;
 
         s_instance = this;
     }
