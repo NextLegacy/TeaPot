@@ -18,7 +18,7 @@
 namespace BHW
 {
     template <typename TEventSystem, typename ...TComponents>
-    class ECS : public ECSSystem<ECS<TEventSystem, TComponents...>, TEventSystem>
+    class ECS : public ECSSystem<ECS<TEventSystem, TComponents...>, TEventSystem>//, public std::enable_shared_from_this<ECS<TEventSystem, TComponents...>>
     {
     using TComponentBitMask = typename ComponentBitMask<TComponents...>;
 
@@ -54,22 +54,24 @@ namespace BHW
             return entityUUID;
         }
 
-        template <typename TComponent>
-        inline void AddComponent(EntityUUID entityUUID)
+        template <typename TComponent, typename ...TArgs>
+        inline TComponent& AddComponent(EntityUUID entityUUID, TArgs... args)
         {
-            if (!EntityExists            (entityUUID)) return;
-            if ( HasComponent<TComponent>(entityUUID)) return;
+            if (!EntityExists            (entityUUID)) return AddComponent<TComponent>(CreateEntity(), args...);
+            if ( HasComponent<TComponent>(entityUUID)) return GetComponent<TComponent>(entityUUID);
 
             std::vector<TComponent>& components = std::get<std::vector<TComponent>>(m_components);
 
             ComponentIndex componentIndex = components.size();
             ComponentUUID componentUUID = TComponentBitMask::template ComponentUUID<TComponent>(componentIndex);
 
-            components.emplace_back();
+            components.emplace_back(args...);
 
             m_entityComponents[entityUUID].AddComponent<TComponent>(componentIndex);
 
             m_componentEntityOwners[componentUUID] = entityUUID;
+
+            return components[componentIndex];
         }
 
         template <typename TComponent>
@@ -102,7 +104,7 @@ namespace BHW
             std::vector<TComponent>& components = std::get<std::vector<TComponent>>(m_components);
 
             ComponentIndex componentIndex = m_entityComponents[entityUUID].GetComponentIndex<TComponent>();
-            ComponentUUID  componentUUID  = TComponentBitMask::template CreateComponentUUID<TComponent>(componentIndex);
+            ComponentUUID  componentUUID  = TComponentBitMask::template ComponentUUID<TComponent>(componentIndex);
 
             components[componentIndex] = components.back();
             components.emplace_back();
@@ -127,27 +129,27 @@ namespace BHW
             }
         }
 
-        template <typename TComponent, typename ...TComponents>
-        inline void ForEachComponent(std::function<void(EntityUUID, TComponents&...)> function)
+        template <typename TComponent>
+        inline void ForEachComponent(std::function<void(EntityUUID, TComponent&)> function)
         {
-            for (std::vector<TComponent>& components : m_components)
-            {
-                for (ComponentIndex componentIndex = 0; componentIndex < components.size(); ++componentIndex)
-                {
-                    ComponentUUID componentUUID = TComponentBitMask::template CreateComponentUUID<TComponent>(componentIndex);
+            std::vector<TComponent>& components = std::get<std::vector<TComponent>>(m_components);
 
+            for (ComponentIndex componentIndex = 0; componentIndex < components.size(); componentIndex++)
+            {
+                ComponentUUID componentUUID = TComponentBitMask::template ComponentUUID<TComponent>(componentIndex);
+
+                if (m_componentEntityOwners.find(componentUUID) != m_componentEntityOwners.end())
+                {
                     EntityUUID entityUUID = m_componentEntityOwners[componentUUID];
 
-                    if (!m_entityComponents[entityUUID].HasComponents<TComponents...>()) continue;
-                    
-                    function(entityUUID, GetComponent<TComponents>(entityUUID)...);
+                    function(entityUUID, components[componentIndex]);
                 }
             }
         }
 
         inline TEntity GetEntity(EntityUUID entityUUID)
         {
-            return TEntity(entityUUID, this->shared_from_this());
+            return TEntity(entityUUID, this);
         }
 
     private:
