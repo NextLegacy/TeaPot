@@ -10,7 +10,7 @@ namespace BHW
     // changes undeterministically at runtime | determines the index of a component
     typedef uint64_t ComponentIndex;
 
-    // combines of ComponentTypeUUID and ComponentIndex | (ComponentTypeUUID << 32) | (ComponentIndex)
+    // combines ComponentTypeUUID and ComponentIndex | (ComponentTypeUUID << 32) | (ComponentIndex)
     typedef uint64_t ComponentUUID;
 
     template <typename ...TComponents>
