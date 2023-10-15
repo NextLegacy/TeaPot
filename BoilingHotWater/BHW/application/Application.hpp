@@ -14,14 +14,37 @@ namespace BHW
 
         inline bool IsRunning() { return m_isRunning; }
 
-        inline static Application* GetInstance() { return s_instance; }
-
     protected:
         virtual void ApplicationEntryPoint() = 0;
     
     private:
         bool m_isRunning;
-    
-        static Application* s_instance;
     };
+
+    namespace
+    {
+        extern Application* s_instance;
+    }
+
+    template <typename TApplication>
+    TApplication& GetApplication()
+    {
+        return static_cast<TApplication&>(Application::GetInstance());
+    }
+
+    template <typename TApplication>
+    TApplication CreateApplication()
+    {
+        TApplication application();
+
+        return GetApplication<TApplication>();
+    }
+
+    template <typename TApplication>
+    TApplication& CreateAndRunApplication()
+    {
+        CreateApplication<TApplication>().Run();
+
+        return GetApplication<TApplication>();
+    }
 }
