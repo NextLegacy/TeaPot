@@ -9,12 +9,12 @@ namespace BHW
     template <typename TECS>
     struct Entity
     {
-        inline Entity(EntityUUID entityUUID, std::shared_ptr<TECS> ecs) : m_entityUUID(entityUUID), m_ecs(ecs) { }
+        inline Entity(EntityUUID entityUUID, TECS* ecs) : m_entityUUID(entityUUID), m_ecs(ecs) { }
 
-        template <typename TComponent>
-        inline void AddComponent()
+        template <typename TComponent, typename ...TArgs>
+        inline TComponent& AddComponent(TArgs&&... args)
         {
-            m_ecs->AddComponent<TComponent>(m_entityUUID);
+            return m_ecs->AddComponent<TComponent>(m_entityUUID, std::forward<TArgs>(args)...);
         }
 
         template <typename TComponent>
@@ -35,8 +35,9 @@ namespace BHW
             return m_ecs->GetComponent<TComponent>(m_entityUUID);
         }
 
-        EntityUUID            m_entityUUID;
-        std::shared_ptr<TECS> m_ecs       ;
+        EntityUUID              m_entityUUID;
+        //std::shared_ptr<TECS> m_ecs       ;
+        TECS* m_ecs;
     };
 
     template <typename ...TComponents>
