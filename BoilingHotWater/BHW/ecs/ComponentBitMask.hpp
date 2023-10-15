@@ -43,17 +43,17 @@ namespace BHW
         }
 
     public:
-        template <typename ...TComponents>
+        template <typename ...TComponentsToEnable>
         inline constexpr ComponentBitMask<TComponents...>& Enable() 
         {
-            (m_bitset.set(ComponentTypeUUID<TComponents>()), ...);
+            (m_bitset.set(ComponentTypeUUID<TComponentsToEnable>()), ...);
             return *this;
         }
 
-        template <typename ...TComponents>
+        template <typename ...TComponentsToDisable>
         inline constexpr ComponentBitMask<TComponents...>& Disable() 
         {
-            (m_bitset.reset(ComponentTypeUUID<TComponents>()), ...);
+            (m_bitset.reset(ComponentTypeUUID<TComponentsToDisable>()), ...);
             return *this;
         }
 
