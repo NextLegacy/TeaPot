@@ -11,6 +11,6 @@ namespace BHW
     template <typename TECS, typename TEventSystem>
     struct ECSSystem : public TEventSystem
     {
-        inline ECSSystem() : TEventSystem() {}
+        inline ECSSystem() : TEventSystem() { }
     };
 }
