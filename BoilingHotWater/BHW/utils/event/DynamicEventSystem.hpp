@@ -13,12 +13,17 @@ namespace BHW
     template <typename TBaseEvent>
     struct DynamicEventSystem
     {
-        template <typename ...TArgs>
-        inline void ForEachEventSystem(void (TBaseEvent::*function)(TArgs...), TArgs... args)
+        inline ~DynamicEventSystem()
         {
-            std::for_each(m_systems.begin(), m_systems.end(), [function, args...](TBaseEvent* system)
+            std::ranges::for_each(m_systems, [](TBaseEvent* system) { delete system; });
+        }
+
+        template <typename ...TArgs>
+        inline void ForEachEventSystem(void (TBaseEvent::*function)(TArgs...), TArgs&&... args)
+        {
+            std::for_each(m_systems.begin(), m_systems.end(), [function, &args...](TBaseEvent* system)
             { 
-                (system->*function)(args...);
+                (system->*function)(std::forward<TArgs>(args)...);
             });
         }
 
