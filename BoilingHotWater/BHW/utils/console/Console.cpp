@@ -2,24 +2,31 @@
 
 namespace BHW
 {
-    void Console::InitConsole()
+    void Console::Initialize()
     {
         #ifdef _WIN32
 
-        AllocConsole();
-    
+        // TODO: when running the program from the command line, there is no output
+        // but dumping into a file works when using Program.exe>file.txt
+
+        // dont create a new console if one already exists
+        if (GetConsoleWindow() != NULL) return;
+
+        if (!AllocConsole()) return;
+
         freopen("CONOUT$", "w", stdout);
         freopen("CONOUT$", "w", stderr);
-        freopen("CONIN$", "r", stdin);
+        freopen("CONIN$",  "r", stdin );
 
         HWND consoleWindow = GetConsoleWindow();
+
         SetForegroundWindow(consoleWindow);
-        SetFocus(consoleWindow);
+        SetFocus           (consoleWindow);
 
         #endif
     }
 
-    void Console::ShutdownConsole()
+    void Console::Shutdown()
     {
         #ifdef _WIN32
 
