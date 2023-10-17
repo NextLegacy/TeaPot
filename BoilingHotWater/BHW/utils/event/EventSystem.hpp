@@ -17,9 +17,9 @@ namespace BHW
         inline EventSystem() : m_systems(std::make_tuple(TEventSubscribers()...)) { }
 
         template <typename ...TArgs>
-        inline void ForEachEventSystem(void (TBaseEvent::*function)(TArgs...), TArgs... args)
+        inline void ForEachEventSystem(void (TBaseEvent::*function)(TArgs...), TArgs&&... args)
         {
-            ((std::get<TEventSubscribers>(m_systems).*function)(args...), ...);
+            ((std::get<TEventSubscribers>(m_systems).*function)(std::forward<TArgs>(args)...), ...);
         }
 
     private:
