@@ -2,6 +2,7 @@
 
 #include <string>
 #include "BHW/utils/random/Seed.hpp"
+#include "BHW/utils/random/UUID.hpp"
 
 namespace BHW
 {
@@ -62,6 +63,11 @@ namespace BHW
             }
 
             return result;
+        }
+
+        UUID UUID()
+        {
+            return BHW::UUID(UInt64(), UInt64());
         }
 
         virtual uint64_t operator()() = 0;
