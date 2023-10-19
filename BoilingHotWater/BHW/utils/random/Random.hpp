@@ -9,8 +9,8 @@ namespace BHW
     class Splitmix64 : public Prng<uint64_t>
     {
     public:
-        Splitmix64() : Prng() { InitState(); }
-        Splitmix64(Seed seed) : Prng(seed) { InitState(); }
+        Splitmix64(         );
+        Splitmix64(Seed seed);
         
         void InitState() override;
 
@@ -20,8 +20,8 @@ namespace BHW
     class Xoshiro256ss : public Prng<uint64_t[4]>
     {
     public:
-        Xoshiro256ss() : Prng() { InitState(); }
-        Xoshiro256ss(Seed seed) : Prng(seed) { InitState(); }
+        Xoshiro256ss(         );
+        Xoshiro256ss(Seed seed);
         
         void InitState() override;
 
