@@ -36,7 +36,7 @@ namespace BHW
 
         m_thread->detach();
 
-        delete &m_thread;
+        //delete &m_thread;
 
         m_shouldStop = false;
     }
@@ -50,7 +50,7 @@ namespace BHW
 
         m_thread->detach();
 
-        delete &m_thread;
+        //delete &m_thread;
 
         m_shouldStop = false;
     }
