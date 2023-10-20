@@ -14,7 +14,7 @@
 
 namespace TC
 {
-    template<typename TGAPI, typename TBaseEvent>
+    template<typename TGAPI, typename TBaseEvent, typename TApplication>
     class TeaCup : public BHW::Application, public ApplicationRuntime, public TGAPI, public BHW::DynamicEventSystem<TBaseEvent>
     {
     static_assert(std::is_base_of<GAPI, TGAPI>::value, "T must be a GAPI");
@@ -28,11 +28,11 @@ namespace TC
     private:
         inline void ApplicationEntryPoint() override
         {
-            BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::Start);
+            BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::Start, static_cast<TApplication&>(*this));
 
             ApplicationRuntime::StartRuntime();
 
-            BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::End);
+            BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::End, static_cast<TApplication&>(*this));
         }
 
         inline void RuntimeMainThreadStart       () override { TGAPI::InitializeWindow     (); }
@@ -46,12 +46,12 @@ namespace TC
         inline void RuntimeUpdate() override
         {
             TGAPI::ProcessEvents();
-            BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::Update);
+            BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::Update, static_cast<TApplication&>(*this));
         }
 
         inline void RuntimeFixedUpdate() override
         {
-            BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::FixedUpdate);
+            BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::FixedUpdate, static_cast<TApplication&>(*this));
         }
 
         inline void RuntimeRender() override
@@ -61,7 +61,7 @@ namespace TC
 
         inline void Frame() override
         {
-            BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::Render);
+            BHW::DynamicEventSystem<TBaseEvent>::ForEachEventSystem(&TBaseEvent::Render, static_cast<TApplication&>(*this));
         }
     };
 }
