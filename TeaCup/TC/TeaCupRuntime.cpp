@@ -64,9 +64,9 @@ namespace TC
             deltaT    += deltaTime * 60;
         }
 
-        RuntimeMainThreadEnd();
-
         m_renderThread.Deactivate();
+
+        RuntimeMainThreadEnd();
     }
 
 
@@ -85,7 +85,7 @@ namespace TC
 
         RuntimeFixedUpdateThreadStart();
 
-        while (IsRunning())
+        while (IsRunning() && !m_fixedUpdateThread.ShouldStop())
         {
             deltaTime    = BHW::NanoSeconds() - last;
             last        += deltaTime;
@@ -130,7 +130,7 @@ namespace TC
 
         m_fixedUpdateThread.Activate();
 
-        while (IsRunning())
+        while (IsRunning() && !m_renderThread.ShouldStop())
         {
             if (deltaF >= 1e9)
             {
@@ -149,8 +149,8 @@ namespace TC
             deltaF   += deltaTime * m_fps;
         }
 
-        RuntimeRenderThreadEnd();
-
         m_fixedUpdateThread.Deactivate();
+
+        RuntimeRenderThreadEnd();
     }
 }
