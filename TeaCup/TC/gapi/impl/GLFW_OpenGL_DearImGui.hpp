@@ -8,11 +8,10 @@
 
 namespace TC
 {
-    template <typename ...TWindows>
-    class GLFW_OpenGL_DearImGui : public GLFW_OpenGL, public DearImGui<TWindows...>
+    class GLFW_OpenGL_DearImGui : public GLFW_OpenGL, public DearImGui
     {
     public:
-        inline GLFW_OpenGL_DearImGui() : GLFW_OpenGL(), DearImGui<TWindows...>() { }
+        inline GLFW_OpenGL_DearImGui() : GLFW_OpenGL(), DearImGui() { }
 
         inline virtual int  InitializeWindow() override
         {
@@ -23,17 +22,17 @@ namespace TC
 
         inline virtual void InitializeDearImGui()
         {
-            DearImGui<TWindows...>::m_imguiIO->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-            DearImGui<TWindows...>::m_imguiIO->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad ;
-            DearImGui<TWindows...>::m_imguiIO->ConfigFlags |= ImGuiConfigFlags_DockingEnable    ;
-            DearImGui<TWindows...>::m_imguiIO->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable  ;
+            m_imguiIO->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+            m_imguiIO->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad ;
+            m_imguiIO->ConfigFlags |= ImGuiConfigFlags_DockingEnable    ;
+            m_imguiIO->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable  ;
 
             ImGui::StyleColorsDark();
 
-            if (DearImGui<TWindows...>::m_imguiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+            if (m_imguiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
             {
-                DearImGui<TWindows...>::m_imguiStyle->WindowRounding = 0.0f;
-                DearImGui<TWindows...>::m_imguiStyle->Colors[ImGuiCol_WindowBg].w = 1.0f;
+                m_imguiStyle->WindowRounding = 0.0f;
+                m_imguiStyle->Colors[ImGuiCol_WindowBg].w = 1.0f;
             }
         }
 
@@ -41,9 +40,9 @@ namespace TC
         {
             IMGUI_CHECKVERSION();
         
-            DearImGui<TWindows...>::m_imguiContext = ImGui::CreateContext();
-            DearImGui<TWindows...>::m_imguiIO      = &ImGui::GetIO();
-            DearImGui<TWindows...>::m_imguiStyle   = &ImGui::GetStyle();
+            m_imguiContext = ImGui::CreateContext();
+            m_imguiIO      = &ImGui::GetIO();
+            m_imguiStyle   = &ImGui::GetStyle();
 
             InitializeDearImGui();
 
@@ -65,16 +64,11 @@ namespace TC
 
         inline virtual void RenderFrame() override
         {
-            glfwPollEvents();
-            glfwPostEmptyEvent();
-            
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
 
             Frame();
-
-            DearImGui<TWindows...>::template RenderImGuiWindows();
 
             ImGui::Render();
 
@@ -87,8 +81,7 @@ namespace TC
 
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-
-            if (DearImGui<TWindows...>::m_imguiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+            if (m_imguiIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
             {
                 ImGui::UpdatePlatformWindows();
                 ImGui::RenderPlatformWindowsDefault();
@@ -96,20 +89,22 @@ namespace TC
             }
 
             glfwSwapBuffers(m_window);
+            glfwPollEvents();
         }
 
         inline virtual void TerminateWindow() override
         {
+            BHW::Console::WriteLine("Terminating window...");
             ImGui_ImplOpenGL3_Shutdown();
             ImGui_ImplGlfw_Shutdown();
-            ImGui::DestroyContext(DearImGui<TWindows...>::m_imguiContext);
+            ImGui::DestroyContext(m_imguiContext);
 
             GLFW_OpenGL::TerminateWindow();
         }
 
         inline virtual void ProcessEvents() override
         {
-            glfwWaitEvents();
+            glfwPollEvents();
         }
 
         bool isRendererInitialized = false;
