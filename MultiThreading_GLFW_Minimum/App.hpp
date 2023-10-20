@@ -9,4 +9,4 @@
 #include <BHW/utils/console/Console.hpp>
 #include <BHW/utils/threads/Thread.hpp>
 
-#include <BHW/utils/Assert.hpp>
+#include <BHW/utils/Debug.hpp>
