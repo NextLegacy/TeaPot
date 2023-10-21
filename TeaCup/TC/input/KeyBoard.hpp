@@ -3,7 +3,7 @@
 #include <vector>
 #include <map>
 
-#include <BHW/utils/Assert.hpp>
+#include <BHW/utils/Debug.hpp>
 
 #include "TC/input/Key.hpp"
 
