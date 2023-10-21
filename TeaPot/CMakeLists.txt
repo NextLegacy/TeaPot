@@ -16,12 +16,18 @@ add_executable(TeaPot WIN32
     ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/ecs/systems/DebugSystem.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/ecs/systems/DebugSystem.hpp
 
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/project/TeaPotProject.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/project/TeaPotProject.cpp
+
     ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/windows/ConsoleWindow.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/windows/ConsoleWindow.cpp
-    
+
     ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/windows/Dockspace.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/windows/Dockspace.cpp
-    )
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/windows/MenuBar.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/windows/MenuBar.cpp
+)
 
 target_include_directories(TeaPot PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
