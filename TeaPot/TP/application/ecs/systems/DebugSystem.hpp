@@ -6,6 +6,8 @@ namespace TP
 {
     class DebugSystem : public EventSubscriber
     {
-        void Update() override;
+        void Start (TeaPot& teaPot) override;
+        void Update(TeaPot& teaPot) override;
+        void Render(TeaPot& teaPot) override;
     };
 }
