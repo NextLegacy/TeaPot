@@ -2,22 +2,7 @@
 
 namespace BHW
 {
-    namespace
-    {
-        Application* s_instance = nullptr;
-    }
-
-    Application::Application() : m_isRunning(false)
-    {
-        if (s_instance) delete s_instance;
-
-        s_instance = this;
-    }
-
-    Application::~Application()
-    {
-        s_instance = nullptr;
-    }
+    Application::Application() : m_isRunning(false) { }
 
     void Application::Run()
     {   
@@ -25,6 +10,11 @@ namespace BHW
 
         ApplicationEntryPoint();
 
+        m_isRunning = false;
+    }
+
+    void Application::Stop()
+    {
         m_isRunning = false;
     }
 }
