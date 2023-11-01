@@ -46,6 +46,9 @@ add_library(BoilingHotWater
     
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/Seed.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/Seed.cpp
+    
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/UUID.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/UUID.cpp
 
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/logger/Logger.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/logger/Logger.cpp
@@ -73,6 +76,12 @@ add_library(BoilingHotWater
 
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/io/FileHandler.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/io/FileHandler.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/reflection/Reflection.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/reflection/ReflectionDefinitions.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/reflection/Type.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/reflection/TypeInfo.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/reflection/Member.hpp
 )
 
 target_include_directories(BoilingHotWater PUBLIC 
