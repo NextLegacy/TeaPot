@@ -25,8 +25,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
         args.push_back(arg);
     }
 
-    //delete argv;
-
     return BHW::EntryPoint(args);
 }
 
