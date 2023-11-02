@@ -1,7 +1,5 @@
 #include "BHW/utils/json/JSONObject.hpp"
 
-#include "BHW/utils/Debug.hpp"
-
 namespace BHW
 {
     JSONObject::JSONObject() : m_type(JSONType::Null), m_value(nullptr) { }
@@ -9,14 +7,6 @@ namespace BHW
     JSONObject::JSONObject(JSONType type, void* value) : m_type(type), m_value(value) { }
 
     bool JSONObject::Is(JSONType type) { return m_type == type; }
-
-    template <typename T>
-    T& JSONObject::Get() 
-    {
-        BHW_ASSERT(m_value != nullptr, "JSONObject::Get", "Value is nullptr");
-
-        return *(T*) m_value; 
-    }
 
     std::string JSONObject::ToString()
     {
