@@ -9,7 +9,7 @@ namespace BHW
     struct ComponentBitMask
     {
     public:
-    using bitset = std::bitset<sizeof...(TComponents)>;
+        using TBitset = std::bitset<sizeof...(TComponents)>;
 
     public:
         inline static constexpr auto Hash = []<typename ...TComponents>(const ComponentBitMask<TComponents...>& componentBitMask)
@@ -19,7 +19,7 @@ namespace BHW
 
     public:
         inline constexpr ComponentBitMask() : m_bitset(0) { }
-        inline constexpr ComponentBitMask(bitset bitset) : m_bitset(bitset) { }
+        inline constexpr ComponentBitMask(TBitset bitset) : m_bitset(bitset) { }
         inline constexpr ComponentBitMask(const ComponentBitMask& componentBitMask) : m_bitset(componentBitMask.m_bitset) { }
         inline constexpr ComponentBitMask(ComponentBitMask&& componentBitMask) : m_bitset(componentBitMask.m_bitset) { }
 
@@ -70,6 +70,6 @@ namespace BHW
         }
 
     private:
-        bitset m_bitset;
+        TBitset m_bitset;
     };
 }
