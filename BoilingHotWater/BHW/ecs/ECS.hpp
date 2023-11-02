@@ -18,12 +18,13 @@
 namespace BHW
 {
     template <typename TEventSystem, typename ...TComponents>
-    class ECS : public ECSSystem<ECS<TEventSystem, TComponents...>, TEventSystem>//, public std::enable_shared_from_this<ECS<TEventSystem, TComponents...>>
+    class ECS : public ECSSystem<ECS<TEventSystem, TComponents...>, TEventSystem>
     {
-    using TComponentBitMask = typename ComponentBitMask<TComponents...>;
+    public:
+        using TComponentBitMask = typename ComponentBitMask<TComponents...>;
 
-    using TEntity           = Entity          <ECS<TEventSystem, TComponents...>>;
-    using TEntityComponents = EntityComponents<TComponents...>;
+        using TEntity           = Entity          <ECS<TEventSystem, TComponents...>>;
+        using TEntityComponents = EntityComponents<TComponents...                   >;
 
     public:
         inline ECS() :
@@ -63,7 +64,7 @@ namespace BHW
             std::vector<TComponent>& components = std::get<std::vector<TComponent>>(m_components);
 
             ComponentIndex componentIndex = components.size();
-            ComponentUUID componentUUID = TComponentBitMask::template ComponentUUID<TComponent>(componentIndex);
+            ComponentUUID  componentUUID  = TComponentBitMask::template ComponentUUID<TComponent>(componentIndex);
 
             components.emplace_back(args...);
 
@@ -152,13 +153,19 @@ namespace BHW
             return TEntity(entityUUID, this);
         }
 
+        inline void Reset()
+        {
+            m_components           = std::tuple<std::vector<TComponents>...>();
+            m_entityComponents     .clear();
+            m_componentEntityOwners.clear();
+        }
+
     private:
         Random m_random;
 
-        std::tuple<std::vector<TComponents>...> m_components;
+        std::tuple        <std::vector<TComponents  >...   > m_components           ;
 
-        std::unordered_map<EntityUUID, TEntityComponents> m_entityComponents;
-        
-        std::unordered_map<ComponentUUID, EntityUUID> m_componentEntityOwners;
+        std::unordered_map<EntityUUID   , TEntityComponents> m_entityComponents     ;
+        std::unordered_map<ComponentUUID, EntityUUID       > m_componentEntityOwners;
     };
 }
