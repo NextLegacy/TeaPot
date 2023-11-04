@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "BHW/utils/json/JSONType.hpp"
+#include "BHW/utils/Debug.hpp"
 
 namespace BHW
 {
@@ -22,7 +23,15 @@ namespace BHW
         bool Is(JSONType type);
 
         template <typename T>
-        T& Get();
+        T& Get() 
+        {
+            BHW_ASSERT(m_value != nullptr, "JSONObject::Get", "Value is nullptr");
+
+            return *(T*) m_value; 
+        }
+
+        const JSONType& GetType () const { return m_type ; }
+        const void*     GetValue() const { return m_value; }
 
         std::string ToString();
 
