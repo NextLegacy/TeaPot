@@ -31,6 +31,8 @@ namespace BHW
 
         void Clear();
 
+        const std::vector<LoggedMessage>& GetLogs() const { return m_messages; }
+
     private:
         void Log(LoggedMessage message);
 
