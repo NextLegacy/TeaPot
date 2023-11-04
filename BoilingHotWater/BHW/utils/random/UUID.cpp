@@ -1,5 +1,8 @@
 #include "BHW/utils/random/UUID.hpp"
 
+
+#include <inttypes.h> // Add this line to include the inttypes.h header
+
 namespace BHW
 {
     UUID::UUID()
@@ -35,12 +38,12 @@ namespace BHW
     std::string UUID::ToString() const
     {
         static char str[37];
-        sprintf(str, "%08x-%04x-%04x-%04x-%012x", 
-            (uint32_t) ( m_high >> 32), 
-            (uint16_t) ((m_high >> 16) & 0xFFFF), 
-            (uint16_t) ( m_high        & 0xFFFF), 
-            (uint16_t) ((m_low  >> 48) & 0xFFFF), 
-            (uint64_t) ( m_low  & 0xFFFFFFFFFFFF)
+        sprintf(str, "%08" PRIx32 "-%04" PRIx16 "-%04" PRIx16 "-%04" PRIx16 "-%012" PRIx64,
+            (uint32_t)(m_high >> 32),
+            (uint16_t)((m_high >> 16) & 0xFFFF),
+            (uint16_t)(m_high & 0xFFFF),
+            (uint16_t)((m_low >> 48) & 0xFFFF),
+            (uint64_t)(m_low & 0xFFFFFFFFFFFF)
         );
         return str;
     }
