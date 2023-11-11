@@ -19,9 +19,9 @@ namespace TC
         void StartRuntime();
         void EndRuntime  ();
 
-        inline uint64_t GetUPS () { return m_measuredUpdatesPerSecond      + 0.5; }
-        inline uint64_t GetFUPS() { return m_measuredFixedUpdatesPerSecond + 0.5; }
-        inline uint64_t GetFPS () { return m_measuredFramesPerSecond       + 0.5; }
+        inline float GetUPS () { return m_measuredUpdatesPerSecond      + 0.5; }
+        inline float GetFUPS() { return m_measuredFixedUpdatesPerSecond + 0.5; }
+        inline float GetFPS () { return m_measuredFramesPerSecond       + 0.5; }
         
         inline float GetDeltaTime     () { return m_deltaUpdateTime     ; }
         inline float GetFixedDeltaTime() { return m_deltaFixedUpdateTime; }
