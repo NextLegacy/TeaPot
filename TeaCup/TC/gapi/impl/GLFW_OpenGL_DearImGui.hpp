@@ -55,7 +55,7 @@ namespace TC
             glfwMakeContextCurrent(m_window);
             //InitializeInput();
 
-            glfwSwapInterval(0);
+            glfwSwapInterval(1);
 
             InitializeDearImGuiContext();
 
@@ -64,6 +64,7 @@ namespace TC
 
         inline virtual void RenderFrame() override
         {
+            glfwPollEvents();
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
@@ -89,7 +90,7 @@ namespace TC
             }
 
             glfwSwapBuffers(m_window);
-            glfwPollEvents();
+            
         }
 
         inline virtual void TerminateWindow() override
@@ -104,7 +105,7 @@ namespace TC
 
         inline virtual void ProcessEvents() override
         {
-            glfwPollEvents();
+            glfwWaitEvents();
         }
 
         bool isRendererInitialized = false;
