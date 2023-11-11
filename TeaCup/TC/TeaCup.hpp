@@ -23,7 +23,7 @@ namespace TC
     public:
         TeaCup() : BHW::Application(), ApplicationRuntime(), TGAPI(), BHW::DynamicEventSystem<TBaseEvent>() { }
 
-        inline bool RuntimeIsRunning() override { return TGAPI::IsWindowOpen(); }
+        inline bool RuntimeIsRunning() override { return BHW::Application::IsRunning() && TGAPI::IsWindowOpen(); }
 
     private:
         inline void ApplicationEntryPoint() override
