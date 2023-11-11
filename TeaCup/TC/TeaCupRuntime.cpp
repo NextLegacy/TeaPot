@@ -7,7 +7,7 @@ namespace TC
         m_deltaFixedUpdateTime(0),
         m_deltaFrameTime      (0),
 
-        m_fps (60 ),
+        m_fps (100),
         m_fups(100),
 
         m_measuredFramesPerSecond      (0),
@@ -56,7 +56,7 @@ namespace TC
 
                 RuntimeUpdate();
 
-            //    deltaT -= 1e9;
+                //deltaT -= 1e9;
             }
 
             deltaTime  = BHW::NanoSeconds() - last;
