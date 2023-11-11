@@ -11,7 +11,10 @@
 //#include <GL/glew.h>
 //#include <GL/GL.h>
 
+#define GLFW_EXPOSE_NATIVE_WIN32
+
 #include <GLFW/glfw3.h>
+#include <GLFW/glfw3native.h>
 
 #include "TC/gapi/GAPI.hpp"
 
@@ -34,6 +37,11 @@ namespace TC
         virtual void SetSize (const glm::ivec2&  size ) override;
 
         virtual void SetWindowHints() = 0;
+
+        inline HWND GetWindowHandle()
+        {
+            return glfwGetWin32Window(m_window);
+        }
 
     public:
         GLFWwindow* m_window;
