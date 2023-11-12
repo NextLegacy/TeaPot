@@ -19,14 +19,41 @@ add_executable(TeaPot WIN32
     ${CMAKE_CURRENT_SOURCE_DIR}/TP/project/TeaPotProject.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/TP/project/TeaPotProject.cpp
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/windows/ConsoleWindow.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/windows/ConsoleWindow.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/Dockspace.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/Dockspace.cpp
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/windows/Dockspace.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/windows/Dockspace.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/MenuBar.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/MenuBar.cpp
+    
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/Build.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/Build.cpp
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/windows/MenuBar.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/windows/MenuBar.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/Performance.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/Performance.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/Console.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/Console.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/Explorer.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/Explorer.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/Inspector.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/Inspector.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/ProjectLoader.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/ProjectLoader.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/ProjectSettings.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/ProjectSettings.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/SceneEditor.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/SceneEditor.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/SceneView.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/SceneView.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/Settings.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/view/Settings.cpp
 )
 
 target_include_directories(TeaPot PUBLIC
