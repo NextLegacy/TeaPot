@@ -13,9 +13,21 @@
 #include "TP/application/ecs/components/DebugComponent.hpp"
 #include "TP/application/ecs/systems/DebugSystem.hpp"
 
-#include "TP/application/gui/window/ConsoleWindow.hpp"
+#include "TP/application/gui/view/Build.hpp"
+#include "TP/application/gui/view/Console.hpp"
+#include "TP/application/gui/view/Explorer.hpp"
+#include "TP/application/gui/view/Inspector.hpp"
+#include "TP/application/gui/view/ProjectLoader.hpp"
+#include "TP/application/gui/view/ProjectSettings.hpp"
+#include "TP/application/gui/view/SceneEditor.hpp"
+#include "TP/application/gui/view/SceneView.hpp"
+#include "TP/application/gui/view/Settings.hpp"
+#include "TP/application/gui/view/Performance.hpp"
+
 #include "TP/application/gui/Dockspace.hpp"
 #include "TP/application/gui/MenuBar.hpp"
+
+#include "TP/project/TeaPotProject.hpp"
 
 namespace TP
 {
@@ -25,15 +37,36 @@ namespace TP
 
     typedef BHW::EventSystem<EventSubscriber, 
         DebugSystem,
+
         DockspaceRenderer,
-        ConsoleWindowRenderer,
+
+        View::BuildRenderer,
+        View::ConsoleRenderer,
+        View::ExplorerRenderer,
+        View::InspectorRenderer,
+        View::ProjectLoaderRenderer,
+        View::ProjectSettingsRenderer,
+        View::SceneEditorRenderer,
+        View::SceneViewRenderer,
+        View::SettingsRenderer,
+        View::PerformanceRenderer,
+
         MenuBarRenderer
     > EventSystem;
 
     typedef BHW::ECS<EventSystem,
         DebugComponent,
-        DockspaceData,
-        ConsoleWindowData
+
+        View::Build,
+        View::Console,
+        View::Explorer,
+        View::Inspector,
+        View::ProjectLoader,
+        View::ProjectSettings,
+        View::SceneEditor,
+        View::SceneView,
+        View::Settings,
+        View::Performance
     > ECS;
 
     class ECSEventSystemSubscriber : public EventSubscriber
@@ -51,21 +84,19 @@ namespace TP
         inline TeaPot() : TeaCup(), ECS(), m_random()
         {
             SubscribeEventSystem<ECSEventSystemSubscriber>();
-
-            GetEntity(CreateEntity()).AddComponent<DockspaceData>("Dockspace");
         }
 
         template <typename TWindow, typename... TArgs>
-        inline BHW::Entity CreateWindow(TArgs&&... args)
+        inline TWindow& CreateView(std::string name, TArgs&&... args)
         {
             auto entity = GetEntity(CreateEntity());
-            entity.AddComponent<TWindow>(std::forward<TArgs>(args)...);
-            return entity;
+            auto& window = entity.AddComponent<TWindow>(name + "####" + m_random.UUID().ToString(), std::forward<TArgs>(args)...);
+            return window;
         }
 
-    private:
-        friend class ECSEventSystemSubscriber;
-
+    public:
         BHW::Random m_random;
+
+        TeaPotProject m_project;
     };
 }
