@@ -1,12 +1,10 @@
 #pragma once
 
-#include <memory>
-
 #include <TC/TeaCupBaseEventSystem.hpp>
 
 namespace TP
 {
-    struct TeaPot;
+    class TeaPot;
 
-    struct EventSubscriber : public TC::TeaCupBaseEvent<TeaPot> { };
+    class EventSubscriber : public TC::TeaCupBaseEvent<TeaPot> { };
 }
