@@ -1,4 +1,4 @@
-#include "TP/application/windows/Dockspace.hpp"
+#include "TP/application/gui/Dockspace.hpp"
 
 #include <BHW/utils/console/Console.hpp>
 
@@ -8,10 +8,7 @@ namespace TP
 {
     void DockspaceRenderer::Render(TeaPot& teaPot)
     {
-        teaPot.ForEachComponent<DockspaceData>([&](BHW::EntityUUID uuid, DockspaceData& data)
-        {
-            RenderDockspace(teaPot, data);
-        });
+        RenderDockspace(teaPot);
     }
 
     void DockspaceRenderer::RenderDockspace(TeaPot& teaPot)
@@ -35,7 +32,7 @@ namespace TP
 
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
         
-        ImGui::Begin(data.m_name.c_str(), nullptr, window_flags);
+        ImGui::Begin("Dockspace", nullptr, window_flags);
 
         ImGui::PopStyleVar();
         ImGui::PopStyleVar(2);
@@ -55,7 +52,7 @@ namespace TP
                 ImGui::DockBuilderAddNode    (dockspaceID, dockspace_flags | ImGuiDockNodeFlags_DockSpace);
                 ImGui::DockBuilderSetNodeSize(dockspaceID, viewport->Size);
 
-                SetupDockspace(teaPot, data, dockspaceID);
+                SetupDockspace(teaPot, dockspaceID);
 
                 ImGui::DockBuilderFinish(dockspaceID);
             }
@@ -66,24 +63,25 @@ namespace TP
 
     void DockspaceRenderer::SetupDockspace(TeaPot& teaPot, unsigned int& dockspaceID)
     {
+        //auto dock_id_left  = ImGui::DockBuilderSplitNode(dockspaceID, ImGuiDir_Left , 0.25f, nullptr, &dockspaceID);
+        //auto dock_id_right = ImGui::DockBuilderSplitNode(dockspaceID, ImGuiDir_Right, 0.3f , nullptr, &dockspaceID);
+        //auto dock_id_down  = ImGui::DockBuilderSplitNode(dockspaceID, ImGuiDir_Down , 0.35f, nullptr, &dockspaceID);
+
+        auto& console     = teaPot.CreateView<View::Console    >("Console"    );
+        auto& explorer    = teaPot.CreateView<View::Explorer   >("Explorer"   );
+        auto& inspector   = teaPot.CreateView<View::Inspector  >("Inspector"  );
+        auto& sceneEditor = teaPot.CreateView<View::SceneEditor>("SceneEditor");
+        auto& sceneView   = teaPot.CreateView<View::SceneView  >("SceneView"  );
+
         auto dock_id_left  = ImGui::DockBuilderSplitNode(dockspaceID, ImGuiDir_Left , 0.25f, nullptr, &dockspaceID);
         auto dock_id_right = ImGui::DockBuilderSplitNode(dockspaceID, ImGuiDir_Right, 0.3f , nullptr, &dockspaceID);
         auto dock_id_down  = ImGui::DockBuilderSplitNode(dockspaceID, ImGuiDir_Down , 0.35f, nullptr, &dockspaceID);
 
-        auto console1 = teaPot.GetEntity(teaPot.CreateEntity());
-        auto console2 = teaPot.GetEntity(teaPot.CreateEntity());
-        auto console3 = teaPot.GetEntity(teaPot.CreateEntity());
-        auto console4 = teaPot.GetEntity(teaPot.CreateEntity());
+        ImGui::DockBuilderDockWindow(explorer   .m_name.c_str(), dock_id_down );
+        ImGui::DockBuilderDockWindow(console    .m_name.c_str(), dock_id_down );
+        ImGui::DockBuilderDockWindow(inspector  .m_name.c_str(), dock_id_right);
+        ImGui::DockBuilderDockWindow(sceneEditor.m_name.c_str(), dock_id_left );
 
-        auto consoleData1 = console1.AddComponent<ConsoleWindowData>("Console###1");
-        auto consoleData2 = console2.AddComponent<ConsoleWindowData>("Console###2");
-        auto consoleData3 = console3.AddComponent<ConsoleWindowData>("Console###3");
-        auto consoleData4 = console4.AddComponent<ConsoleWindowData>("Console###4");
-
-        ImGui::DockBuilderDockWindow(consoleData1.m_name.c_str(), dock_id_left );
-        ImGui::DockBuilderDockWindow(consoleData2.m_name.c_str(), dock_id_right);
-        ImGui::DockBuilderDockWindow(consoleData3.m_name.c_str(), dock_id_down);
-
-        ImGui::DockBuilderDockWindow(consoleData4.m_name.c_str(), dockspaceID);
+        ImGui::DockBuilderDockWindow(sceneView  .m_name.c_str(), dockspaceID);
     }
 }
