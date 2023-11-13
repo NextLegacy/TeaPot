@@ -1,7 +1,6 @@
 #pragma once
 
 #include "TP/application/EventSubscriber.hpp"
-#include <BHW/utils/console/Console.hpp>
 
 namespace TP
 {
