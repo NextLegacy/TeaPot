@@ -15,6 +15,16 @@ namespace TP
     {
     }
 
+    void TeaPotProject::Save()
+    {
+
+    }
+
+    void TeaPotProject::Reload()
+    {
+
+    }
+
     TeaPotProject CreateProject(const std::string& projectLocation)
     {
         TeaPotProject project;
