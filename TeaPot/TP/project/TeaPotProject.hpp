@@ -10,6 +10,10 @@ namespace TP
         TeaPotProject();
         ~TeaPotProject();
 
+        void Save  ();
+        void Reload();
+
+    public:
         std::string m_projectLocation;
         std::string m_projectName;
         uint64_t    m_someNumber;
