@@ -8,6 +8,9 @@ add_library(BoilingHotWater
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/EntryPoint
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/EntryPoint.cpp
 
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/DLLEntryPoint
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/DLLEntryPoint.cpp
+
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/ecs/ECS.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/ecs/Component.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/ecs/ComponentBitMask.hpp
@@ -27,14 +30,6 @@ add_library(BoilingHotWater
 
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/json/JSON.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/json/JSON.cpp
-
-    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/json/JSONObject.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/json/JSONObject.cpp
-
-    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/json/JSONType.hpp
-
-    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/json/Serializable.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/json/Serializable.cpp
     
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/Random.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/random/Random.cpp
@@ -80,6 +75,7 @@ add_library(BoilingHotWater
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/reflection/Reflection.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/reflection/ReflectionDefinitions.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/reflection/Type.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/reflection/Value.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/reflection/TypeInfo.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BHW/utils/reflection/Member.hpp
 )
