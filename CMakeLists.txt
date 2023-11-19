@@ -10,4 +10,5 @@ include(cmake/project.cmake)     # set up project variables
 
 add_subdirectory(BoilingHotWater)
 add_subdirectory(TeaCup)
+add_subdirectory(Tea)
 add_subdirectory(TeaPot)
