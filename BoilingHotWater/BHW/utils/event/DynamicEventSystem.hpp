@@ -33,6 +33,12 @@ namespace BHW
             m_systems.push_back(new TEvent(args...));
         }
 
+        template <typename TEvent>
+        inline void SubscribeEventSystem(TEvent* event)
+        {
+            m_systems.push_back(event);
+        }
+
     private:
         std::vector<TBaseEvent*> m_systems;
     };
