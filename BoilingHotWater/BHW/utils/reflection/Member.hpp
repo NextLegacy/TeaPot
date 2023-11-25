@@ -1,5 +1,6 @@
 #pragma once
 
+#include <type_traits>
 #include <string_view>
 #include <tuple>
 
@@ -12,15 +13,24 @@ namespace BHW
     {
     public:
         constexpr Member(std::string_view name, TType TClass::* memberPtr) 
-            : Name     (name                 ), 
-              MemberPtr(memberPtr            ), 
-              Type     (GetTypeInfo<TType >()),
-              Class    (GetTypeInfo<TClass>()) { }
+            : Name     (name                    ), 
+              MemberPtr(memberPtr               ), 
+              Type     (GetTypeInfo<TType >()   ),
+              Class    (GetTypeInfo<TClass>()   ),
+              IsPointer(std::is_pointer_v<TType>) { }
+
     public:
         const std::string_view Name     ;
-        const TType TClass::*  MemberPtr;
+              TType TClass::*  MemberPtr;
         const TypeInfo&        Type     ;
         const TypeInfo&        Class    ;
+        const bool             IsPointer;
+
+    public:
+        TType& operator()(TClass& object)
+        {
+            return object.*MemberPtr;
+        }
     };
     
     namespace __reflection
@@ -38,6 +48,31 @@ namespace BHW
         }
     }
 
-    template <typename TClass>
+    template <size_t THash>
     constexpr auto GetMembers();
+
+    template <typename TClass>
+    constexpr auto GetMembers()
+    {
+        return GetMembers<Hash<TClass>()>();
+    }
+
+    template <typename TClass, typename ...TTypes>
+    constexpr auto MemberPointersToMemberValues(std::tuple<TTypes TClass::*...> tuple, TClass& object)
+    {
+        std::tuple<TTypes&...> result;
+
+        std::apply([&](auto&&... memberPtrs)
+        {
+            result = std::make_tuple((object.*memberPtrs)...);
+        }, tuple);
+
+        return result;
+    }
+
+    template <typename TClass>
+    constexpr auto GetMemberValues(TClass& object)
+    {
+        return MemberPointersToMemberValues(GetMembers<TClass>(), object);
+    }
 }
