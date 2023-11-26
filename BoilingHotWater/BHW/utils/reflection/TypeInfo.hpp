@@ -44,30 +44,38 @@ namespace BHW
             const TypeInfo& typeInfo = *(new TypeInfo
             (
                 TypeName<TClass>(),
-                Hash    <TClass>(), 
-                { { Hash<TInheritedClasses>(), GetTypeInfo<Hash<TInheritedClasses>()>() }... }
+                TypeHash<TClass>(), 
+                { { TypeHash<TInheritedClasses>(), GetTypeInfo<TypeHash<TInheritedClasses>()>() }... }
             ));
 
-            ((const_cast<TypeInfo*>(&GetTypeInfo<Hash<TInheritedClasses>()>())->DerivedClasses.insert({ Hash<TClass>(), typeInfo })), ...);
+            ((const_cast<TypeInfo*>(&GetTypeInfo<TypeHash<TInheritedClasses>()>())->DerivedClasses.insert({ TypeHash<TClass>(), typeInfo })), ...);
 
             return typeInfo;
         }
     }
     
-    template <size_t THash>
+    template <uint64_t THash>
+    constexpr auto Cast(void* ptr);
+
+    template <uint64_t THash>
     inline constexpr const TypeInfo& GetTypeInfo();
 
     template <typename TClass> 
-    inline constexpr bool IsRegistered()
-    {
-        return false;
-    }
+    inline constexpr bool IsRegistered() { return false; }
 
-    template <typename TClass>
-    inline constexpr const TypeInfo& GetTypeInfo()
-    {
-        static_assert(IsRegistered<TClass>(), "Type is not registered");
+    //template <typename TClass>
+    //inline constexpr const TypeInfo& GetTypeInfo()
+    //{
+    //    static_assert(IsRegistered<TClass>(), "Type is not registered");
+//
+    //    return GetTypeInfo<TypeHash<TClass>()>();
+    //}
 
-        return GetTypeInfo<Hash<TClass>()>();
+/*
+    template <typename TType>
+    inline constexpr auto Cast(void* ptr)
+    {
+        return Cast<TypeHash<TType>()>(ptr);
     }
+*/
 }
