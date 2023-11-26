@@ -1,14 +1,13 @@
 project(Tea)
 
-add_executable(Tea WIN32
-    ${CMAKE_CURRENT_SOURCE_DIR}/Tea/application/Tea.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Tea/application/Tea.hpp
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/Tea/application/EventSubscriber.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Tea/application/EventSubscriber.hpp
+add_library(Tea
+    ${CMAKE_CURRENT_SOURCE_DIR}/Tea/Tea.hpp
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/Tea/TeaEntrypoint.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Tea/TeaEntrypoint.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Tea/EventSubscriber.hpp
 )
 
 target_include_directories(Tea PUBLIC
@@ -31,5 +30,3 @@ set_target_properties(Tea PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY_RELEASE ${OUTPUT_DIR}
     RUNTIME_OUTPUT_DIRECTORY_RELEASE ${OUTPUT_DIR}
 )
-
-install(TARGETS Tea RUNTIME DESTINATION ${OUTPUT_DIR})
