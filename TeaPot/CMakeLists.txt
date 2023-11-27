@@ -1,14 +1,10 @@
 project(TeaPot)
 
 add_executable(TeaPot WIN32
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/TeaPot.hpp
+
     ${CMAKE_CURRENT_SOURCE_DIR}/TP/TeaPotEntryPoint.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/TP/TeaPotEntryPoint.hpp
-
-    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/TeaPot.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/TeaPot.hpp
-    
-    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/EventSubscriber.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/EventSubscriber.hpp
 
     ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/ecs/components/DebugComponent.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/ecs/components/DebugComponent.hpp
@@ -63,6 +59,7 @@ target_include_directories(TeaPot PUBLIC
 target_link_libraries(TeaPot PUBLIC 
     BoilingHotWater
     TeaCup
+    Tea
 )
 
 set_target_properties(TeaPot PROPERTIES 
