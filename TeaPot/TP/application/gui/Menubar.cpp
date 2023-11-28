@@ -19,8 +19,8 @@ namespace TP
             {
                 if (ImGui::MenuItem("Load")) teaPot.CreateView<View::ProjectLoader>(std::string("Project Loader"));
 
-                if (ImGui::MenuItem("Save"  )) teaPot.m_project.Save  ();
-                if (ImGui::MenuItem("Reload")) teaPot.m_project.Reload();
+                if (ImGui::MenuItem("Save"  ));//teaPot.m_project.Save  ();
+                if (ImGui::MenuItem("Reload"));//teaPot.m_project.Reload();
 
                 ImGui::Separator();
 
