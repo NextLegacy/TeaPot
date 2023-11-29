@@ -1,6 +1,6 @@
 #pragma once
 
-#include <BHW/utils/json/Serializable.hpp>
+#include <BHW/utils/reflection/Reflection.hpp>
 
 #include "TP/application/EventSubscriber.hpp"
 
@@ -13,9 +13,9 @@ namespace TP
             std::string m_name;
             bool        m_open;
 
-            BHW::Serializable* m_serializable;
+            //void (*m_render)(void* data);
 
-            Inspector(std::string name, BHW::Serializable* serializable = nullptr, bool open = true);
+            Inspector(std::string name, bool open = true);
         };
 
         class InspectorRenderer : public EventSubscriber
