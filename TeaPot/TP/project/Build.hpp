@@ -4,8 +4,5 @@
 
 namespace TP
 {
-    //void Build(TeaPotProject& project)
-    //{
-    //    
-    //}
+
 }
