@@ -6,8 +6,8 @@ namespace TP
 {
     namespace View
     {
-        Inspector::Inspector(std::string name, BHW::Serializable* serializable, bool open) 
-            : m_name(name), m_serializable(serializable), m_open(open) { }
+        Inspector::Inspector(std::string name, bool open) 
+            : m_name(name), m_open(open) { }
 
         void InspectorRenderer::Render(TeaPot& teaPot)
         {
@@ -21,36 +21,22 @@ namespace TP
         {
             if (!data.m_open) return;
 
+
             ImGui::Begin(data.m_name.c_str(), &data.m_open);
 
-            if (data.m_serializable == nullptr)
+
+            /*
+            if (data.m_data == nullptr)
             {
                 ImGui::End();
                 return;
             }
 
-            for (auto& [key, value] : data.m_serializable->GetJSONObject().Get<BHW::JSONMap>())
+            for (const auto& [name, member] : data.m_type.
             {
-                switch (value.GetType())
-                {
-                    case BHW::JSONType::String: RenderField<std::string>(key, value.Get<std::string>()); break;
-                    //case JSONType::Int64 : break;
-                    //case JSONType::Int32 : break;
-                    //case JSONType::Int16 : break;
-                    //case JSONType::Int8  : break;
-                    //case JSONType::UInt64: break;
-                    //case JSONType::UInt32: break;
-                    //case JSONType::UInt16: break;
-                    //case JSONType::UInt8 : break;
-                    //case JSONType::Float : break;
-                    //case JSONType::Double: break;
-                    //case JSONType::Bool  : break;
-                    //case JSONType::Array : break;
-                    //case JSONType::Object: break;
-
-                    //default: RenderField<void*>(key, value.Get<void*>()); break;
-                }
+                ImGui::Text(member.Name.c_str());
             }
+            */
 
             ImGui::End();
         }
