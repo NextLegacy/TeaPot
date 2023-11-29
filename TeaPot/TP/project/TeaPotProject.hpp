@@ -2,24 +2,31 @@
 
 #include <string>
 
+#include <BHW/utils/reflection/Reflection.hpp>
+
 namespace TP
 {
-    class TeaPotProject
+    struct TeaPotProjectConfig
     {
-    public:
-        TeaPotProject();
-        ~TeaPotProject();
-
-        void Save  ();
-        void Reload();
-
-    public:
-        std::string m_projectLocation;
-        std::string m_projectName;
-        uint64_t    m_someNumber;
+        std::string m_name;
     };
 
-    TeaPotProject CreateProject      (const std::string& projectLocation);
-    TeaPotProject LoadProject        (const std::string& projectLocation);
-    TeaPotProject LoadOrCreateProject(const std::string& projectLocation);
+    struct TeaPotProject
+    {
+        TeaPotProjectConfig m_config;
+
+        std::string m_path;
+
+        std::vector<std::string> m_scripts  ;
+        std::vector<std::string> m_resources;
+    };
 }
+
+/*
+BHW_REFLECT(TP::TeaPotProjectConfig)
+
+BHW_REFLECT_MEMBERS(TP::TeaPotProjectConfig,
+    BHW_REFLECT_MEMBER("name", &TP::TeaPotProjectConfig::m_name)
+)
+
+*/
