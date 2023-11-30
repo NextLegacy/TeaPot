@@ -14,9 +14,9 @@ namespace BHW
 
         if (!AllocConsole()) return;
 
-        freopen("CONOUT$", "w", stdout);
-        freopen("CONOUT$", "w", stderr);
-        freopen("CONIN$",  "r", stdin );
+        freopen_s(reinterpret_cast<FILE**>(stdout), "CONOUT$", "w", stdout);
+        freopen_s(reinterpret_cast<FILE**>(stderr), "CONOUT$", "w", stderr);
+        freopen_s(reinterpret_cast<FILE**>(stdin), "CONIN$", "r", stdin);
 
         HWND consoleWindow = GetConsoleWindow();
 
