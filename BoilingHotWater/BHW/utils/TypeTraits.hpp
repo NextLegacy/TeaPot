@@ -4,8 +4,6 @@
 
 namespace BHW
 {
-    // Helper to check if a type is a specialization of a template
-    
     template <template <typename...> class Template, typename T>
     struct is_specialization_of : std::false_type {};
 
