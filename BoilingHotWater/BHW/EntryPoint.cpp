@@ -19,16 +19,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
     for (int i = 0; i < argc; i++)
     {
-        int size_needed = WideCharToMultiByte(CP_UTF8, 0, argv[i], wcslen(argv[i]), NULL, 0, NULL, NULL);
+        int size_needed = WideCharToMultiByte(CP_UTF8, 0, argv[i], (int)wcslen(argv[i]), NULL, 0, NULL, NULL);
         std::string arg(size_needed, 0);
-        WideCharToMultiByte(CP_UTF8, 0, argv[i], wcslen(argv[i]), &arg[0], size_needed, NULL, NULL);
+        WideCharToMultiByte(CP_UTF8, 0, argv[i], (int)wcslen(argv[i]), &arg[0], size_needed, NULL, NULL);
         args.push_back(arg);
     }
 
     return BHW::EntryPoint(args);
 }
 
-#else // _WIN32
+#endif // _WIN32
 
 int main(const int argc, const char** argv)
 {
@@ -40,4 +40,4 @@ int main(const int argc, const char** argv)
     return BHW::EntryPoint(args);
 }
 
-#endif // _WIN32
+
