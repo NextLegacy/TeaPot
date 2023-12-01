@@ -2,6 +2,7 @@
 
 #include <string>
 #include <map>
+#include <tuple>
 #include <vector>
 
 #include "BHW/utils/reflection/Reflection.hpp"
@@ -21,26 +22,28 @@ namespace BHW
         JSONKeyValue(std::string key, T value) : key(key), value(value) { }
     };
 
-    std::string ToString(Value& value);
+    std::string ToString(Value& value, uint64_t indent = 0);
 
     template <typename T>
-    inline std::string ToString(const T& object)
+    inline std::string ToString(T& object, uint64_t indent = 0)
     {
-        return "\"UNKNOW\"";
+        if (!IsRegistered<T>()) return "null";
+
+        return Serialize<T>(object, indent);
     }
 
-    template <> std::string ToString<std::string>(const std::string& value);
-    template <> std::string ToString<int64_t    >(const int64_t&     value);
-    template <> std::string ToString<int32_t    >(const int32_t&     value);
-    template <> std::string ToString<int16_t    >(const int16_t&     value);
-    template <> std::string ToString<int8_t     >(const int8_t&      value);
-    template <> std::string ToString<uint64_t   >(const uint64_t&    value);
-    template <> std::string ToString<uint32_t   >(const uint32_t&    value);
-    template <> std::string ToString<uint16_t   >(const uint16_t&    value);
-    template <> std::string ToString<uint8_t    >(const uint8_t&     value);
-    template <> std::string ToString<float      >(const float&       value);
-    template <> std::string ToString<double     >(const double&      value);
-    template <> std::string ToString<bool       >(const bool&        value);
+    template <> std::string ToString<std::string>(std::string& value, uint64_t indent);
+    template <> std::string ToString<int64_t    >(int64_t&     value, uint64_t indent);
+    template <> std::string ToString<int32_t    >(int32_t&     value, uint64_t indent);
+    template <> std::string ToString<int16_t    >(int16_t&     value, uint64_t indent);
+    template <> std::string ToString<int8_t     >(int8_t&      value, uint64_t indent);
+    template <> std::string ToString<uint64_t   >(uint64_t&    value, uint64_t indent);
+    template <> std::string ToString<uint32_t   >(uint32_t&    value, uint64_t indent);
+    template <> std::string ToString<uint16_t   >(uint16_t&    value, uint64_t indent);
+    template <> std::string ToString<uint8_t    >(uint8_t&     value, uint64_t indent);
+    template <> std::string ToString<float      >(float&       value, uint64_t indent);
+    template <> std::string ToString<double     >(double&      value, uint64_t indent);
+    template <> std::string ToString<bool       >(bool&        value, uint64_t indent);
 
     /*
     template <typename T>
@@ -53,46 +56,42 @@ namespace BHW
     }*/
 
     template <typename T> 
-    inline std::string ToString(std::vector<T>& vector)
+    inline std::string ToString(std::vector<T>& vector, uint64_t indent = 0)
     {
         std::string result = "[\n";
 
+        std::string indentString = "";
+
+        for (uint64_t i = 0; i < indent; i++) indentString += "    ";
+
         for (T& value : vector)
         {
-            std::string valueString = ToString(value);
+            std::string valueString = ToString(value, indent + 1);
 
-            for (uint32_t i = 0; i < valueString.size(); i++)
-            {
-                if (valueString[i] == '\n')
-                    valueString.insert(i + 1, "    ");
-            }
-
-            result += "    " + valueString + ",\n";
+            result += "    " + indentString + valueString + ",\n";
         }
 
-        return result + "]";
+        return result + indentString + "]";
     }
 
 
     template <typename T> 
-    inline std::string ToString(std::map<std::string, T>& map)
+    inline std::string ToString(std::map<std::string, T>& map, uint64_t indent = 0)
     {
         std::string result = "{\n";
 
+        std::string indentString = "";
+
+        for (uint64_t i = 0; i < indent; i++) indentString += "    ";
+
         for (auto& [key, value] : map)
         {
-            std::string valueString = ToString(value);
+            std::string valueString = ToString(value, indent + 1);
 
-            for (uint32_t i = 0; i < valueString.size(); i++)
-            {
-                if (valueString[i] == '\n')
-                    valueString.insert(i + 1, "    ");
-            }
-
-            result += "    \"" + key + "\": " + valueString + ",\n";
+            result += indentString + "    " + "\"" + key + "\": "+ valueString + ",\n";
         }
 
-        return result + "}";
+        return result + indentString + "}}";
     }
 
     namespace
@@ -110,7 +109,7 @@ namespace BHW
     }
 
     template <typename ...T>
-    inline std::string Serialize(JSONKeyValue<T>... keyValue)
+    inline std::string SerializeKeyValuePairs(JSONKeyValue<T>... keyValue)
     {
         std::string result = "{\n";
 
@@ -125,20 +124,21 @@ namespace BHW
     JSONObject DeserializeToMap(const std::string& string);
 
     template <typename T>
-    inline std::string Serialize(T& object)
+    inline std::string Serialize(T& object, uint64_t indent = 0)
     {
         BHW_ASSERT(BHW::IsRegistered<T>(), "Serialize()", "Type is not registered!");
 
         std::string result = "{\n";
 
+        std::string indentString = "";
+
+        for (uint64_t i = 0; i < indent; i++) indentString += "    ";
+        
         std::apply([&](auto&&... members)
         {
-            ((result += "    \"" + std::string(members.Name.begin(), members.Name.end()) + "\": " + ToString(members(object)) + ",\n"), ...);
-        }, GetMembers<T>());
-
-        return result + "}";
-
-        return result;
+            ((result += indentString + "    \"" + std::string(members.Name.begin(), members.Name.end()) + "\": " + ToString(members(object), 1) + ",\n"), ...);
+        }, GetMembersOfType<T>());      
+        return result + indentString + "}";
     }
 
     template <typename T>
@@ -152,10 +152,17 @@ namespace BHW
 
         std::apply([&](auto&&... members)
         {
-            ((members(*result) = object[std::string(members.Name.begin(), members.Name.end())].Get<typename std::remove_reference<decltype(members(*result))>::type>()), ...);
-        }, GetMembers<T>());
+            (..., [&]()
+            {
+                if (object.find(std::string(members.Name.begin(), members.Name.end())) == object.end()) return;
+
+                Value& value = object[std::string(members.Name.begin(), members.Name.end())];
+    
+                members(*result) = value.Is<JSONObject>() ? Deserialize<typename std::remove_reference<decltype(members(*result))>::type>(ToString(value.Get<JSONObject>())) : 
+                                                            value.Get  <typename std::remove_reference<decltype(members(*result))>::type>();
+            }());
+        }, GetMembersOfType<T>());
 
         return *result;
     }
-
 }
