@@ -15,7 +15,10 @@ namespace BHW
     {
         inline ~DynamicEventSystem()
         {
-            std::ranges::for_each(m_systems, [](TBaseEvent* system) { delete system; });
+            //for (auto& system : m_systems)
+            //{
+            //    delete system;
+            //}
         }
 
         template <typename ...TArgs>
