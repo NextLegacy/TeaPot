@@ -15,15 +15,15 @@ namespace BHW
         constexpr Member(std::string_view name, TType TClass::* memberPtr) 
             : Name     (name                    ), 
               MemberPtr(memberPtr               ), 
-              Type     (GetTypeInfo<TType >()   ),
-              Class    (GetTypeInfo<TClass>()   ),
+              //Type     (GetTypeInfo<TypeHash<TType >>()),
+              //Class    (GetTypeInfo<TypeHash<TClass>>()),
               IsPointer(std::is_pointer_v<TType>) { }
 
     public:
         const std::string_view Name     ;
               TType TClass::*  MemberPtr;
-        const TypeInfo&        Type     ;
-        const TypeInfo&        Class    ;
+        //const TypeInfo&        Type     ;
+        //const TypeInfo&        Class    ;
         const bool             IsPointer;
 
     public:
@@ -49,16 +49,19 @@ namespace BHW
     }
 
     template <size_t THash>
-    constexpr auto GetMembers();
-
-    template <typename TClass>
     constexpr auto GetMembers()
     {
-        return GetMembers<Hash<TClass>()>();
+        return std::make_tuple();
+    }
+
+    template <typename TClass>
+    constexpr auto GetMembersOfType()
+    {
+        return GetMembers<TypeHash<TClass>()>();
     }
 
     template <typename TClass, typename ...TTypes>
-    constexpr auto MemberPointersToMemberValues(std::tuple<TTypes TClass::*...> tuple, TClass& object)
+    inline constexpr auto MemberPointersToMemberValues(std::tuple<TTypes TClass::*...> tuple, TClass& object)
     {
         std::tuple<TTypes&...> result;
 
