@@ -2,38 +2,38 @@
 
 namespace BHW
 {
-    std::string ToString(Value& value)
+    std::string ToString(Value& value, uint64_t indent)
     {
-        if (value.Is<std::string>()) return ToString(value.Get<std::string>());
-        if (value.Is<int64_t    >()) return ToString(value.Get<int64_t    >());
-        if (value.Is<int32_t    >()) return ToString(value.Get<int32_t    >());
-        if (value.Is<int16_t    >()) return ToString(value.Get<int16_t    >());
-        if (value.Is<int8_t     >()) return ToString(value.Get<int8_t     >());
-        if (value.Is<uint64_t   >()) return ToString(value.Get<uint64_t   >());
-        if (value.Is<uint32_t   >()) return ToString(value.Get<uint32_t   >());
-        if (value.Is<uint16_t   >()) return ToString(value.Get<uint16_t   >());
-        if (value.Is<uint8_t    >()) return ToString(value.Get<uint8_t    >());
-        if (value.Is<float      >()) return ToString(value.Get<float      >());
-        if (value.Is<double     >()) return ToString(value.Get<double     >());
-        if (value.Is<bool       >()) return ToString(value.Get<bool       >());
-        if (value.Is<JSONArray  >()) return ToString(value.Get<JSONArray  >());
-        if (value.Is<JSONObject >()) return ToString(value.Get<JSONObject >());
+        if (value.Is<JSONArray  >()) return ToString<JSONArray >(value.Get<JSONArray >(), indent);
+        if (value.Is<JSONObject >()) return ToString<JSONObject>(value.Get<JSONObject>(), indent);
+        if (value.Is<std::string>()) return ToString<std::string>(value.Get<std::string>());
+        if (value.Is<int64_t    >()) return ToString(value.Get<int64_t    >(), indent);
+        if (value.Is<int32_t    >()) return ToString(value.Get<int32_t    >(), indent);
+        if (value.Is<int16_t    >()) return ToString(value.Get<int16_t    >(), indent);
+        if (value.Is<int8_t     >()) return ToString(value.Get<int8_t     >(), indent);
+        if (value.Is<uint64_t   >()) return ToString(value.Get<uint64_t   >(), indent);
+        if (value.Is<uint32_t   >()) return ToString(value.Get<uint32_t   >(), indent);
+        if (value.Is<uint16_t   >()) return ToString(value.Get<uint16_t   >(), indent);
+        if (value.Is<uint8_t    >()) return ToString(value.Get<uint8_t    >(), indent);
+        if (value.Is<float      >()) return ToString(value.Get<float      >(), indent);
+        if (value.Is<double     >()) return ToString(value.Get<double     >(), indent);
+        if (value.Is<bool       >()) return ToString(value.Get<bool       >(), indent);
 
         BHW_ASSERT(false, "JSONObject::ToString", "Unknown type"); return "Unknown type";
     }
 
-    template <> std::string ToString<std::string>(const std::string& value) { return "\"" + value  + "\""          ; }
-    template <> std::string ToString<int64_t    >(const int64_t&     value) { return std::to_string(value) + "i64" ; }
-    template <> std::string ToString<int32_t    >(const int32_t&     value) { return std::to_string(value) + "i32" ; }
-    template <> std::string ToString<int16_t    >(const int16_t&     value) { return std::to_string(value) + "i16" ; }
-    template <> std::string ToString<int8_t     >(const int8_t&      value) { return std::to_string(value) + "i8"  ; }
-    template <> std::string ToString<uint64_t   >(const uint64_t&    value) { return std::to_string(value) + "ui64"; }
-    template <> std::string ToString<uint32_t   >(const uint32_t&    value) { return std::to_string(value) + "ui32"; }
-    template <> std::string ToString<uint16_t   >(const uint16_t&    value) { return std::to_string(value) + "ui16"; }
-    template <> std::string ToString<uint8_t    >(const uint8_t&     value) { return std::to_string(value) + "ui8" ; }
-    template <> std::string ToString<float      >(const float&       value) { return std::to_string(value) + "f"   ; }
-    template <> std::string ToString<double     >(const double&      value) { return std::to_string(value) + "d"   ; }
-    template <> std::string ToString<bool       >(const bool&        value) { return value ? "true" : "false"      ; }
+    template <> std::string ToString<std::string>(std::string& value, uint64_t indent) { return "\"" + value  + "\""          ; }
+    template <> std::string ToString<int64_t    >(int64_t&     value, uint64_t indent) { return std::to_string(value) + "i64" ; }
+    template <> std::string ToString<int32_t    >(int32_t&     value, uint64_t indent) { return std::to_string(value) + "i32" ; }
+    template <> std::string ToString<int16_t    >(int16_t&     value, uint64_t indent) { return std::to_string(value) + "i16" ; }
+    template <> std::string ToString<int8_t     >(int8_t&      value, uint64_t indent) { return std::to_string(value) + "i8"  ; }
+    template <> std::string ToString<uint64_t   >(uint64_t&    value, uint64_t indent) { return std::to_string(value) + "ui64"; }
+    template <> std::string ToString<uint32_t   >(uint32_t&    value, uint64_t indent) { return std::to_string(value) + "ui32"; }
+    template <> std::string ToString<uint16_t   >(uint16_t&    value, uint64_t indent) { return std::to_string(value) + "ui16"; }
+    template <> std::string ToString<uint8_t    >(uint8_t&     value, uint64_t indent) { return std::to_string(value) + "ui8" ; }
+    template <> std::string ToString<float      >(float&       value, uint64_t indent) { return std::to_string(value) + "f"   ; }
+    template <> std::string ToString<double     >(double&      value, uint64_t indent) { return std::to_string(value) + "d"   ; }
+    template <> std::string ToString<bool       >(bool&        value, uint64_t indent) { return value ? "true" : "false"      ; }
 
     namespace
     {
@@ -88,7 +88,7 @@ namespace BHW
 
         inline void SkipToSignificant(const std::string& data, uint32_t& i)
         {
-            BHW_ASSERT(i < data.length(), "BHW::ParserSkip()", "Index out of range");
+            //BHW_ASSERT(i < data.length(), "BHW::ParserSkip()", "Index out of range");
 
             while (data[i] == '\t' || data[i] == '\r' || data[i] == '\n' || data[i] == ' ') ++i;
 
@@ -263,8 +263,6 @@ namespace BHW
 
                 SkipToSignificant(data, i);
             }
-
-            i++;
 
             return true;
         }
