@@ -23,7 +23,7 @@ namespace BHW
         template<typename TFunction>
         TFunction GetFunction(const char* name)
         {
-            return reinterpret_cast<T>(GetProcAddress(m_handle, name));
+            return reinterpret_cast<TFunction>(GetProcAddress(m_handle, name));
         }
 
     private:
