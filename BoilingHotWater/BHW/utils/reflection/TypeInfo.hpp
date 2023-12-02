@@ -63,13 +63,13 @@ namespace BHW
     template <typename TClass> 
     inline constexpr bool IsRegistered() { return false; }
 
-    //template <typename TClass>
-    //inline constexpr const TypeInfo& GetTypeInfo()
-    //{
-    //    static_assert(IsRegistered<TClass>(), "Type is not registered");
-//
-    //    return GetTypeInfo<TypeHash<TClass>()>();
-    //}
+    template <typename TClass>
+    inline constexpr const TypeInfo& GetTypeInfo()
+    {
+        static_assert(IsRegistered<TClass>(), "Type is not registered");
+    
+        return GetTypeInfo<TypeHash<TClass>()>();
+    }
 
 /*
     template <typename TType>
