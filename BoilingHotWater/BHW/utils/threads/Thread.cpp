@@ -29,12 +29,10 @@ namespace BHW
     {
         if (!m_isRunning || m_shouldStop) return;
 
-        m_isRunning  = false;
-        m_shouldStop = true ;
-
         Join();
 
-        m_thread->detach();
+        m_isRunning  = false;
+        m_shouldStop = true ;
 
         //delete &m_thread;
 
