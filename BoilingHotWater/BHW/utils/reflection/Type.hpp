@@ -1,7 +1,5 @@
 #pragma once
 
-#include <string_view>
-
 #include "BHW/utils/Hash.hpp"
 
 #include "BHW/utils/Debug.hpp"
@@ -54,23 +52,22 @@ namespace BHW
         const uint64_t         Hash;
 
     private:
-        inline constexpr Type(const std::string_view name) : Name(name), Hash(BHW::Hash(Name.data(), Name.length())) { }
+        inline constexpr Type(const std::string_view& name) : Name(name), Hash(BHW::Hash(name)) { }
 
         friend constexpr Type TypeOf(const std::string_view name);
 
-        inline static constexpr Type Create(const std::string_view name)
+        inline static constexpr Type Create(const std::string_view& name)
         {
             return Type(name);
         }
     };
 
-/*
     template <uint64_t Hash>
     inline constexpr auto Cast(void* ptr)
     {   
         BHW_DEBUG("Type with hash {} is not registered", Hash);
     }
-*/
+
     inline constexpr Type TypeOf(const std::string_view name)
     {
         return Type::Create(name);
@@ -82,20 +79,9 @@ namespace BHW
         return TypeOf(TypeName<T>());
     }
 
-    constexpr unsigned long long tetstsetset(const char* str, unsigned long long length)
-    {
-        unsigned long long hash = 0xcbf29ce484222325ULL;
-        for (unsigned long long i = 0; i < length; ++i)
-        {
-            hash ^= str[i];
-            hash *= 0x100000001b3ULL;
-        }
-        return hash;
-    }
-
     template <typename T>
     inline constexpr uint64_t TypeHash()
     {
-        return tetstsetset(TypeName<T>().data(), TypeName<T>().length());
+        return Hash(TypeName<T>());
     }
 }
