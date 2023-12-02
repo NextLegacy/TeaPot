@@ -19,21 +19,22 @@ namespace BHW
         Value(void* value, uint64_t hash) : m_value(value), m_hash(hash) { }
 
         template <typename T>
-        T Get()
+        T& Get()
         {
             if constexpr (is_specialization_of_v<std::vector, T>)
             {
                 if (Is<std::vector<Value>>())
                 {
                     std::vector<Value>& values = *reinterpret_cast<std::vector<Value>*>(m_value);
-                    std::vector<typename T::value_type> result;
+                    std::vector<typename T::value_type>* result = new std::vector<typename T::value_type>();
 
                     for (Value& value : values)
-                        result.push_back(value.Get<typename T::value_type>());
-                
-                    return result;
+                        result->push_back(value.Get<typename T::value_type>());
+                    
+                    return *result;
                 }
             }
+
             return *reinterpret_cast<T*>(m_value);
         }
 
