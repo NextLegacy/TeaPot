@@ -22,7 +22,7 @@ namespace BHW
         void Join      ();
 
         inline bool IsRunning () const { return m_isRunning ; }
-        inline bool ShouldStop() const { return m_shouldStop; }
+        inline bool ShouldStop() const { return m_shouldStop || !m_isRunning; }
 
     private:
         void Run();
