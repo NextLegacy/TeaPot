@@ -4,6 +4,10 @@
 
 namespace Tea
 {
-    template <typename T>
+    class Application;
+
+    template <typename T = Application>
     struct EventSubscriber : public TC::TeaCupBaseEvent<T> { };
+
+    struct EventStorage { };
 }
