@@ -1,0 +1,43 @@
+project(TeaBrewer)
+
+add_executable(TeaBrewer
+    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewerEntryPoint.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewerEntryPoint.hpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewerConfig.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewerConfig.hpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewerBuilder.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewerBuilder.hpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewer.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewer.hpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewerBuildTarget.hpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewerUpdater.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewerUpdater.hpp
+)
+
+target_include_directories(TeaBrewer PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_link_libraries(TeaBrewer PUBLIC 
+    BoilingHotWater
+    Tea
+)
+
+set_target_properties(TeaBrewer PROPERTIES 
+    ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR}
+    LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR}
+    RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR}
+    ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${OUTPUT_DIR}
+    LIBRARY_OUTPUT_DIRECTORY_DEBUG ${OUTPUT_DIR}
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG ${OUTPUT_DIR}
+    ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${OUTPUT_DIR}
+    LIBRARY_OUTPUT_DIRECTORY_RELEASE ${OUTPUT_DIR}
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE ${OUTPUT_DIR}
+)
+
+install(TARGETS TeaBrewer RUNTIME DESTINATION ${OUTPUT_DIR})
