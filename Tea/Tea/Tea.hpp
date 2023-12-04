@@ -5,8 +5,6 @@
 #include <BHW/utils/event/EventSystem.hpp>
 
 #include <TC/TeaCup.hpp>
-#include <TC/gapi/impl/GLFW_OpenGL_DearImGui.hpp>
-
 #include "Tea/EventSubscriber.hpp"
 
 namespace Tea
