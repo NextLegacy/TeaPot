@@ -1,12 +1,6 @@
 #pragma once
 
-#include <mutex>
-#include <condition_variable>
-
 #include <BHW/utils/threads/Thread.hpp>
-#include <BHW/utils/Time.hpp>
-
-#include <BHW/utils/console/Console.hpp>
 
 namespace TC
 {
