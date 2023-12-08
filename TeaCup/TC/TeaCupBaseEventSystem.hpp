@@ -1,10 +1,5 @@
 #pragma once
 
-#include <BHW/utils/event/DynamicEventSystem.hpp>
-#include <BHW/utils/TypeTraits.hpp>
-
-#include "TC/TeaCup.hpp"
-
 namespace TC
 {
     template <typename TApplication>
