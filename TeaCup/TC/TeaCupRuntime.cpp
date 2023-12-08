@@ -1,5 +1,11 @@
 #include "TC/TeaCupRuntime.hpp"
 
+#include <mutex>
+#include <condition_variable>
+#include <BHW/utils/Time.hpp>
+
+#include <BHW/utils/console/Console.hpp>
+
 namespace TC
 {
     ApplicationRuntime::ApplicationRuntime() : 
@@ -15,7 +21,7 @@ namespace TC
         m_measuredFixedUpdatesPerSecond(0),
 
         m_fixedUpdateThread(std::bind(&ApplicationRuntime::FixedUpdateThread, this)),
-        m_renderThread     (std::bind(&ApplicationRuntime::RenderThread    , this)),
+        m_renderThread     (std::bind(&ApplicationRuntime::RenderThread     , this)),
 
         m_isRunning(false)
     {
@@ -65,6 +71,8 @@ namespace TC
         }
 
         m_renderThread.Deactivate();
+
+        BHW::Console::WriteLine("Main thread stopped");
 
         RuntimeMainThreadEnd();
     }
@@ -144,12 +152,14 @@ namespace TC
                 deltaF -= 1e9;
             }
 
-            deltaTime = BHW::NanoSeconds() - last;
-            last     += deltaTime;
-            deltaF   += deltaTime * m_fps;
+            deltaTime  = BHW::NanoSeconds() - last;
+            last      += deltaTime;
+            deltaF    += deltaTime * m_fps;
         }
 
         m_fixedUpdateThread.Deactivate();
+
+        BHW::Console::WriteLine("Render thread stopped");
 
         RuntimeRenderThreadEnd();
     }
