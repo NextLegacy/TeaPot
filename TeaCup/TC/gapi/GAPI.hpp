@@ -2,9 +2,6 @@
 
 #include <glm/glm.hpp>
 
-#include <BHW/utils/console/Console.hpp>
-#include <BHW/utils/threads/Thread.hpp>
-
 #include "TC/input/Input.hpp"
 
 namespace TC
