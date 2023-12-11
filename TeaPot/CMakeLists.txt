@@ -2,6 +2,7 @@ project(TeaPot)
 
 add_executable(TeaPot WIN32
     ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/TeaPot.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/TeaPot.cpp
 
     ${CMAKE_CURRENT_SOURCE_DIR}/TP/TeaPotEntryPoint.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/TP/TeaPotEntryPoint.hpp
@@ -13,7 +14,11 @@ add_executable(TeaPot WIN32
     ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/ecs/systems/DebugSystem.hpp
 
     ${CMAKE_CURRENT_SOURCE_DIR}/TP/project/TeaPotProject.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/TP/project/TeaPotProject.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/project/TeaPotProjectBuilder.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/project/TeaPotProjectBuilder.cpp
+
+    ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/Inspector.hpp
 
     ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/Dockspace.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/TP/application/gui/Dockspace.cpp
