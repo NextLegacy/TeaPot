@@ -3,6 +3,8 @@
 #include <TC/gapi/impl/GLFW_OpenGL_DearImGui.hpp>
 #include <Tea/Tea.hpp>
 
+#include <string>
+
 #include "TP/application/ecs/components/DebugComponent.hpp"
 #include "TP/application/ecs/systems/DebugSystem.hpp"
 
@@ -24,6 +26,11 @@
 
 namespace TP
 {
+    namespace View
+    {
+        class PerformanceRenderer;
+        class Performance;
+    }
     class TeaPot : public Tea::Tea
     <
         TC::GLFW_OpenGL_DearImGui, 
@@ -73,6 +80,8 @@ namespace TP
             auto& window = entity.AddComponent<TWindow>(name + "####" + m_random.UUID().ToString(), std::forward<TArgs>(args)...);
             return window;
         }
+
+        void ReloadProject();
 
     public:
         BHW::Random m_random;
