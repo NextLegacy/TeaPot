@@ -9,11 +9,6 @@ namespace TP
 {
     void DebugSystem::Start(TeaPot& teaPot)
     {
-        //SomeTest test{ 123, "Hello World", { "Hello", "World" }, { { "Hello", "World" }, { "Hello", "World" } } };
-
-        //BHW::Deserialize<SomeTest>(BHW::Serialize<SomeTest>(test), &test);
-
-        //BHW::Console::WriteLine(BHW::Serialize<SomeTest>(test));
     }
 
     void DebugSystem::Update(TeaPot& teaPot)
