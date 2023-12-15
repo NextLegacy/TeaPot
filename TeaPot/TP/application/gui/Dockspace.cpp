@@ -1,8 +1,8 @@
 #include "TP/application/gui/Dockspace.hpp"
 
-#include <BHW/utils/console/Console.hpp>
-
 #include "TP/application/TeaPot.hpp"
+
+#include <BHW/utils/console/Console.hpp>
 
 namespace TP
 {
