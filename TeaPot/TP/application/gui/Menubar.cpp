@@ -1,6 +1,9 @@
 #include "TP/application/gui/MenuBar.hpp"
 
+#include <BHW/utils/io/FileHandler.hpp>
+
 #include "TP/application/TeaPot.hpp"
+#include "TP/project/TeaPotProjectBuilder.hpp"
 
 namespace TP
 {
@@ -17,6 +20,7 @@ namespace TP
         {
             if (ImGui::BeginMenu("Project"))
             {
+                if (ImGui::MenuItem("New"  )) { teaPot.m_project = BuildProject(BHW::GetCurrentPath(), BHW::SelectFolder("Select a folder to create the project in.", "", teaPot.GetWindowHandle())); teaPot.ReloadProject(); }
                 if (ImGui::MenuItem("Load")) teaPot.CreateView<View::ProjectLoader>(std::string("Project Loader"));
 
                 if (ImGui::MenuItem("Save"  ));//teaPot.m_project.Save  ();
