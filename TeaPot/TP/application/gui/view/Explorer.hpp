@@ -1,5 +1,9 @@
 #pragma once
 
+#include <string>
+#include <vector>
+#include <map>
+
 #include "TP/application/EventSubscriber.hpp"
 
 namespace TP
