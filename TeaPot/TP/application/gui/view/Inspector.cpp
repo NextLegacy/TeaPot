@@ -2,6 +2,8 @@
 
 #include "TP/application/TeaPot.hpp"
 
+#include "TP/application/gui/Inspector.hpp"
+
 namespace TP
 {
     namespace View
@@ -21,36 +23,11 @@ namespace TP
         {
             if (!data.m_open) return;
 
-
             ImGui::Begin(data.m_name.c_str(), &data.m_open);
 
-
-            /*
-            if (data.m_data == nullptr)
-            {
-                ImGui::End();
-                return;
-            }
-
-            for (const auto& [name, member] : data.m_type.
-            {
-                ImGui::Text(member.Name.c_str());
-            }
-            */
+            ImGuiInputField("Test", data.m_test);
 
             ImGui::End();
         }
-
-        template<>
-        void InspectorRenderer::RenderField<std::string>(const std::string& name, std::string& value)
-        {
-            //ImGui::InputText("##string", value.c_str(), sizeof(value));
-        }
-    
-        //template<>
-        //void InspectorRenderer::RenderField<void*>(std::string& name, void*& object)
-        //{
-        //    ImGui::Text(name.c_str());
-        //}
     }
 }
