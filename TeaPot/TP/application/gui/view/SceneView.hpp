@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "TP/application/EventSubscriber.hpp"
 
 namespace TP
