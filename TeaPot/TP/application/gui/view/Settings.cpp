@@ -2,6 +2,8 @@
 
 #include "TP/application/TeaPot.hpp"
 
+#include "TP/application/gui/Inspector.hpp"
+
 namespace TP
 {
     namespace View
@@ -22,8 +24,12 @@ namespace TP
 
             ImGui::Begin(data.m_name.c_str(), &data.m_open);
 
-            ImGui::Text("Settings");
-            
+            ImGuiInputField("Project", teaPot.m_project);
+
+            ImGui::Separator();
+
+            if (ImGui::Button("Reload")) teaPot.ReloadProject();
+
             ImGui::End();
         }
     }
