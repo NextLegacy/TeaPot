@@ -6,27 +6,18 @@
 
 namespace TP
 {
-    struct TeaPotProjectConfig
-    {
-        std::string m_name;
-    };
-
     struct TeaPotProject
     {
-        TeaPotProjectConfig m_config;
+        uint64_t m_version = 0;
+        std::string m_name = "Untitled Project";
 
-        std::string m_path;
-
-        std::vector<std::string> m_scripts  ;
-        std::vector<std::string> m_resources;
+        std::vector<std::string> m_sourceFiles  ;
+        std::vector<std::string> m_resourceFiles;
     };
 }
 
-/*
-BHW_REFLECT(TP::TeaPotProjectConfig)
-
-BHW_REFLECT_MEMBERS(TP::TeaPotProjectConfig,
-    BHW_REFLECT_MEMBER("name", &TP::TeaPotProjectConfig::m_name)
+BHW_REFLECT(TP::TeaPotProject)
+BHW_REFLECT_MEMBERS(TP::TeaPotProject,
+    BHW_REFLECT_MEMBER("version", &TP::TeaPotProject::m_version),
+    BHW_REFLECT_MEMBER("name", &TP::TeaPotProject::m_name)
 )
-
-*/
