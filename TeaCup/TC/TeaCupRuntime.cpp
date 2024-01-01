@@ -77,7 +77,6 @@ namespace TC
         RuntimeMainThreadEnd();
     }
 
-
     void ApplicationRuntime::FixedUpdateThread()
     {
         // measuring fixed ticks per second
