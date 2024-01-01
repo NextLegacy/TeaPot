@@ -3,13 +3,10 @@
 #include <type_traits>
 
 #include <BHW/application/Application.hpp>
-
-#include "TC/gapi/GAPI.hpp"
-
-#include "TC/TeaCupRuntime.hpp"
-
 #include <BHW/utils/event/DynamicEventSystem.hpp>
 
+#include "TC/gapi/GAPI.hpp"
+#include "TC/TeaCupRuntime.hpp"
 #include "TC/TeaCupBaseEventSystem.hpp"
 
 namespace TC
