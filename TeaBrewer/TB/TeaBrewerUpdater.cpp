@@ -9,12 +9,12 @@ namespace TB
 {
     std::string IntermediateCMakeListsFile()
     {
-        return BHW::ReadFile(BHW::GetExecutablePath() + "/TeaBrewer/Intermediate.cmake");
+        return BHW::ReadFile(BHW::GetExecutablePath() + "/ProjectTemplateFiles/Intermediate.cmake");
     }
 
     std::string FinalCMakeListsFile(const TeaBrewerConfig& config)
     {
-        return BHW::ReadFile(BHW::GetExecutablePath() + "/TeaBrewer/Final.cmake");
+        return BHW::ReadFile(BHW::GetExecutablePath() + "/ProjectTemplateFiles/Final.cmake");
     }
 
     std::string ProjectCMakeListsFile(const TeaBrewerConfig& config)
@@ -30,7 +30,7 @@ namespace TB
 
         return BHW::Format
         (
-            BHW::ReadFile(BHW::GetExecutablePath() + "/TeaBrewer/Project.cmake"),
+            BHW::ReadFile(BHW::GetExecutablePath() + "/ProjectTemplateFiles/Project.cmake"),
             config.Name                 ,
             config.DistributionDirectory,
             config.IsConsoleApplication ? "" : "WIN32",
@@ -42,22 +42,22 @@ namespace TB
 
     std::string EntryPointSourceFile(const TeaBrewerConfig& config)
     {
-        return BHW::ReadFile(BHW::GetExecutablePath() + "/TeaBrewer/EntryPoint.cpp");
+        return BHW::ReadFile(BHW::GetExecutablePath() + "/ProjectTemplateFiles/EntryPoint.cpp");
     }
 
     std::string ExportHeaderFile(const TeaBrewerConfig& config)
     {
-        return BHW::ReadFile(BHW::GetExecutablePath() + "/TeaBrewer/Exports.hpp");
+        return BHW::ReadFile(BHW::GetExecutablePath() + "/ProjectTemplateFiles/Exports.hpp");
     }
 
     std::string ExportSourceFile(const TeaBrewerConfig& config)
     {
-        return BHW::ReadFile(BHW::GetExecutablePath() + "/TeaBrewer/Exports.cpp");
+        return BHW::ReadFile(BHW::GetExecutablePath() + "/ProjectTemplateFiles/Exports.cpp");
     }
 
     std::string DLLEntryPointSourceFile(const TeaBrewerConfig& config)
     {
-        return BHW::ReadFile(BHW::GetExecutablePath() + "/TeaBrewer/DLLEntryPoint.cpp");
+        return BHW::ReadFile(BHW::GetExecutablePath() + "/ProjectTemplateFiles/DLLEntryPoint.cpp");
     }
 
     void Update(const TeaBrewerConfig& config)

@@ -38,7 +38,7 @@ namespace TB
 
         return BHW::Format
         (
-            BHW::ReadFile(BHW::GetExecutablePath() + "/TeaBrewer/Application.hpp"), 
+            BHW::ReadFile(BHW::GetExecutablePath() + "/ProjectTemplateFiles/Application.hpp"), 
             config.GAPI_Include,
             config.GAPI        ,
             systemsString      ,

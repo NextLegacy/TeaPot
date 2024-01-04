@@ -1,19 +1,9 @@
-set(DEPENDENCIES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/dependencies)
+add_subdirectory(dependencies/BoilingHotWater)
+add_subdirectory(dependencies/TeaCup)
 
-set(GLFW_DIR  ${DEPENDENCIES_DIR}/glfw )
-set(GLM_DIR   ${DEPENDENCIES_DIR}/glm  )
-set(GLEW_DIR  ${DEPENDENCIES_DIR}/glew-2.2.0)
-set(IMGUI_DIR ${DEPENDENCIES_DIR}/imgui)
 
-set(DEPENDENCIES_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/dependencies)
+#list(APPEND CMAKE_PREFIX_PATH dependencies/BoilingHotWater/install)
+#find_package(BHW REQUIRED)
 
-include(cmake/dependencies/opengl.cmake)
-include(cmake/dependencies/glew.cmake)
-include(cmake/dependencies/glfw.cmake)
-include(cmake/dependencies/glm.cmake)
-
-include(cmake/dependencies/imgui.cmake)
-
-include(cmake/dependencies/vulkan.cmake)
-
-include(cmake/dependencies/java.cmake)
+#list(APPEND CMAKE_PREFIX_PATH dependencies/TeaCup/install)
+#find_package(TC REQUIRED)
