@@ -1,43 +1,61 @@
-project(TeaBrewer)
+file(GLOB_RECURSE TeaBrewerSources *.cpp)
+file(GLOB_RECURSE TeaBrewerHeaders *.hpp)
 
-add_executable(TeaBrewer
-    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewerEntryPoint.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewerEntryPoint.hpp
+add_library(TeaBrewer STATIC ${TeaBrewerSources} ${TeaBrewerHeaders})
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewerConfig.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewerConfig.hpp
-
-    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewerBuilder.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewerBuilder.hpp
-
-    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewer.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewer.hpp
-
-    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewerBuildTarget.hpp
-
-    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewerUpdater.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/TB/TeaBrewerUpdater.hpp
+target_include_directories(TeaBrewer PUBLIC 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
+    $<INSTALL_INTERFACE:include>
 )
 
-target_include_directories(TeaBrewer PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}
+target_link_libraries(TeaBrewer PUBLIC
+    BoilingHotWater::BoilingHotWater
+    Tea::Tea
 )
 
-target_link_libraries(TeaBrewer PUBLIC 
-    BoilingHotWater
-    Tea
+add_library(TeaBrewer::TeaBrewer ALIAS TeaCup)
+
+include(GNUInstallDirs)
+include(CPack)
+
+install(TARGETS TeaBrewer
+    EXPORT TeaBrewer
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
-set_target_properties(TeaBrewer PROPERTIES 
-    ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR}
-    LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR}
-    RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR}
-    ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${OUTPUT_DIR}
-    LIBRARY_OUTPUT_DIRECTORY_DEBUG ${OUTPUT_DIR}
-    RUNTIME_OUTPUT_DIRECTORY_DEBUG ${OUTPUT_DIR}
-    ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${OUTPUT_DIR}
-    LIBRARY_OUTPUT_DIRECTORY_RELEASE ${OUTPUT_DIR}
-    RUNTIME_OUTPUT_DIRECTORY_RELEASE ${OUTPUT_DIR}
+install(
+    DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    PATTERN "CMakeLists.txt" EXCLUDE
+    PATTERN "*.cpp" EXCLUDE
 )
 
-install(TARGETS TeaBrewer RUNTIME DESTINATION ${OUTPUT_DIR})
+install(
+    EXPORT TeaBrewer
+    NAMESPACE TeaBrewer::
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/TeaBrewer
+    FILE TeaBrewerConfig.cmake
+)
+
+include(CMakePackageConfigHelpers)
+
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/TeaBrewerConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY AnyNewerVersion
+)
+
+install(
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/TeaBrewerConfigVersion.cmake
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/TeaBrewer
+)
+
+message(STATUS "Copying ProjectTemplateFiles to ${CMAKE_INSTALL_PREFIX}/ProjectTemplateFiles")
+
+add_custom_command(
+        TARGET TeaBrewer POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/../ProjectTemplateFiles ${CMAKE_CURRENT_BINARY_DIR}/ProjectTemplateFiles
+        COMMENT "Copying ProjectTemplateFiles to ${OUTPUT_DIR}/ProjectTemplateFiles"
+)

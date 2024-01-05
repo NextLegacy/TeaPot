@@ -1,40 +1,52 @@
-project(Tea)
+file(GLOB_RECURSE TeaSources *.cpp)
+file(GLOB_RECURSE TeaHeaders *.hpp)
 
-set(TeaHeaders
-    ${CMAKE_CURRENT_SOURCE_DIR}/Tea/Tea.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Tea/EventSubscriber.hpp
-)
+add_library(Tea STATIC ${TeaSources} ${TeaHeaders})
 
-set(TeaSources
-    ${CMAKE_CURRENT_SOURCE_DIR}/Tea/Tea.cpp
-)
-
-add_library(Tea STATIC)
-
-target_include_directories(Tea PRIVATE ${PROJECT_SOURCE_DIR})
-
-target_sources(Tea 
-    PRIVATE ${TeaSources}
-    PUBLIC FILE_SET HEADERS
-    BASE_DIRS ${PROJECT_SOURCE_DIR}
-    FILES ${TeaHeaders}
+target_include_directories(Tea PUBLIC 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
+    $<INSTALL_INTERFACE:include>
 )
 
 target_link_libraries(Tea PUBLIC
-    BoilingHotWater
-    TeaCup
+    BoilingHotWater::BoilingHotWater
+    TeaCup::TeaCup
 )
 
-install(TARGETS Tea FILE_SET HEADERS)
+add_library(Tea::Tea ALIAS TeaCup)
 
-#set_target_properties(Tea PROPERTIES 
-#    ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_DIR}
-#    LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR}
-#    RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR}
-#    ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${OUTPUT_DIR}
-#    LIBRARY_OUTPUT_DIRECTORY_DEBUG ${OUTPUT_DIR}
-#    RUNTIME_OUTPUT_DIRECTORY_DEBUG ${OUTPUT_DIR}
-#    ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${OUTPUT_DIR}
-#    LIBRARY_OUTPUT_DIRECTORY_RELEASE ${OUTPUT_DIR}
-#    RUNTIME_OUTPUT_DIRECTORY_RELEASE ${OUTPUT_DIR}
-#)
+include(GNUInstallDirs)
+include(CPack)
+
+install(TARGETS Tea
+    EXPORT Tea
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
+
+install(
+    DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    PATTERN "CMakeLists.txt" EXCLUDE
+    PATTERN "*.cpp" EXCLUDE
+)
+
+install(
+    EXPORT Tea
+    NAMESPACE Tea::
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/Tea
+    FILE TeaConfig.cmake
+)
+
+include(CMakePackageConfigHelpers)
+
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/TeaConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY AnyNewerVersion
+)
+
+install(
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/TeaConfigVersion.cmake
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/Tea
+)
