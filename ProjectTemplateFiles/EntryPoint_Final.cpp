@@ -1,11 +1,10 @@
-#include <BHW/EntryPoint>
+#include <BHW/EntryPoint.hpp>
 
-#include "Application.hpp"
+#include "Tea.hpp"
 
 int BHW::EntryPoint(std::vector<std::string> args)
 {
-    Tea::Application app;
-
+    Application app;
     app.Run();
 
     return 0;

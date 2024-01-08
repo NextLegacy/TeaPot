@@ -10,14 +10,13 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/bin/install)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/dependencies.cmake)
 
-add_subdirectory(Tea      )
-add_subdirectory(TeaBrewer)
-add_subdirectory(TeaPot   )
+add_subdirectory(Tea   )
+add_subdirectory(TeaPot)
 
 include(GNUInstallDirs)
 include(CPack)
 
-install(TARGETS Tea TeaBrewer TeaPot
+install(TARGETS Tea TeaPot
     EXPORT TeaPot
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

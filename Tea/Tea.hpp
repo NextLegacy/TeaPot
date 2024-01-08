@@ -5,7 +5,6 @@
 #include <BHW/utils/event/EventSystem.hpp>
 
 #include <TC/TeaCup.hpp>
-#include "Tea/EventSubscriber.hpp"
 
 namespace Tea
 {

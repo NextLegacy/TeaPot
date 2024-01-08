@@ -4,6 +4,7 @@
 
 int BHW::EntryPoint(std::vector<std::string> args)
 {
+    BHW::Console::Initialize();
     BHW::Console::WriteLine("TeaPot Engine - Version 0.0.1");
 
     TP::TeaPot teaPot;

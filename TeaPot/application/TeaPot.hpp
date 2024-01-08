@@ -22,7 +22,7 @@
 #include "TeaPot/application/gui/Dockspace.hpp"
 #include "TeaPot/application/gui/MenuBar.hpp"
 
-#include "TeaPot/project/TeaPotProject.hpp"
+#include "TeaPot/project/Project.hpp"
 
 namespace TP
 {
@@ -86,6 +86,6 @@ namespace TP
     public:
         BHW::Random m_random;
 
-        TeaPotProject m_project;
+        Project m_project;
     };
 }

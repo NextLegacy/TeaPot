@@ -3,7 +3,7 @@
 #include <BHW/utils/io/FileHandler.hpp>
 
 #include "TeaPot/application/TeaPot.hpp"
-#include "TeaPot/project/TeaPotProjectBuilder.hpp"
+#include "TeaPot/project/Project.hpp"
 
 namespace TP
 {
@@ -20,7 +20,8 @@ namespace TP
         {
             if (ImGui::BeginMenu("Project"))
             {
-                if (ImGui::MenuItem("New"  )) { teaPot.m_project = BuildProject(BHW::GetCurrentPath(), BHW::SelectFolder("Select a folder to create the project in.", "", teaPot.GetWindowHandle())); teaPot.ReloadProject(); }
+                if (ImGui::MenuItem("New" )) teaPot.m_project.Load(BHW::SelectFolder("Select a folder to create the project in.", "", teaPot.GetWindowHandle()));
+                if (ImGui::MenuItem("Native Scripts")) teaPot.m_project.BuildNativeScripts();
                 if (ImGui::MenuItem("Load")) teaPot.CreateView<View::ProjectLoader>(std::string("Project Loader"));
 
                 if (ImGui::MenuItem("Save"  ));//teaPot.m_project.Save  ();

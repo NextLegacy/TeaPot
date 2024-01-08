@@ -2,6 +2,8 @@
 
 #include "TeaPot/application/TeaPot.hpp"
 
+#include "TeaPot/application/gui/Inspector.hpp"
+
 namespace TP
 {
     namespace View
@@ -23,6 +25,10 @@ namespace TP
             ImGui::Begin(data.m_name.c_str(), &data.m_open);
 
             ImGui::Text("Scene View");
+
+            ProjectMetaData project = teaPot.m_project.GetProjectMetaData();
+
+            ImGuiInputField("Test", project);
             
             ImGui::End();
         }
