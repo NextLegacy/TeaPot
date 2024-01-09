@@ -19,10 +19,10 @@
 # Variables
 # -------------------------------------------------------------------------------------------------
 
-set(OUTPUT_DIR   {})
+set(OUTPUT_DIR   ${{CMAKE_CURRENT_SOURCE_DIR}}/../../{})
 set(ENGINE_DIR   {})
-set(SOURCE_DIR   ${{CMAKE_CURRENT_SOURCE_DIR}}/../../${})
-set(RESOURCE_DIR ${{CMAKE_CURRENT_SOURCE_DIR}}/../../${})
+set(SOURCE_DIR   ${{CMAKE_CURRENT_SOURCE_DIR}}/../../{})
+set(RESOURCE_DIR ${{CMAKE_CURRENT_SOURCE_DIR}}/../../{})
 
 # -------------------------------------------------------------------------------------------------
 # Some general settings
@@ -56,9 +56,15 @@ set(BUILD_SHARED_LIBS ON)
 
 file(GLOB_RECURSE NATIVE_SOURCE_FILES ${{SOURCE_DIR}}/*.cpp ${{SOURCE_DIR}}/*.hpp)
 
-add_library(NativeScripts SHARED ${{NATIVE_SOURCE_FILES}})
+add_library(NativeScripts SHARED ${{NATIVE_SOURCE_FILES}} EntryPoint_NativeScriptCore.cpp)
 
 target_link_libraries(NativeScripts PUBLIC BoilingHotWater::BoilingHotWater Tea::Tea)
+
+set_target_properties(NativeScripts PROPERTIES 
+    RUNTIME_OUTPUT_DIRECTORY ${{OUTPUT_DIR}}
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG ${{OUTPUT_DIR}}
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE ${{OUTPUT_DIR}}
+)
 
 # -------------------------------------------------------------------------------------------------
 # Install the shared library to the bin folder
@@ -68,7 +74,7 @@ set(CMAKE_INSTALL_PREFIX ${{CMAKE_CURRENT_SOURCE_DIR}}/bin)
 
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
-install(TARGETS NativeScripts RUNTIME DESTINATION .)
+#install(TARGETS NativeScripts RUNTIME DESTINATION .)
 
 # -------------------------------------------------------------------------------------------------
 # Build the executable
@@ -82,7 +88,13 @@ add_executable(${{PROJECT_NAME}} ${{GENERATED_SOURCE_FILES}})
 
 target_link_libraries(${{PROJECT_NAME}} PUBLIC NativeScripts)
 
-install(TARGETS ${{PROJECT_NAME}} RUNTIME DESTINATION .)
+set_target_properties(${{PROJECT_NAME}} PROPERTIES 
+    RUNTIME_OUTPUT_DIRECTORY ${{OUTPUT_DIR}}
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG ${{OUTPUT_DIR}}
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE ${{OUTPUT_DIR}}
+)
+
+#install(TARGETS ${{PROJECT_NAME}} RUNTIME DESTINATION .)
 
 # -------------------------------------------------------------------------------------------------
 # Copy the necessary files to the bin folder

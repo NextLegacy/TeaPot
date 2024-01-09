@@ -22,6 +22,7 @@ namespace TP
             {
                 if (ImGui::MenuItem("New" )) teaPot.m_project.Load(BHW::SelectFolder("Select a folder to create the project in.", "", teaPot.GetWindowHandle()));
                 if (ImGui::MenuItem("Native Scripts")) teaPot.m_project.BuildNativeScripts();
+                if (ImGui::MenuItem("Build Final"   )) teaPot.m_project.BuildFinalExecutable();
                 if (ImGui::MenuItem("Load")) teaPot.CreateView<View::ProjectLoader>(std::string("Project Loader"));
 
                 if (ImGui::MenuItem("Save"  ));//teaPot.m_project.Save  ();

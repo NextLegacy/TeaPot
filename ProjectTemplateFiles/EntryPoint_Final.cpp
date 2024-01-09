@@ -4,7 +4,7 @@
 
 int BHW::EntryPoint(std::vector<std::string> args)
 {
-    Application app;
+    Tea::Application app;
     app.Run();
 
     return 0;

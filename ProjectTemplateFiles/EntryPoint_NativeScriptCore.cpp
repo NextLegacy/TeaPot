@@ -2,18 +2,11 @@
 #include <BHW/utils/Debug.hpp>
 
 int test(std::string arg)
-{
-    static bool first = true;
+{{
+    return 0;
+}}
 
-    if (first)
-    {
-        first = false;
-        BHW::Console::Initialize();
-        BHW::Console::WriteLine("Hello from " + arg + "!");
-    }
-}
-
-int BHW::ProcessAttach() { return test("ProcessAttach"); }
-int BHW::ProcessDetach() { return test("ProcessDetach"); }
-int BHW::ThreadAttach () { return test("ThreadAttach" );  }
-int BHW::ThreadDetach () { return test("ThreadDetach" );  }
+int BHW::ProcessAttach() {{ return test("ProcessAttach"); }}
+int BHW::ProcessDetach() {{ return test("ProcessDetach"); }}
+int BHW::ThreadAttach () {{ return test("ThreadAttach" );  }}
+int BHW::ThreadDetach () {{ return test("ThreadDetach" );  }}

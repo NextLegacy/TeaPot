@@ -48,7 +48,7 @@ namespace TP
 
     private:
         template<typename ...TArgs>
-        void GenerateBuildFile(std::string fileName, TArgs&&... args);
+        void GenerateBuildFile(std::string fileName, std::string fileContent, TArgs&&... args);
 
         void GenerateProjectFiles();
 

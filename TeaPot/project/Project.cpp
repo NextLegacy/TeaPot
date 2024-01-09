@@ -3,6 +3,12 @@
 #include <BHW/utils/Debug.hpp>
 #include <BHW/utils/io/FileHandler.hpp>
 #include <BHW/utils/json/JSON.hpp>
+#include <BHW/utils/dlls/DLL.hpp>
+
+#include "TeapOt/project/ProjectTemplateFiles.hpp"
+
+#include <BHW/utils/reflection/Reflection.hpp>
+#include <array>
 
 namespace TP
 {
@@ -53,35 +59,35 @@ namespace TP
 
     void Project::CMakeBuild(std::string target)
     {
-        BHW::Console::WriteLine("Building project: " + target);
-
-        BHW::Console::WriteLine(BHW::Format(
-            R"("{} --build {} --config Release --target {} -j 30 --)",
-            m_metaData.CMakeCommand,
-            BHW::CombinePaths(m_metaData.Path, "/.teapot/.teabrewer"),
-            target
-        ));
+        std::system
+        ((
+            BHW::Format(
+                R"("cd {}/build && {} ..)",
+                BHW::CombinePaths(m_metaData.Path, ".teapot/.teabrewer"),
+                m_metaData.CMakeCommand
+            ) +
+            " > " + BHW::CombinePaths(m_metaData.Path, m_metaData.Directories.LogDirectory + "/ConfigureLog" + target + ".txt") +
+            " 2> " + BHW::CombinePaths(m_metaData.Path, m_metaData.Directories.LogDirectory + "/ConfigureErrorLog" + target + ".txt")
+        ).c_str());
 
         std::system
         ((
             BHW::Format(
-                R"("{} --build {} --config Release --target {} -j 30 --)",
-                m_metaData.CMakeCommand,
+                R"("cd {}/build && {} --build . --config Release --target {} -j 30 --)",
                 BHW::CombinePaths(m_metaData.Path, ".teapot/.teabrewer"),
+                m_metaData.CMakeCommand,
                 target
             ) +
-            " > " + BHW::CombinePaths(m_metaData.Path, m_metaData.Directories.LogDirectory + "/BuildLog.txt") +
-            " 2> " + BHW::CombinePaths(m_metaData.Path, m_metaData.Directories.LogDirectory + "/BuildErrorLog.txt")
+            " > " + BHW::CombinePaths(m_metaData.Path, m_metaData.Directories.LogDirectory + "/BuildLog" + target + ".txt") +
+            " 2> " + BHW::CombinePaths(m_metaData.Path, m_metaData.Directories.LogDirectory + "/BuildErrorLog" + target + ".txt")
         ).c_str());
     }
 
     template<typename ...TArgs>
-    void Project::GenerateBuildFile(std::string fileName, TArgs&&... args)
+    void Project::GenerateBuildFile(std::string fileName, std::string fileContent, TArgs&&... args)
     {
         BHW::WriteFile(BHW::CombinePaths(m_metaData.Path,".teapot/.teabrewer/" + fileName),
-            BHW::Format(BHW::ReadFile(BHW::CombinePaths(BHW::CombinePaths(BHW::GetExecutablePath(), "ProjectTemplateFiles"), fileName)),
-                std::forward<TArgs>(args)...
-            )
+            BHW::Format(fileContent, std::forward<TArgs>(args)... )
         );
     }
 
@@ -102,8 +108,9 @@ namespace TP
         BHW::CreateFolder(relativePath(m_metaData.Directories.LogDirectory         ));
         BHW::CreateFolder(relativePath(".teapot"                                   ));
         BHW::CreateFolder(relativePath(".teapot/.teabrewer"                        ));
+        BHW::CreateFolder(relativePath(".teapot/.teabrewer/build"                  ));
 
-        GenerateBuildFile("CMakeLists.txt", 
+        GenerateBuildFile("CMakeLists.txt", TP::ProjectTemplateFiles::CMakeLists,
             m_metaData.Directories.DistributionDirectory,
             BHW::GetExecutablePath(),
             m_metaData.Directories.SourceDirectory,
@@ -111,13 +118,24 @@ namespace TP
             m_metaData.Name
         );
 
-        GenerateBuildFile("EntryPoint_NativeScriptCore.cpp");
+        GenerateBuildFile("EntryPoint_NativeScriptCore.cpp", TP::ProjectTemplateFiles::EntryPoint_NativeScripts);
     }
 
     void Project::GenerateFinalSourceFiles()
     {
-        GenerateBuildFile("EntryPoint_Final.cpp");
-        GenerateBuildFile("Tea.cpp");
-        GenerateBuildFile("Tea.hpp");
+        BHW::DLL dll(BHW::CombinePaths(m_metaData.Path, m_metaData.Directories.DistributionDirectory + "/NativeScripts.dll").c_str());
+
+        typedef int(__stdcall *Func)();
+        Func func = dll.GetFunction<Func>("test");
+
+        typedef const char*(__stdcall *GetTypesFunc)();
+
+        GetTypesFunc getTypesFunc = dll.GetFunction<GetTypesFunc>("GetTypes");
+        const char* types = getTypesFunc();
+
+        BHW::Console::WriteLine(types);
+        //GenerateBuildFile("EntryPoint_Final.cpp");
+        //GenerateBuildFile("Tea.cpp");
+        //GenerateBuildFile("Tea.hpp");
     }
 }

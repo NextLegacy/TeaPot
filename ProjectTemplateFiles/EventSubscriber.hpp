@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Tea/EventSubscriber.hpp>
+#include <TC/EventSubscriber.hpp>
 
 namespace Tea
 {
     class Application;
 
-    typedef Tea::EventSubscriber<TeaApp> AppEventSubscriber;
+    typedef TC::EventSubscriber<Application> EventSubscriber;
 }
