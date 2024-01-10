@@ -1,3 +1,7 @@
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 function(embed_resource resource_file_name source_file_name variable_name)
 
     file(READ ${resource_file_name} hex_content HEX)

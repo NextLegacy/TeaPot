@@ -3,16 +3,16 @@
 #include <BHW/utils/Debug.hpp>
 #include <BHW/utils/io/FileHandler.hpp>
 #include <BHW/utils/json/JSON.hpp>
-#include <BHW/utils/dlls/DLL.hpp>
 
-#include "TeapOt/project/ProjectTemplateFiles.hpp"
+#include "TeaPot/project/ProjectTemplateFiles.hpp"
+
 
 #include <BHW/utils/reflection/Reflection.hpp>
 #include <array>
 
 namespace TP
 {
-    Project::Project(const std::string& path)
+    Project::Project(const std::string& path) : m_nativeScripts(NativeScripts(*this))
     {
         Load(path);
     }
@@ -47,6 +47,8 @@ namespace TP
     void Project::BuildNativeScripts() 
     {
         CMakeBuild("NativeScripts");
+
+        m_nativeScripts.Update();
     }
 
     void Project::BuildFinalExecutable() 
@@ -123,19 +125,15 @@ namespace TP
 
     void Project::GenerateFinalSourceFiles()
     {
-        BHW::DLL dll(BHW::CombinePaths(m_metaData.Path, m_metaData.Directories.DistributionDirectory + "/NativeScripts.dll").c_str());
+        std::string nativeScripts       ;
+        std::string nativeScriptIncludes;
 
-        typedef int(__stdcall *Func)();
-        Func func = dll.GetFunction<Func>("test");
+        for (auto& nativeScript : m_nativeScripts.GetNativeScripts())
+        {
+            if (nativeScript.TypeInfo.InheritedClasses.at(BHW::TypeOf<TP::EventSubscriber>)
 
-        typedef const char*(__stdcall *GetTypesFunc)();
-
-        GetTypesFunc getTypesFunc = dll.GetFunction<GetTypesFunc>("GetTypes");
-        const char* types = getTypesFunc();
-
-        BHW::Console::WriteLine(types);
-        //GenerateBuildFile("EntryPoint_Final.cpp");
-        //GenerateBuildFile("Tea.cpp");
-        //GenerateBuildFile("Tea.hpp");
+            nativeScripts += BHW::Format("    
+            nativeScriptIncludes += BHW::Format("#include \"{}\"\n", nativeScript.SourceLocation);
+        }
     }
 }

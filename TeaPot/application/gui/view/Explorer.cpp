@@ -4,6 +4,8 @@
 
 #include "TeaPot/application/TeaPot.hpp"
 
+#include <BHW/utils/io/FileHandler.hpp>
+
 namespace TP
 {
     namespace View
@@ -31,27 +33,39 @@ namespace TP
 
         void ExplorerRenderer::RenderFiles(TeaPot& teaPot, Explorer& data)
         {
-            if(!(std::filesystem::exists(data.m_path) && std::filesystem::is_directory(data.m_path))) return;
+            std::string path = data.m_path;
 
-            if (m_files.find(data.m_path) == m_files.end())
+            if (path.empty()) path = teaPot.m_project.GetProjectMetaData().Path;
+
+            for (auto& c : path)
             {
-                std::vector<File> files;
+                if (c == '\\') c = '/';
+            }
 
-                for (auto& p : std::filesystem::directory_iterator(data.m_path))
+            if (path.back() != '/') path += '/';
+
+            if (!std::filesystem::exists(path)) return;
+
+            for (auto& p : std::filesystem::directory_iterator(path))
+            {
+                if (p.is_directory())
                 {
-                    files.push_back({ p.path().filename().string() });
+                    if (ImGui::TreeNode(p.path().filename().string().c_str()))
+                    {
+                        RenderFiles(teaPot, data);
+
+                        ImGui::TreePop();
+                    }
                 }
-
-                m_files[data.m_path] = files;
+                else
+                {
+                    ImGui::Text(p.path().filename().string().c_str());
+                }
             }
 
-            std::vector<File> files = m_files[data.m_path];
+            ImGui::Separator();
 
-
-            for (auto& file : files)
-            {
-                ImGui::Text(file.m_fileName.c_str());
-            }
+            
         }
     }
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TeaPot/project/ProjectMetaData.hpp"
+#include "TeaPot/project/NativeScripts.hpp"
 
 // --------------------------------------------------------------------------------------------
 // Project Directory Structure (generated with cmd: tree /F /A)
@@ -58,5 +59,6 @@ namespace TP
 
     private:
         ProjectMetaData m_metaData;
+        NativeScripts   m_nativeScripts;
     };
 }
