@@ -128,12 +128,17 @@ namespace TP
         std::string nativeScripts       ;
         std::string nativeScriptIncludes;
 
-        for (auto& nativeScript : m_nativeScripts.GetNativeScripts())
+        for (auto&[sourceLocation, nativeScript] : m_nativeScripts.GetNativeScripts())
         {
-            if (nativeScript.TypeInfo.InheritedClasses.at(BHW::TypeOf<TP::EventSubscriber>)
+            for (auto& type : nativeScript.GetTypes())
+            {
+                //type.Name is in format struct NAME or class NAME so we need to remove struct or class
+                std::string_view name = type.Type.Name.substr(type.Type.Name.find(' ') + 1);
 
-            nativeScripts += BHW::Format("    
-            nativeScriptIncludes += BHW::Format("#include \"{}\"\n", nativeScript.SourceLocation);
+                nativeScripts += BHW::Format("    {},\n", name);
+            }
+
+            nativeScriptIncludes += BHW::Format("#include \"{}\"\n", BHW::GetRelativePath(sourceLocation, BHW::CombinePaths(m_metaData.Path, m_metaData.Directories.SourceDirectory)));
         }
     }
 }

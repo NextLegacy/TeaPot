@@ -15,8 +15,14 @@ namespace TP
         NativeScript(const std::vector<BHW::TypeInfo>& types, const std::string& sourceLocation);
 
     public:
+        const std::string& GetSourceLocation() const { return SourceLocation; }
+        const std::vector<BHW::TypeInfo>& GetTypes() const { return Types; }
+
+        inline void AddType(const BHW::TypeInfo& type) { Types.push_back(type); }
+
+    private:
         const std::string SourceLocation;
-        const std::vector<BHW::TypeInfo> Types;
+        std::vector<BHW::TypeInfo> Types;
     };
 
     class NativeScripts
