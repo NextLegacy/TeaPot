@@ -6,7 +6,6 @@
 
 #include "TeaPot/project/ProjectTemplateFiles.hpp"
 
-
 #include <BHW/utils/reflection/Reflection.hpp>
 #include <array>
 
@@ -33,6 +32,10 @@ namespace TP
             BHW::WriteFile(BHW::CombinePaths(path, "Project.teapot"), BHW::Serialize(m_metaData));
         }
 
+        BHW::Console::WriteLine("Loading project from: " + BHW::CombinePaths(path, "Project.teapot"));
+
+        BHW::Console::WriteLine(BHW::ReadFile(BHW::CombinePaths(path, "Project.teapot")));
+
         m_metaData = BHW::Deserialize<ProjectMetaData>(BHW::ReadFile(BHW::CombinePaths(path, "Project.teapot")));
         m_metaData.Path = path;
 
@@ -48,7 +51,7 @@ namespace TP
     {
         CMakeBuild("NativeScripts");
 
-        m_nativeScripts.Update();
+        //m_nativeScripts.Update();
     }
 
     void Project::BuildFinalExecutable() 
@@ -56,7 +59,9 @@ namespace TP
         GenerateProjectFiles    ();
         GenerateFinalSourceFiles();
 
-        CMakeBuild("Final");
+        CMakeBuild(GetProjectMetaData().Name);
+
+        BHW::Console::WriteLine("Build complete!");
     }
 
     void Project::CMakeBuild(std::string target)
@@ -120,25 +125,72 @@ namespace TP
             m_metaData.Name
         );
 
-        GenerateBuildFile("EntryPoint_NativeScriptCore.cpp", TP::ProjectTemplateFiles::EntryPoint_NativeScripts);
+        GenerateBuildFile("NativeScripts.cpp", TP::ProjectTemplateFiles::NativeScripts);
+
+        GenerateBuildFile("Tea.hpp", TP::ProjectTemplateFiles::TeaHeader, GetProjectMetaData().GAPI.Include, GetProjectMetaData().GAPI.Name, "", "");
+        GenerateBuildFile("Tea.cpp", TP::ProjectTemplateFiles::TeaSource);
+        GenerateBuildFile("EntryPoint_final.cpp", TP::ProjectTemplateFiles::EntryPoint_Final);
+
+        BHW::Console::WriteLine(TP::ProjectTemplateFiles::NativeScripts);
     }
 
     void Project::GenerateFinalSourceFiles()
     {
-        std::string nativeScripts       ;
-        std::string nativeScriptIncludes;
+        BHW::DLL dll(BHW::CombinePaths(GetProjectMetaData().Path, GetProjectMetaData().Directories.DistributionDirectory, "NativeScripts.dll"));
+       
+        dll.Load();
 
-        for (auto&[sourceLocation, nativeScript] : m_nativeScripts.GetNativeScripts())
+        if (!dll.IsLoaded())
         {
-            for (auto& type : nativeScript.GetTypes())
-            {
-                //type.Name is in format struct NAME or class NAME so we need to remove struct or class
-                std::string_view name = type.Type.Name.substr(type.Type.Name.find(' ') + 1);
-
-                nativeScripts += BHW::Format("    {},\n", name);
-            }
-
-            nativeScriptIncludes += BHW::Format("#include \"{}\"\n", BHW::GetRelativePath(sourceLocation, BHW::CombinePaths(m_metaData.Path, m_metaData.Directories.SourceDirectory)));
+            BHW::Console::WriteLine("Failed to load native script core DLL!");
+            return;
         }
+
+        typedef void(*GetTypes)(BHW::TypeInfo**, uint32_t*);
+
+        GetTypes GetComponents = dll.GetFunction<GetTypes>("GetComponents");
+        GetTypes GetSystems    = dll.GetFunction<GetTypes>("GetSystems");
+
+        if (!GetComponents || !GetSystems)
+        {
+            BHW::Console::WriteLine("Failed to get GetComponents or GetSystems function from native script core DLL!");
+            return;
+        }
+
+        BHW::TypeInfo* components = nullptr;
+        uint32_t componentCount = 0;
+
+        GetComponents(&components, &componentCount);
+
+        BHW::TypeInfo* systems = nullptr;
+        uint32_t systemCount = 0;
+
+        GetSystems(&systems, &systemCount);
+
+        std::string componentsString = "";
+        for (uint32_t i = 0; i < componentCount; i++)
+        {
+            std::string componentString = std::string(components[i].Type.Name);
+
+            componentString = componentString.substr(componentString.find(" ") + 1);
+
+            componentsString += "        " + componentString + ",\n";
+        }
+
+        std::string systemsString = "";
+        for (uint32_t i = 0; i < systemCount; i++)
+        {
+            std::string systemString = std::string(systems[i].Type.Name);
+
+            systemString = systemString.substr(systemString.find(" ") + 1);
+
+            systemsString += "        " + systemString + ",\n";
+        }
+
+        GenerateBuildFile("Tea.hpp", TP::ProjectTemplateFiles::TeaHeader, GetProjectMetaData().GAPI.Include, GetProjectMetaData().GAPI.Name, componentsString, systemsString);
+        GenerateBuildFile("Tea.cpp", TP::ProjectTemplateFiles::TeaSource);
+        GenerateBuildFile("EntryPoint_final.cpp", TP::ProjectTemplateFiles::EntryPoint_Final);
+
+        dll.Unload();
     }
 }

@@ -25,8 +25,7 @@ endfunction()
 
 embed_resource(${CMAKE_CURRENT_SOURCE_DIR}/../ProjectTemplateFiles/CMakeLists.txt ${CMAKE_CURRENT_SOURCE_DIR}/project/files/CMakeLists.txt.hpp CMakeLists_txt)
 embed_resource(${CMAKE_CURRENT_SOURCE_DIR}/../ProjectTemplateFiles/EntryPoint_Final.cpp ${CMAKE_CURRENT_SOURCE_DIR}/project/files/EntryPoint_Final.cpp.hpp EntryPoint_Final_cpp)
-embed_resource(${CMAKE_CURRENT_SOURCE_DIR}/../ProjectTemplateFiles/EntryPoint_NativeScriptCore.cpp ${CMAKE_CURRENT_SOURCE_DIR}/project/files/EntryPoint_NativeScriptCore.cpp.hpp EntryPoint_NativeScriptCore_cpp)
-embed_resource(${CMAKE_CURRENT_SOURCE_DIR}/../ProjectTemplateFiles/EventSubscriber.hpp ${CMAKE_CURRENT_SOURCE_DIR}/project/files/EventSubscriber.hpp.hpp EventSubscriber_hpp)
+embed_resource(${CMAKE_CURRENT_SOURCE_DIR}/../ProjectTemplateFiles/NativeScripts.cpp ${CMAKE_CURRENT_SOURCE_DIR}/project/files/NativeScripts.cpp.hpp NativeScripts_cpp)
 embed_resource(${CMAKE_CURRENT_SOURCE_DIR}/../ProjectTemplateFiles/Tea.cpp ${CMAKE_CURRENT_SOURCE_DIR}/project/files/Tea.cpp.hpp Tea_cpp)
 embed_resource(${CMAKE_CURRENT_SOURCE_DIR}/../ProjectTemplateFiles/Tea.hpp ${CMAKE_CURRENT_SOURCE_DIR}/project/files/Tea.hpp.hpp Tea_hpp)
 

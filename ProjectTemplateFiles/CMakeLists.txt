@@ -21,7 +21,7 @@
 
 set(OUTPUT_DIR   ${{CMAKE_CURRENT_SOURCE_DIR}}/../../{})
 set(ENGINE_DIR   {})
-set(SOURCE_DIR   ${{CMAKE_CURRENT_SOURCE_DIR}}/../../{})
+set(SOURCES_DIR  ${{CMAKE_CURRENT_SOURCE_DIR}}/../../{})
 set(RESOURCE_DIR ${{CMAKE_CURRENT_SOURCE_DIR}}/../../{})
 
 # -------------------------------------------------------------------------------------------------
@@ -54,11 +54,22 @@ find_package(Tea             REQUIRED)
 
 set(BUILD_SHARED_LIBS ON)
 
-file(GLOB_RECURSE NATIVE_SOURCE_FILES ${{SOURCE_DIR}}/*.cpp ${{SOURCE_DIR}}/*.hpp)
+file(GLOB_RECURSE NATIVE_SOURCE_FILES ${{SOURCES_DIR}}/*.cpp)
+file(GLOB_RECURSE NATIVE_HEADER_FILES ${{SOURCES_DIR}}/*.hpp)
 
-add_library(NativeScripts SHARED ${{NATIVE_SOURCE_FILES}} EntryPoint_NativeScriptCore.cpp)
+file(WRITE "Headers.hpp" "#pragma once\n\n")
+
+foreach(HEADER_FILE ${{NATIVE_HEADER_FILES}})
+    file(APPEND "Headers.hpp" "#include \"${{HEADER_FILE}}\"\n")
+endforeach()
+
+message(STATUS "Found source files: ${{NATIVE_SOURCE_FILES}}")
+
+add_library(NativeScripts SHARED ${{NATIVE_SOURCE_FILES}} ${{NATIVE_HEADER_FILES}} NativeScripts.cpp Headers.hpp)
 
 target_link_libraries(NativeScripts PUBLIC BoilingHotWater::BoilingHotWater Tea::Tea)
+
+target_include_directories(NativeScripts PUBLIC ${{SOURCES_DIR}})
 
 set_target_properties(NativeScripts PROPERTIES 
     RUNTIME_OUTPUT_DIRECTORY ${{OUTPUT_DIR}}
@@ -82,9 +93,7 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 set(BUILD_SHARED_LIBS OFF)
 
-file(GLOB_RECURSE GENERATED_SOURCE_FILES ${{CMAKE_CURRENT_SOURCE_DIR}}/*.cpp ${{CMAKE_CURRENT_SOURCE_DIR}}/*.hpp ${{NATIVE_SOURCE_FILES}})
-
-add_executable(${{PROJECT_NAME}} ${{GENERATED_SOURCE_FILES}})
+add_executable(${{PROJECT_NAME}} ${{CMAKE_CURRENT_SOURCE_DIR}}/EntryPoint_Final.cpp ${{CMAKE_CURRENT_SOURCE_DIR}}/Tea.hpp ${{CMAKE_CURRENT_SOURCE_DIR}}/Tea.cpp)
 
 target_link_libraries(${{PROJECT_NAME}} PUBLIC NativeScripts)
 

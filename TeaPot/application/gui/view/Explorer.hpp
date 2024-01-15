@@ -5,6 +5,7 @@
 #include <map>
 
 #include "TeaPot/application/EventSubscriber.hpp"
+#include <filesystem>
 
 namespace TP
 {
@@ -15,7 +16,8 @@ namespace TP
             std::string m_name;
             bool        m_open;
 
-            std::string m_path;
+            std::filesystem::path m_currentDirectory;
+            std::filesystem::path m_baseDirectory;
 
             Explorer(std::string name, std::string path = "", bool open = true);
         };
@@ -33,7 +35,7 @@ namespace TP
         private:
             void RenderExplorer(TeaPot& teaPot, Explorer& data);
 
-            void RenderFiles(TeaPot& teaPot, Explorer& data);
+            void RenderPath(Explorer& data);
 
             std::map<std::string, std::vector<File>> m_files;
         };

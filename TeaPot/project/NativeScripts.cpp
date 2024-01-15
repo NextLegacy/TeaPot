@@ -1,6 +1,9 @@
 #include "TeaPot/project/NativeScripts.hpp"
 
 #include <BHW/utils/reflection/TypeInfo.hpp>
+#include <BHW/utils/io/FileHandler.hpp>
+
+#include "TeaPot/project/Project.hpp"
 
 namespace TP
 {
@@ -18,6 +21,8 @@ namespace TP
 
     void NativeScripts::Update()
     {
+        return;
+        m_nativeScriptCoreDLL.SetPath(BHW::CombinePaths(m_project.GetProjectMetaData().Path, m_project.GetProjectMetaData().Directories.DistributionDirectory, "NativeScripts.dll"));
         m_nativeScriptCoreDLL.Unload();
     
         m_nativeScripts.clear();
@@ -30,30 +35,34 @@ namespace TP
             return;
         }
 
-        typedef void(*GetNativeScriptsFunc)(BHW::TypeInfo**, int*);
+        typedef std::vector<BHW::TypeInfo>&(*GetTypes)();
+        typedef uint32_t(*GetTypesCount)();
 
-        GetNativeScriptsFunc getNativeScriptsFunc = m_nativeScriptCoreDLL.GetFunction<GetNativeScriptsFunc>("GetNativeScripts");
+        GetTypes getComponents = m_nativeScriptCoreDLL.GetFunction<GetTypes>("GetComponents");
+        GetTypes getSystems    = m_nativeScriptCoreDLL.GetFunction<GetTypes>("GetSystems");
 
-        if (!getNativeScriptsFunc)
+        GetTypesCount getComponentsCount = m_nativeScriptCoreDLL.GetFunction<GetTypesCount>("GetCount");
+
+        if (!getComponents)
         {
-            BHW::Console::WriteLine("Failed to get GetNativeScripts function from native script core DLL!");
+            BHW::Console::WriteLine("Failed to get GetComponents function from native script core DLL!");
             return;
         }
 
-        BHW::TypeInfo* types = nullptr;
-        int count;
+        std::vector<BHW::TypeInfo>& types = getComponents();
 
-        getNativeScriptsFunc(&types, &count);
+        BHW::Console::WriteLine("Types: " + std::to_string(types.size()));
 
-        for (int i = 0; i < count; i++)
+        std::string componentsString = "";
+        for (const BHW::TypeInfo& type : types)
         {
-            if (m_nativeScripts.find(std::string(types[i].SourceLocation)) != m_nativeScripts.end())
-            {
-                m_nativeScripts.insert(std::make_pair(std::string(types[i].SourceLocation), NativeScript({ types[i] }, std::string(types[i].SourceLocation))));
-                continue;           
-            }
+            std::string componentString = std::string(type.Type.Name);
 
-            m_nativeScripts.at(std::string(types[i].SourceLocation)).AddType(types[i]);
+            componentString = componentString.substr(componentString.find(" ") + 1);
+
+            componentsString += componentString + ",\n";
         }
+
+        
     }
 }

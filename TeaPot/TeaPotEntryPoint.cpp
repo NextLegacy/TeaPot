@@ -17,7 +17,6 @@ int BHW::EntryPoint(std::vector<std::string> args)
 
     BHW::Console::WriteLine(std::string(BHW::TypeName<SuperTestStruct>()).c_str());
 
-
     BHW::Console::WriteLine(super_path());
 
     TP::TeaPot teaPot;

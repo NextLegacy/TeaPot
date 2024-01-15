@@ -45,7 +45,9 @@ namespace TP
 
         void BuildFinalExecutable();
 
-        const ProjectMetaData& GetProjectMetaData() const { return m_metaData; }
+        inline const ProjectMetaData& GetProjectMetaData() const { return m_metaData; }
+
+        inline const bool IsLoaded() const { return !m_metaData.Path.empty(); }
 
     private:
         template<typename ...TArgs>
