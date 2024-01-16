@@ -9,9 +9,11 @@
 #include <BHW/utils/reflection/Reflection.hpp>
 #include <array>
 
+#include <BHW/utils/dlls/DLL.hpp>
+
 namespace TP
 {
-    Project::Project(const std::string& path) : m_nativeScripts(NativeScripts(*this))
+    Project::Project(const std::string& path)
     {
         Load(path);
     }
@@ -131,6 +133,8 @@ namespace TP
         GenerateBuildFile("Tea.cpp", TP::ProjectTemplateFiles::TeaSource);
         GenerateBuildFile("EntryPoint_final.cpp", TP::ProjectTemplateFiles::EntryPoint_Final);
 
+        GenerateBuildFile("Resources.hpp", TP::ProjectTemplateFiles::ResourcesHeader);
+
         BHW::Console::WriteLine(TP::ProjectTemplateFiles::NativeScripts);
     }
 
@@ -157,15 +161,14 @@ namespace TP
             return;
         }
 
-        BHW::TypeInfo* components = nullptr;
-        uint32_t componentCount = 0;
+        BHW::TypeInfo* components     = nullptr;
+        uint32_t       componentCount = 0      ;
+
+        BHW::TypeInfo* systems     = nullptr;
+        uint32_t       systemCount = 0      ;
 
         GetComponents(&components, &componentCount);
-
-        BHW::TypeInfo* systems = nullptr;
-        uint32_t systemCount = 0;
-
-        GetSystems(&systems, &systemCount);
+        GetSystems   (&systems   , &systemCount   );
 
         std::string componentsString = "";
         for (uint32_t i = 0; i < componentCount; i++)
@@ -187,7 +190,11 @@ namespace TP
             systemsString += "        " + systemString + ",\n";
         }
 
-        GenerateBuildFile("Tea.hpp", TP::ProjectTemplateFiles::TeaHeader, GetProjectMetaData().GAPI.Include, GetProjectMetaData().GAPI.Name, componentsString, systemsString);
+    	// remove last comma
+        componentsString = componentsString.substr(0, componentsString.size() - 2);
+        systemsString    = systemsString   .substr(0, systemsString   .size() - 2);
+
+        GenerateBuildFile("Tea.hpp", TP::ProjectTemplateFiles::TeaHeader, GetProjectMetaData().GAPI.Include, GetProjectMetaData().GAPI.Name, systemsString, componentsString);
         GenerateBuildFile("Tea.cpp", TP::ProjectTemplateFiles::TeaSource);
         GenerateBuildFile("EntryPoint_final.cpp", TP::ProjectTemplateFiles::EntryPoint_Final);
 

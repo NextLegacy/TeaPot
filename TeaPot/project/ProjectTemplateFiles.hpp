@@ -11,5 +11,6 @@ namespace TP
         extern std::string NativeScripts;
         extern std::string TeaSource;
         extern std::string TeaHeader;
+        extern std::string ResourcesHeader;
     }
 }

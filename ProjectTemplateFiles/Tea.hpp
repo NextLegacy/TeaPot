@@ -5,22 +5,22 @@
 
 namespace Tea
 {{
-    class Application : public Tea::Tea
+    class Application : public Tea
     <        
 {}, // Graphics API
-        EventSubscriber, 
-        Tea::ECSSystem
+        System, 
+        ECSSystem
         <
-            EventSubscriber,
+            System,
 
             // ECS Systems
 {}
         >,
-        TeaPot,
+        Application,
 
         // ECS Components
 {}
     >
     {{
-    }}
+    }};
 }}

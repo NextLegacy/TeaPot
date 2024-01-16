@@ -28,7 +28,7 @@ embed_resource(${CMAKE_CURRENT_SOURCE_DIR}/../ProjectTemplateFiles/EntryPoint_Fi
 embed_resource(${CMAKE_CURRENT_SOURCE_DIR}/../ProjectTemplateFiles/NativeScripts.cpp ${CMAKE_CURRENT_SOURCE_DIR}/project/files/NativeScripts.cpp.hpp NativeScripts_cpp)
 embed_resource(${CMAKE_CURRENT_SOURCE_DIR}/../ProjectTemplateFiles/Tea.cpp ${CMAKE_CURRENT_SOURCE_DIR}/project/files/Tea.cpp.hpp Tea_cpp)
 embed_resource(${CMAKE_CURRENT_SOURCE_DIR}/../ProjectTemplateFiles/Tea.hpp ${CMAKE_CURRENT_SOURCE_DIR}/project/files/Tea.hpp.hpp Tea_hpp)
-
+embed_resource(${CMAKE_CURRENT_SOURCE_DIR}/../ProjectTemplateFiles/Resources.hpp ${CMAKE_CURRENT_SOURCE_DIR}/project/files/Resources.hpp.hpp Resources_hpp)
 file(GLOB_RECURSE TeaPotSources *.cpp)
 file(GLOB_RECURSE TeaPotHeaders *.hpp)
 
