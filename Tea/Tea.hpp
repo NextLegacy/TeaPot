@@ -18,10 +18,10 @@ namespace Tea
         public TEventSubscriber
     {
     public:
-    using TTeaCup = TC::TeaCup<TGAPI, TEventSubscriber, Tea>;
+    using TTeaCup      = TC::TeaCup<TGAPI, TEventSubscriber, Tea>;
     using TEventSystem = TECSSystem;
-    using TECS = BHW::ECS<TEventSystem, TComponents...>;
-    using TTea = Tea<TGAPI, TEventSubscriber, TECSSystem, TComponents...>;
+    using TECS         = BHW::ECS<TEventSystem, TComponents...>;
+    using TTea         = Tea<TGAPI, TEventSubscriber, TECSSystem, TComponents...>;
 
     public:
         inline Tea() : TECS() // TTeaCup(), TECS(), TEventSubscriber()

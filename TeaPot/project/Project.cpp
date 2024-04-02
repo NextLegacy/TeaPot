@@ -4,7 +4,7 @@
 #include <BHW/utils/io/FileHandler.hpp>
 #include <BHW/utils/json/JSON.hpp>
 
-#include "TeaPot/project/ProjectTemplateFiles.hpp"
+#include "TeaPot/Resources.hpp"
 
 #include <BHW/utils/reflection/Reflection.hpp>
 #include <array>
@@ -119,7 +119,7 @@ namespace TP
         BHW::CreateFolder(relativePath(".teapot/.teabrewer"                        ));
         BHW::CreateFolder(relativePath(".teapot/.teabrewer/build"                  ));
 
-        GenerateBuildFile("CMakeLists.txt", TP::ProjectTemplateFiles::CMakeLists,
+        GenerateBuildFile("CMakeLists.txt", Resources.at("CMakeLists.txt"),
             m_metaData.Directories.DistributionDirectory,
             BHW::GetExecutablePath(),
             m_metaData.Directories.SourceDirectory,
@@ -127,15 +127,13 @@ namespace TP
             m_metaData.Name
         );
 
-        GenerateBuildFile("NativeScripts.cpp", TP::ProjectTemplateFiles::NativeScripts);
+        GenerateBuildFile("NativeScripts.cpp", Resources.at("NativeScripts.cpp"));
 
-        GenerateBuildFile("Tea.hpp", TP::ProjectTemplateFiles::TeaHeader, GetProjectMetaData().GAPI.Include, GetProjectMetaData().GAPI.Name, "", "");
-        GenerateBuildFile("Tea.cpp", TP::ProjectTemplateFiles::TeaSource);
-        GenerateBuildFile("EntryPoint_final.cpp", TP::ProjectTemplateFiles::EntryPoint_Final);
+        GenerateBuildFile("Tea.hpp", Resources.at("Tea.hpp"), GetProjectMetaData().GAPI.Include, GetProjectMetaData().GAPI.Name, "", "");
+        GenerateBuildFile("Tea.cpp", Resources.at("Tea.cpp"));
+        GenerateBuildFile("EntryPoint.cpp", Resources.at("EntryPoint.cpp"));
 
-        GenerateBuildFile("Resources.hpp", TP::ProjectTemplateFiles::ResourcesHeader);
-
-        BHW::Console::WriteLine(TP::ProjectTemplateFiles::NativeScripts);
+        GenerateBuildFile("Resources.hpp", Resources.at("Resources.hpp"));
     }
 
     void Project::GenerateFinalSourceFiles()
@@ -194,9 +192,9 @@ namespace TP
         componentsString = componentsString.substr(0, componentsString.size() - 2);
         systemsString    = systemsString   .substr(0, systemsString   .size() - 2);
 
-        GenerateBuildFile("Tea.hpp", TP::ProjectTemplateFiles::TeaHeader, GetProjectMetaData().GAPI.Include, GetProjectMetaData().GAPI.Name, systemsString, componentsString);
-        GenerateBuildFile("Tea.cpp", TP::ProjectTemplateFiles::TeaSource);
-        GenerateBuildFile("EntryPoint_final.cpp", TP::ProjectTemplateFiles::EntryPoint_Final);
+        GenerateBuildFile("Tea.hpp", Resources.at("Tea.hpp"), GetProjectMetaData().GAPI.Include, GetProjectMetaData().GAPI.Name, systemsString, componentsString);
+        GenerateBuildFile("Tea.cpp", Resources.at("Tea.cpp"));
+        GenerateBuildFile("EntryPoint_final.cpp", Resources.at("EntryPoint.cpp"));
 
         dll.Unload();
     }

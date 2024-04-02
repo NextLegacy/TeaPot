@@ -12,6 +12,7 @@ namespace TP
 
         if constexpr (BHW::IsRegistered<T>())
         {
+            std::apply([&](auto&&... members) { ((std::cout << members.Name << std::endl), ...); }, BHW::GetMembersOfType<T>());
             std::apply([&](auto&&... members) { ((ImGuiInputField(std::string(members.Name.begin(), members.Name.end()), members(object))), ...); }, BHW::GetMembersOfType<T>());
         }
         else
