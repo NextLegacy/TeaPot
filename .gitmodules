@@ -1,6 +1,0 @@
-[submodule "dependencies/BoilingHotWater"]
-	path = dependencies/BoilingHotWater
-	url = https://github.com/NextLegacy/BoilingHotWater.git
-[submodule "dependencies/TeaCup"]
-	path = dependencies/TeaCup
-	url = https://github.com/NextLegacy/TeaCup.git
