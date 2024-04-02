@@ -10,6 +10,11 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/bin/install)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/dependencies.cmake)
 
+find_package(BoilingHotWater REQUIRED)
+find_package(TeaCup REQUIRED)
+find_package(Threads REQUIRED)
+find_package(OpenGL REQUIRED)
+
 add_subdirectory(Tea   )
 add_subdirectory(TeaPot)
 

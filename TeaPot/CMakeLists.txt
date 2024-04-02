@@ -2,33 +2,8 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-function(embed_resource resource_file_name source_file_name variable_name)
+include(Resources.cmake)
 
-    file(READ ${resource_file_name} hex_content HEX)
-
-    # remove all newlines
-    string(REPEAT "[0-9a-f]" 32 column_pattern)
-    string(REGEX REPLACE "(${column_pattern})" "\\1\n" content "${hex_content}")
-    
-    string(REGEX REPLACE "([0-9a-f][0-9a-f])" "0x\\1, " content "${content}")
-    
-    string(REGEX REPLACE ", $" "" content "${content}")
-    
-    string(REGEX REPLACE "0x0d, 0x0a" "0x0a" content "${content}")
-    set(array_definition "static const unsigned char ${variable_name}[] =\n{\n${content}\n};")
-    
-    set(source "// Auto generated file.\n${array_definition}\n")
-    
-    file(WRITE "${source_file_name}" "${source}")
-
-endfunction()
-
-embed_resource(${CMAKE_CURRENT_SOURCE_DIR}/../ProjectTemplateFiles/CMakeLists.txt ${CMAKE_CURRENT_SOURCE_DIR}/project/files/CMakeLists.txt.hpp CMakeLists_txt)
-embed_resource(${CMAKE_CURRENT_SOURCE_DIR}/../ProjectTemplateFiles/EntryPoint_Final.cpp ${CMAKE_CURRENT_SOURCE_DIR}/project/files/EntryPoint_Final.cpp.hpp EntryPoint_Final_cpp)
-embed_resource(${CMAKE_CURRENT_SOURCE_DIR}/../ProjectTemplateFiles/NativeScripts.cpp ${CMAKE_CURRENT_SOURCE_DIR}/project/files/NativeScripts.cpp.hpp NativeScripts_cpp)
-embed_resource(${CMAKE_CURRENT_SOURCE_DIR}/../ProjectTemplateFiles/Tea.cpp ${CMAKE_CURRENT_SOURCE_DIR}/project/files/Tea.cpp.hpp Tea_cpp)
-embed_resource(${CMAKE_CURRENT_SOURCE_DIR}/../ProjectTemplateFiles/Tea.hpp ${CMAKE_CURRENT_SOURCE_DIR}/project/files/Tea.hpp.hpp Tea_hpp)
-embed_resource(${CMAKE_CURRENT_SOURCE_DIR}/../ProjectTemplateFiles/Resources.hpp ${CMAKE_CURRENT_SOURCE_DIR}/project/files/Resources.hpp.hpp Resources_hpp)
 file(GLOB_RECURSE TeaPotSources *.cpp)
 file(GLOB_RECURSE TeaPotHeaders *.hpp)
 

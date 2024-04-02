@@ -93,7 +93,7 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 set(BUILD_SHARED_LIBS OFF)
 
-add_executable(${{PROJECT_NAME}} ${{CMAKE_CURRENT_SOURCE_DIR}}/EntryPoint_Final.cpp ${{CMAKE_CURRENT_SOURCE_DIR}}/Tea.hpp ${{CMAKE_CURRENT_SOURCE_DIR}}/Tea.cpp)
+add_executable(${{PROJECT_NAME}} ${{CMAKE_CURRENT_SOURCE_DIR}}/EntryPoint.cpp ${{CMAKE_CURRENT_SOURCE_DIR}}/Tea.hpp ${{CMAKE_CURRENT_SOURCE_DIR}}/Tea.cpp)
 
 target_link_libraries(${{PROJECT_NAME}} PUBLIC NativeScripts)
 
@@ -120,36 +120,23 @@ add_custom_command(
 # RESOURCES
 # -------------------------------------------------------------------------------------------------
 
-function(embed_resource resource_file_name source_file_name variable_name)
+function(add_resource file_name variable_name)
 
-    file(READ ${{resource_file_name}} hex_content HEX)
+    file(READ ${{file_name}} file_content)
 
-    # remove all newlines
-    string(REPEAT "[0-9a-f]" 32 column_pattern)
-    string(REGEX REPLACE "(${{column_pattern}})" "\\1\n" content "${{hex_content}}")
-    
-    string(REGEX REPLACE "([0-9a-f][0-9a-f])" "0x\\1, " content "${{content}}")
-    
-    string(REGEX REPLACE ", $" "" content "${{content}}")
-    
-    string(REGEX REPLACE "0x0d, 0x0a" "0x0a" content "${{content}}")
-    set(array_definition "const unsigned char arr[] =\n        {{\n${{content}}\n        }}\;")
-    set(map_definition "    {{\"${{variable_name}}\", []() -> std::string {{\n        ${{array_definition}}\n        return std::string(reinterpret_cast<const char*>(arr), sizeof(arr))\;\n    }}}},")
-    set(source "\n${{map_definition}}\n")
-    
-    file(APPEND ${{source_file_name}} ${{source}})
+    file(APPEND ${{CMAKE_CURRENT_SOURCE_DIR}}/Resources.cpp "        {{\"${{variable_name}}\",\nR\"(${{file_content}})\"\n        }},\n")
 
 endfunction()
 
 file(GLOB_RECURSE RESOURCES ${{RESOURCE_DIR}}/*)
 
-file(WRITE "${{CMAKE_CURRENT_SOURCE_DIR}}/Resources.cpp" "// Auto generated file.\nnamespace Tea{{\nconst std::unordered_map<std::string, std::string(*)()> Resources = {{\n")
+file(WRITE ${{CMAKE_CURRENT_SOURCE_DIR}}/Resources.cpp "// Auto generated file.\n#include \"Resources.hpp\"\nnamespace Tea{{\n    const std::unordered_map<std::string, const std::string> Resources = {{\n")
 
 foreach(RESOURCE ${{RESOURCES}})
     get_filename_component(RESOURCE_NAME ${{RESOURCE}} NAME)
-    embed_resource("${{RESOURCE}}" "${{CMAKE_CURRENT_SOURCE_DIR}}/Resources.cpp" "${{RESOURCE_NAME}}")
+    add_resource(${{RESOURCE}} ${{RESOURCE_NAME}})
 endforeach()
 
-file(APPEND "${{CMAKE_CURRENT_SOURCE_DIR}}/Resources.cpp" "}};\n}}")
+file(APPEND ${{CMAKE_CURRENT_SOURCE_DIR}}/Resources.cpp "    }};\n}}")
 
 # -------------------------------------------------------------------------------------------------

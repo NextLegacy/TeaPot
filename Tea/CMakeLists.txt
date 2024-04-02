@@ -13,7 +13,7 @@ target_link_libraries(Tea PUBLIC
     TeaCup::TeaCup
 )
 
-add_library(Tea::Tea ALIAS TeaCup)
+#add_library(Tea::Tea ALIAS TeaCup)
 
 include(GNUInstallDirs)
 include(CPack)
