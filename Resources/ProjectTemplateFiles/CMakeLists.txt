@@ -43,8 +43,9 @@ set(CMAKE_CXX_EXTENSIONS        OFF)
 list(APPEND CMAKE_PREFIX_PATH ${{ENGINE_DIR}}/install)
 
 find_package(BoilingHotWater REQUIRED)
+find_package(Threads         REQUIRED)
 find_package(OpenGL          REQUIRED)
-find_package(glfw3           REQUIRED)
+#find_package(glfw3          REQUIRED)
 find_package(TeaCup          REQUIRED)
 find_package(Tea             REQUIRED)
 

@@ -82,7 +82,7 @@ namespace TP
         std::system
         ((
             BHW::Format(
-                R"("cd {}/build && {} --build . --config Release --target {} -j 30 --)",
+                R"("cd {}/build && {} --build . --config Debug --target {} -j 30 --)",
                 BHW::CombinePaths(m_metaData.Path, ".teapot/.teabrewer"),
                 m_metaData.CMakeCommand,
                 target

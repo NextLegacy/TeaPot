@@ -35,11 +35,11 @@ namespace TP
             ImGui::Separator();
 
             ImGui::Text("Fixed UPS: %f", teaPot.GetFUPS());
-            ImGui::Text("Fixed Update Time: %f", teaPot.GetFixedDeltaTime());
+            ImGui::Text("Fifxed Update Time: %f", teaPot.GetFixedDeltaTime());
 
             //ImPlot::CreateContext();
 
-            ImPlot::ShowDemoWindow();
+            /*ImPlot::ShowDemoWindow();
 
             if (ImPlot::BeginPlot("Times", "Frame", "Time", ImVec2(-1, 200)))
             {
@@ -69,7 +69,7 @@ namespace TP
 
                 ImPlot::EndPlot();
             }
-
+    */
             ImGui::End();
         }
     }

@@ -8,8 +8,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/bin/install)
 
-include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/dependencies.cmake)
-
 find_package(BoilingHotWater REQUIRED)
 find_package(TeaCup REQUIRED)
 find_package(Threads REQUIRED)

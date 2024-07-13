@@ -10,15 +10,15 @@ namespace TP
     {
         ImGui::Text(name.c_str());
 
-        if constexpr (BHW::IsRegistered<T>())
-        {
-            std::apply([&](auto&&... members) { ((std::cout << members.Name << std::endl), ...); }, BHW::GetMembersOfType<T>());
-            std::apply([&](auto&&... members) { ((ImGuiInputField(std::string(members.Name.begin(), members.Name.end()), members(object))), ...); }, BHW::GetMembersOfType<T>());
-        }
-        else
-        {
-            ImGui::Text("Type is not serializable");
-        }
+        //if constexpr (BHW::IsRegistered<T>())
+        //{
+        //    std::apply([&](auto&&... members) { ((std::cout << members.Name << std::endl), ...); }, BHW::GetMembersOfType<T>());
+        //    std::apply([&](auto&&... members) { ((ImGuiInputField(std::string(members.Name.begin(), members.Name.end()), members(object))), ...); }, BHW::GetMembersOfType<T>());
+        //}
+        //else
+        //{
+        //    ImGui::Text("Type is not serializable");
+        //}
     }
 
     template<> inline void ImGuiInputField<int        >(std::string name, int&         object) { ImGui::InputInt   (name.c_str(), &object); }
